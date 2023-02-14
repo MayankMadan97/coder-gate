@@ -12,6 +12,7 @@ test:
       junit:
         - target/ProjectReports/TEST_*.xml
   script:
+    - cd coder-gate
     - echo "Pipeline test started"
     - mvn verify
   tags:
