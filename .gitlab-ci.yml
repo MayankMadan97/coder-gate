@@ -10,7 +10,7 @@ test:
       - target
     reports:
       junit:
-        - target/ProjectReports/TEST_*.xml
+        - coder-gate/target/ProjectReports/TEST_*.xml
   script:
     - cd coder-gate
     - echo "Pipeline test started"
