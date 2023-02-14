@@ -23,6 +23,7 @@ build:
   stage: build
   image: maven:latest
   script:
+    - cd coder-gate
     - echo "Building the pipeline"
     - mvn clean package
   artifacts:
