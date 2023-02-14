@@ -7,7 +7,7 @@ test:
   image: maven:latest
   artifacts:
     paths:
-      - target
+      - coder-gate/target
     reports:
       junit:
         - coder-gate/target/ProjectReports/TEST_*.xml
@@ -29,7 +29,7 @@ build:
     - mvn clean package
   artifacts:
     paths:
-      - target
+      - coder-gate/target
   tags:
     - Group19Runner
   only:
