@@ -1,0 +1,34 @@
+stages:
+  - test
+  - build
+
+test:
+  stage: test
+  image: maven:latest
+  artifacts:
+    paths:
+      - target
+    reports:
+      junit:
+        - target/ProjectReports/TEST_*.xml
+  script:
+    - echo "Pipeline test started"
+    - mvn verify
+  tags:
+    - Group19Runner
+  only:
+    - dev
+
+build:
+  stage: build
+  image: maven:latest
+  script:
+    - echo "Building the pipeline"
+    - mvn clean package
+  artifacts:
+    paths:
+      - target
+  tags:
+    - Group19Runner
+  only:
+    - dev
