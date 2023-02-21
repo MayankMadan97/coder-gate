@@ -6,6 +6,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -45,27 +47,27 @@ public class RestClient {
         return response;
     }
 
-    public Map<String, Object> invokeForGet(String uri,
-            MultiValueMap<String, String> customHeaders) {
+    public Object invokeForGet(String uri, MultiValueMap<String, String> customHeaders) {
         LOGGER.debug("RestClient :: invokeForPost : Entering the method");
-        Map<String, Object> response = null;
+        Object response = null;
         if (uri != null && URI.create(uri) != null) {
-            try {
-                customHeaders = appendAuthenticationHeaders(customHeaders);
-                HttpEntity<String> request = new HttpEntity<>(customHeaders);
-                String apiResponse = restTemplate.postForObject(URI.create(uri), request, String.class);
-                response = Mapper.getInstance().readValue(apiResponse, new TypeReference<Map<String, Object>>() {
-                });
-            } catch (JsonProcessingException e) {
-                LOGGER.error("RestClient :: invokeForPost : API parsing failed");
+            customHeaders = appendAuthenticationHeaders(customHeaders);
+            HttpEntity<String> request = new HttpEntity<>(customHeaders);
+            ResponseEntity<String> apiResponse = restTemplate.exchange(uri, HttpMethod.GET, request, String.class);
+            if (apiResponse.getBody() != null) {
+                try {
+                    response = Mapper.getInstance().readValue(apiResponse.getBody(), new TypeReference<Object>() {
+                    });
+                } catch (JsonProcessingException e) {
+                    LOGGER.error("invokeForGet : Failed to map api response to the required type");
+                }
             }
-
         } else {
             throw new IllegalArgumentException("Mandatory parameters not found");
         }
-        LOGGER.debug("RestClient :: invokeForPost : Exiting the method");
-
+        LOGGER.debug("invokeForPost : Exiting the method");
         return response;
+
     }
 
     private static MultiValueMap<String, String> appendAuthenticationHeaders(
