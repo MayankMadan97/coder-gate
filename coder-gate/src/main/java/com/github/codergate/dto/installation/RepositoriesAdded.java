@@ -4,7 +4,7 @@ package com.github.codergate.dto.installation;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,15 +14,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "node_id",
-    "name",
-    "full_name",
-    "private"
+        "id",
+        "node_id",
+        "name",
+        "full_name",
+        "private"
 })
-@Generated("jsonschema2pojo")
-public class RepositoriesAdded implements Serializable
-{
+public class RepositoriesAdded implements Serializable {
 
     @JsonProperty("id")
     private Integer id;
@@ -155,33 +153,34 @@ public class RepositoriesAdded implements Serializable
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(RepositoriesAdded.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(RepositoriesAdded.class.getName()).append('@')
+                .append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("id");
         sb.append('=');
-        sb.append(((this.id == null)?"<null>":this.id));
+        sb.append(((this.id == null) ? "<null>" : this.id));
         sb.append(',');
         sb.append("nodeId");
         sb.append('=');
-        sb.append(((this.nodeId == null)?"<null>":this.nodeId));
+        sb.append(((this.nodeId == null) ? "<null>" : this.nodeId));
         sb.append(',');
         sb.append("name");
         sb.append('=');
-        sb.append(((this.name == null)?"<null>":this.name));
+        sb.append(((this.name == null) ? "<null>" : this.name));
         sb.append(',');
         sb.append("fullName");
         sb.append('=');
-        sb.append(((this.fullName == null)?"<null>":this.fullName));
+        sb.append(((this.fullName == null) ? "<null>" : this.fullName));
         sb.append(',');
         sb.append("_private");
         sb.append('=');
-        sb.append(((this._private == null)?"<null>":this._private));
+        sb.append(((this._private == null) ? "<null>" : this._private));
         sb.append(',');
         sb.append("additionalProperties");
         sb.append('=');
-        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(((this.additionalProperties == null) ? "<null>" : this.additionalProperties));
         sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
         } else {
             sb.append(']');
         }
@@ -191,12 +190,12 @@ public class RepositoriesAdded implements Serializable
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this._private == null)? 0 :this._private.hashCode()));
-        result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
-        result = ((result* 31)+((this.fullName == null)? 0 :this.fullName.hashCode()));
-        result = ((result* 31)+((this.id == null)? 0 :this.id.hashCode()));
-        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
-        result = ((result* 31)+((this.nodeId == null)? 0 :this.nodeId.hashCode()));
+        result = ((result * 31) + ((this._private == null) ? 0 : this._private.hashCode()));
+        result = ((result * 31) + ((this.name == null) ? 0 : this.name.hashCode()));
+        result = ((result * 31) + ((this.fullName == null) ? 0 : this.fullName.hashCode()));
+        result = ((result * 31) + ((this.id == null) ? 0 : this.id.hashCode()));
+        result = ((result * 31) + ((this.additionalProperties == null) ? 0 : this.additionalProperties.hashCode()));
+        result = ((result * 31) + ((this.nodeId == null) ? 0 : this.nodeId.hashCode()));
         return result;
     }
 
@@ -209,7 +208,13 @@ public class RepositoriesAdded implements Serializable
             return false;
         }
         RepositoriesAdded rhs = ((RepositoriesAdded) other);
-        return (((((((this._private == rhs._private)||((this._private!= null)&&this._private.equals(rhs._private)))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))))&&((this.fullName == rhs.fullName)||((this.fullName!= null)&&this.fullName.equals(rhs.fullName))))&&((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.nodeId == rhs.nodeId)||((this.nodeId!= null)&&this.nodeId.equals(rhs.nodeId))));
+        return (((((((this._private == rhs._private) || ((this._private != null) && this._private.equals(rhs._private)))
+                && ((this.name == rhs.name) || ((this.name != null) && this.name.equals(rhs.name))))
+                && ((this.fullName == rhs.fullName) || ((this.fullName != null) && this.fullName.equals(rhs.fullName))))
+                && ((this.id == rhs.id) || ((this.id != null) && this.id.equals(rhs.id))))
+                && ((this.additionalProperties == rhs.additionalProperties) || ((this.additionalProperties != null)
+                        && this.additionalProperties.equals(rhs.additionalProperties))))
+                && ((this.nodeId == rhs.nodeId) || ((this.nodeId != null) && this.nodeId.equals(rhs.nodeId))));
     }
 
 }

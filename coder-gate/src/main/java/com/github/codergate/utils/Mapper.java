@@ -9,6 +9,11 @@ public class Mapper {
     private Mapper() {
     }
 
+    
+    /** 
+     * singleton instance of object mapper
+     * @return ObjectMapper
+     */
     public static ObjectMapper getInstance() {
         if (objectMapper == null)
             objectMapper = new ObjectMapper();
