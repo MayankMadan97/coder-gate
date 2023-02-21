@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,17 +15,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "action",
-    "installation",
-    "repository_selection",
-    "repositories_added",
-    "repositories_removed",
-    "requester",
-    "sender"
+        "action",
+        "installation",
+        "repository_selection",
+        "repositories_added",
+        "repositories_removed",
+        "requester",
+        "sender"
 })
-@Generated("jsonschema2pojo")
-public class InstallationPayload implements Serializable
-{
+public class InstallationPayload implements Serializable {
 
     @JsonProperty("action")
     private String action;
@@ -62,7 +60,9 @@ public class InstallationPayload implements Serializable
      * @param repositoriesAdded
      * @param repositoriesRemoved
      */
-    public InstallationPayload(String action, Installation installation, String repositorySelection, List<RepositoriesAdded> repositoriesAdded, List<Object> repositoriesRemoved, Object requester, Sender sender) {
+    public InstallationPayload(String action, Installation installation, String repositorySelection,
+            List<RepositoriesAdded> repositoriesAdded, List<Object> repositoriesRemoved, Object requester,
+            Sender sender) {
         super();
         this.action = action;
         this.installation = installation;
@@ -196,41 +196,42 @@ public class InstallationPayload implements Serializable
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(InstallationPayload.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(InstallationPayload.class.getName()).append('@')
+                .append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("action");
         sb.append('=');
-        sb.append(((this.action == null)?"<null>":this.action));
+        sb.append(((this.action == null) ? "<null>" : this.action));
         sb.append(',');
         sb.append("installation");
         sb.append('=');
-        sb.append(((this.installation == null)?"<null>":this.installation));
+        sb.append(((this.installation == null) ? "<null>" : this.installation));
         sb.append(',');
         sb.append("repositorySelection");
         sb.append('=');
-        sb.append(((this.repositorySelection == null)?"<null>":this.repositorySelection));
+        sb.append(((this.repositorySelection == null) ? "<null>" : this.repositorySelection));
         sb.append(',');
         sb.append("repositoriesAdded");
         sb.append('=');
-        sb.append(((this.repositoriesAdded == null)?"<null>":this.repositoriesAdded));
+        sb.append(((this.repositoriesAdded == null) ? "<null>" : this.repositoriesAdded));
         sb.append(',');
         sb.append("repositoriesRemoved");
         sb.append('=');
-        sb.append(((this.repositoriesRemoved == null)?"<null>":this.repositoriesRemoved));
+        sb.append(((this.repositoriesRemoved == null) ? "<null>" : this.repositoriesRemoved));
         sb.append(',');
         sb.append("requester");
         sb.append('=');
-        sb.append(((this.requester == null)?"<null>":this.requester));
+        sb.append(((this.requester == null) ? "<null>" : this.requester));
         sb.append(',');
         sb.append("sender");
         sb.append('=');
-        sb.append(((this.sender == null)?"<null>":this.sender));
+        sb.append(((this.sender == null) ? "<null>" : this.sender));
         sb.append(',');
         sb.append("additionalProperties");
         sb.append('=');
-        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(((this.additionalProperties == null) ? "<null>" : this.additionalProperties));
         sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
         } else {
             sb.append(']');
         }
@@ -240,14 +241,14 @@ public class InstallationPayload implements Serializable
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.requester == null)? 0 :this.requester.hashCode()));
-        result = ((result* 31)+((this.sender == null)? 0 :this.sender.hashCode()));
-        result = ((result* 31)+((this.repositorySelection == null)? 0 :this.repositorySelection.hashCode()));
-        result = ((result* 31)+((this.installation == null)? 0 :this.installation.hashCode()));
-        result = ((result* 31)+((this.action == null)? 0 :this.action.hashCode()));
-        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
-        result = ((result* 31)+((this.repositoriesAdded == null)? 0 :this.repositoriesAdded.hashCode()));
-        result = ((result* 31)+((this.repositoriesRemoved == null)? 0 :this.repositoriesRemoved.hashCode()));
+        result = ((result * 31) + ((this.requester == null) ? 0 : this.requester.hashCode()));
+        result = ((result * 31) + ((this.sender == null) ? 0 : this.sender.hashCode()));
+        result = ((result * 31) + ((this.repositorySelection == null) ? 0 : this.repositorySelection.hashCode()));
+        result = ((result * 31) + ((this.installation == null) ? 0 : this.installation.hashCode()));
+        result = ((result * 31) + ((this.action == null) ? 0 : this.action.hashCode()));
+        result = ((result * 31) + ((this.additionalProperties == null) ? 0 : this.additionalProperties.hashCode()));
+        result = ((result * 31) + ((this.repositoriesAdded == null) ? 0 : this.repositoriesAdded.hashCode()));
+        result = ((result * 31) + ((this.repositoriesRemoved == null) ? 0 : this.repositoriesRemoved.hashCode()));
         return result;
     }
 
@@ -260,7 +261,20 @@ public class InstallationPayload implements Serializable
             return false;
         }
         InstallationPayload rhs = ((InstallationPayload) other);
-        return (((((((((this.requester == rhs.requester)||((this.requester!= null)&&this.requester.equals(rhs.requester)))&&((this.sender == rhs.sender)||((this.sender!= null)&&this.sender.equals(rhs.sender))))&&((this.repositorySelection == rhs.repositorySelection)||((this.repositorySelection!= null)&&this.repositorySelection.equals(rhs.repositorySelection))))&&((this.installation == rhs.installation)||((this.installation!= null)&&this.installation.equals(rhs.installation))))&&((this.action == rhs.action)||((this.action!= null)&&this.action.equals(rhs.action))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.repositoriesAdded == rhs.repositoriesAdded)||((this.repositoriesAdded!= null)&&this.repositoriesAdded.equals(rhs.repositoriesAdded))))&&((this.repositoriesRemoved == rhs.repositoriesRemoved)||((this.repositoriesRemoved!= null)&&this.repositoriesRemoved.equals(rhs.repositoriesRemoved))));
+        return (((((((((this.requester == rhs.requester)
+                || ((this.requester != null) && this.requester.equals(rhs.requester)))
+                && ((this.sender == rhs.sender) || ((this.sender != null) && this.sender.equals(rhs.sender))))
+                && ((this.repositorySelection == rhs.repositorySelection) || ((this.repositorySelection != null)
+                        && this.repositorySelection.equals(rhs.repositorySelection))))
+                && ((this.installation == rhs.installation)
+                        || ((this.installation != null) && this.installation.equals(rhs.installation))))
+                && ((this.action == rhs.action) || ((this.action != null) && this.action.equals(rhs.action))))
+                && ((this.additionalProperties == rhs.additionalProperties) || ((this.additionalProperties != null)
+                        && this.additionalProperties.equals(rhs.additionalProperties))))
+                && ((this.repositoriesAdded == rhs.repositoriesAdded)
+                        || ((this.repositoriesAdded != null) && this.repositoriesAdded.equals(rhs.repositoriesAdded))))
+                && ((this.repositoriesRemoved == rhs.repositoriesRemoved) || ((this.repositoriesRemoved != null)
+                        && this.repositoriesRemoved.equals(rhs.repositoriesRemoved))));
     }
 
 }
