@@ -16,8 +16,7 @@ import javax.persistence.*;
 public class Branch {
 
     @Id
-    private int branchId;
-    private String branchName;
+    private String branchUrl;
 
     @ManyToOne
     @JoinColumn(name = "repositoryId")

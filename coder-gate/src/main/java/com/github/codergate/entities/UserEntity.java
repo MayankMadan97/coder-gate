@@ -16,12 +16,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class User {
     @Id
-    private int userId;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long userId;
     private String userName;
     private String email;
-    private String organization;
-    private String role;
-    private String collaborators;
 
     @ManyToOne
     @JoinColumn(name = "repositoryId")

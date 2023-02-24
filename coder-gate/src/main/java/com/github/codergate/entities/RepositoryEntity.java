@@ -20,7 +20,7 @@ public class Repository {
     @Id
     private int repositoryId;
     private String repositoryName;
-    private String fork;
+    private boolean fork;
 
     @OneToMany(mappedBy = "r1", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<User> u1;

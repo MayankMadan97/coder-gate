@@ -14,9 +14,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tag {
-    @Id
-    private int tagId;
-    private String tagName;
+   @Id
+    private String tagUrl;
 
     @ManyToOne
     @JoinColumn(name = "repositoryId")
