@@ -2,6 +2,8 @@ package com.github.codergate.controllers;
 
 import java.util.Map;
 
+import com.github.codergate.dto.push.PusherPayloadDTO;
+import com.github.codergate.services.PushPayloadService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,12 @@ public class WebhookListenerController {
     @Autowired
     private RestClient restClient;
 
+    @Autowired
+    private PushPayloadService pushPayloadService;
+
     private static final String INSTALLATION_ADDED = "added";
     private static final String INSTALLATION_ACTION = "action";
+    private static final String PUSH_PUSHER = "pusher";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebhookListenerController.class);
 
@@ -44,7 +50,17 @@ public class WebhookListenerController {
                 //TODO: API call to test JWT and RestClient; remove once verified
                 restClient.invokeForGet("https://api.github.com/app/installations",
                         JwtUtils.getGithubSpecificHeaders());
-            } else {
+            }
+
+            else if(webhookPayload.containsKey(PUSH_PUSHER)){
+                PusherPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload,
+                        PusherPayloadDTO.class);
+                LOGGER.debug("webHookListener : Pusher payload {}", payload);
+                // calling service for saving data to the database
+                pushPayloadService.pushPayload(payload);
+            }
+
+            else {
                 LOGGER.warn("webHookListener : Following webhook payload is not yet supported {}", webhookPayload);
             }
         }
