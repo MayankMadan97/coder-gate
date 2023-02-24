@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Event {
+public class EventEntity {
 
     @Id
     private int eventID;
@@ -22,10 +22,10 @@ public class Event {
     private String commitMessage;
     @ManyToOne
     @JoinColumn(name = "userID")
-    private User u2;
+    private UserEntity u2;
 
     @ManyToOne
     @JoinColumn(name = "repositoryID")
-    private Repository r2;
+    private RepositoryEntity r2;
 
 }

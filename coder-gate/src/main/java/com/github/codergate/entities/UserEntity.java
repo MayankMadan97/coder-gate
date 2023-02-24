@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long userId;
@@ -23,10 +23,10 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "repositoryId")
-    private Repository r1;
+    private RepositoryEntity r1;
 
     @OneToMany(mappedBy = "u2", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Event> e1;
+    private Set<EventEntity> e1;
 
 }
 

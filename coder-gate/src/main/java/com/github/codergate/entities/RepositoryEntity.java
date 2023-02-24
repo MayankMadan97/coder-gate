@@ -16,21 +16,21 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Repository {
+public class RepositoryEntity {
     @Id
     private int repositoryId;
     private String repositoryName;
     private boolean fork;
 
     @OneToMany(mappedBy = "r1", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<User> u1;
+    private Set<UserEntity> u1;
 
     @OneToMany(mappedBy = "b", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Branch> branches = new ArrayList<>();
+    private List<BranchEntity> branchEntities = new ArrayList<>();
     @OneToMany(mappedBy = "t", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Tag> tags = new ArrayList<>();
+    private List<TagEntity> tagEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "r2", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Event> e2;
+    private Set<EventEntity> e2;
 
 }

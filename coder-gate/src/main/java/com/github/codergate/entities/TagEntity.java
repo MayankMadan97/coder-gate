@@ -13,11 +13,11 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tag {
+public class TagEntity {
    @Id
     private String tagUrl;
 
     @ManyToOne
     @JoinColumn(name = "repositoryId")
-    private Repository t;
+    private RepositoryEntity t;
 }

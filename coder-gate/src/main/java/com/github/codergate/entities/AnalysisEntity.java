@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Analysis {
+public class AnalysisEntity {
     @Id
     private int analysisID;
     private String analysisType;
@@ -22,5 +22,5 @@ public class Analysis {
 
     @OneToOne
     @JoinColumn(name = "eventID")
-    private Event e3;
+    private EventEntity e3;
 }

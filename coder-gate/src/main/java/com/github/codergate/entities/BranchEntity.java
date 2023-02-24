@@ -13,12 +13,12 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Branch {
+public class BranchEntity {
 
     @Id
     private String branchUrl;
 
     @ManyToOne
     @JoinColumn(name = "repositoryId")
-    private Repository b;
+    private RepositoryEntity b;
 }
