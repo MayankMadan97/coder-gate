@@ -22,7 +22,7 @@ public class RepositoryEntity {
     private String repositoryName;
     private boolean fork;
 
-    @OneToMany(mappedBy = "r1", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "r1", cascade = CascadeType.ALL)
     private Set<UserEntity> u1;
 
     @OneToMany(mappedBy = "b", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -30,7 +30,7 @@ public class RepositoryEntity {
     @OneToMany(mappedBy = "t", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TagEntity> tagEntities = new ArrayList<>();
 
-    @OneToMany(mappedBy = "r2", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "r2", cascade = CascadeType.ALL)
     private Set<EventEntity> e2;
 
 }

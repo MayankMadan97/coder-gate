@@ -32,12 +32,14 @@ public class PushPayloadService {
     public void pushPayload(PusherPayloadDTO payload){
         if (payload != null) {
 
+
             UserEntity userEntity = new UserEntity();
             RepositoryEntity repositoryEntity = new RepositoryEntity();
             BranchEntity branchEntity = new BranchEntity();
             TagEntity tagEntity = new TagEntity();
             EventEntity eventEntity = new EventEntity();
 
+            userEntity.setUserId(payload.getSender().getId());
             userEntity.setUserName(payload.getPusher().getName());
             userEntity.setEmail(payload.getPusher().getEmail());
             userEntity.setR1(repositoryEntity);

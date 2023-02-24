@@ -16,7 +16,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long userId;
     private String userName;
     private String email;
@@ -25,7 +24,7 @@ public class UserEntity {
     @JoinColumn(name = "repositoryId")
     private RepositoryEntity r1;
 
-    @OneToMany(mappedBy = "u2", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "u2", cascade = CascadeType.ALL)
     private Set<EventEntity> e1;
 
 }
