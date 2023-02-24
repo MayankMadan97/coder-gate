@@ -16,9 +16,10 @@ import javax.persistence.*;
 public class EventEntity {
 
     @Id
-    private int eventID;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long eventID;
     private String eventName;
-    private int commitID;
+    private String commitID;
     private String commitMessage;
     @ManyToOne
     @JoinColumn(name = "userID")
