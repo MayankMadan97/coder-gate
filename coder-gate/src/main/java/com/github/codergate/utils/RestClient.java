@@ -1,6 +1,8 @@
 package com.github.codergate.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,12 +37,14 @@ public class RestClient {
      * @return Object
      */
     public Object invokeForPost(String uri, Object bodyParams,
-            MultiValueMap<String, String> customHeaders) {
+            MultiValueMap<String, String> customHeaders, boolean authorize) {
         LOGGER.debug("RestClient :: invokeForPost : Entering the method");
         Object response = null;
         HttpEntity<String> request = null;
         if (uri != null && URI.create(uri) != null) {
-            customHeaders = appendAuthenticationHeaders(customHeaders);
+            if (authorize) {
+                customHeaders = appendAuthenticationHeaders(customHeaders);
+            }
             try {
                 request = new HttpEntity<>(
                         bodyParams != null ? Mapper.getInstance().writeValueAsString(bodyParams) : null,
@@ -47,7 +52,7 @@ public class RestClient {
             } catch (JsonProcessingException e) {
                 LOGGER.error("RestClient :: invokeForPost : API request parsing failed");
             }
-            ResponseEntity<String> apiResponse = restTemplate.exchange(uri, HttpMethod.POST, request, String.class);
+            ResponseEntity<String> apiResponse = restTemplate.exchange(uri, HttpMethod.PUT, request, String.class);
             if (apiResponse.getBody() != null) {
                 try {
                     response = Mapper.getInstance().readValue(apiResponse.getBody(), new TypeReference<Object>() {
@@ -71,23 +76,30 @@ public class RestClient {
      * @param customHeaders
      * @return Object
      */
-    public Object invokeForGet(String uri, MultiValueMap<String, String> customHeaders) {
+    public Object invokeForGet(String uri, MultiValueMap<String, String> customHeaders, boolean authorize) {
         LOGGER.debug("RestClient :: invokeForPost : Entering the method");
         Object response = null;
-        if (uri != null && URI.create(uri) != null) {
-            customHeaders = appendAuthenticationHeaders(customHeaders);
-            HttpEntity<String> request = new HttpEntity<>(customHeaders);
-            ResponseEntity<String> apiResponse = restTemplate.exchange(uri, HttpMethod.GET, request, String.class);
-            if (apiResponse.getBody() != null) {
-                try {
-                    response = Mapper.getInstance().readValue(apiResponse.getBody(), new TypeReference<Object>() {
-                    });
-                } catch (JsonProcessingException e) {
-                    LOGGER.error("invokeForGet : Failed to map api response to the required type");
+        try {
+            if (uri != null && URI.create(URLEncoder.encode(uri, "UTF-8")) != null) {
+                if (authorize) {
+                    customHeaders = appendAuthenticationHeaders(customHeaders);
                 }
+                HttpEntity<String> request = new HttpEntity<>(customHeaders);
+                ResponseEntity<String> apiResponse = restTemplate.exchange(uri, HttpMethod.GET, request, String.class);
+                if (apiResponse.getBody() != null) {
+                    try {
+                        response = Mapper.getInstance().readValue(apiResponse.getBody(), new TypeReference<Object>() {
+                        });
+                    } catch (JsonProcessingException e) {
+                        LOGGER.error("invokeForGet : Failed to map api response to the required type");
+                    }
+                }
+            } else {
+                throw new IllegalArgumentException("Mandatory parameters not found");
             }
-        } else {
-            throw new IllegalArgumentException("Mandatory parameters not found");
+        } catch (RestClientException | UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         LOGGER.debug("invokeForPost : Exiting the method");
         return response;
