@@ -20,5 +20,5 @@ public class BranchEntity {
 
     @ManyToOne
     @JoinColumn(name = "repositoryId")
-    private RepositoryEntity b;
+    private RepositoryEntity repositoryIdInBranch;
 }

@@ -20,7 +20,7 @@ public class AnalysisEntity {
     private String analysisType;
     private int repositoryID;
 
-    @OneToOne
-    @JoinColumn(name = "eventID")
-    private EventEntity e3;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "eventId")
+    private EventEntity eventIdInAnalysis;
 }

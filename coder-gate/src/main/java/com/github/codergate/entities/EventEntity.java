@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "Event")
@@ -17,16 +18,19 @@ public class EventEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long eventID;
+    private long eventId;
     private String eventName;
-    private String commitID;
+    private String commitId;
     private String commitMessage;
     @ManyToOne
-    @JoinColumn(name = "userID")
-    private UserEntity u2;
+    @JoinColumn(name = "userId")
+    private UserEntity userIdInEvent;
 
     @ManyToOne
-    @JoinColumn(name = "repositoryID")
-    private RepositoryEntity r2;
+    @JoinColumn(name = "repositoryId")
+    private RepositoryEntity repositoryIdInEvent;
+
+    @OneToOne(mappedBy = "eventIdInAnalysis")
+    private AnalysisEntity analysisAndRepository;
 
 }

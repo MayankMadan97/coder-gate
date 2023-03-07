@@ -1,8 +1,6 @@
 package com.github.codergate.services;
 
 import com.github.codergate.controllers.WebhookListenerController;
-import com.github.codergate.dto.push.CommitDTO;
-import com.github.codergate.dto.push.CommitterDTO;
 import com.github.codergate.dto.push.PusherPayloadDTO;
 import com.github.codergate.entities.*;
 import com.github.codergate.repositories.*;
@@ -27,6 +25,7 @@ public class PushPayloadService {
     @Autowired
     private EventRepository eventRepository;
 
+
     private static final Logger LOGGER = LoggerFactory.getLogger(WebhookListenerController.class);
 
     public void pushPayload(PusherPayloadDTO payload){
@@ -38,26 +37,27 @@ public class PushPayloadService {
             BranchEntity branchEntity = new BranchEntity();
             TagEntity tagEntity = new TagEntity();
             EventEntity eventEntity = new EventEntity();
+            ThresholdEntity thresholdEntity = new ThresholdEntity();
 
             userEntity.setUserId(payload.getSender().getId());
             userEntity.setUserName(payload.getPusher().getName());
             userEntity.setEmail(payload.getPusher().getEmail());
-            userEntity.setR1(repositoryEntity);
+            userEntity.setRepositoryIdInUser(repositoryEntity);
 
             repositoryEntity.setRepositoryId(payload.getRepository().getId());
             repositoryEntity.setRepositoryName(payload.getRepository().getName());
             repositoryEntity.setFork(payload.getRepository().getFork());
 
             branchEntity.setBranchUrl(payload.getRepository().getBranchesUrl());
-            branchEntity.setB(repositoryEntity);
+            branchEntity.setRepositoryIdInBranch(repositoryEntity);
 
             tagEntity.setTagUrl(payload.getRepository().getTagsUrl());
-            tagEntity.setT(repositoryEntity);
+            tagEntity.setRepositoryIdInTag(repositoryEntity);
 
-            eventEntity.setR2(repositoryEntity);
-            eventEntity.setU2(userEntity);
+            eventEntity.setRepositoryIdInEvent(repositoryEntity);
+            eventEntity.setUserIdInEvent(userEntity);
             eventEntity.setEventName("push");
-            eventEntity.setCommitID(payload.getHeadCommit().getId());
+            eventEntity.setCommitId(payload.getHeadCommit().getId());
             eventEntity.setCommitMessage(payload.getHeadCommit().getMessage());
 
             this.repository.save(repositoryEntity);
@@ -65,6 +65,7 @@ public class PushPayloadService {
             this.branchRepository.save(branchEntity);
             this.tagRepository.save(tagEntity);
             this.eventRepository.save(eventEntity);
+
 
             LOGGER.debug("payload : Pusher payload saved");
         }

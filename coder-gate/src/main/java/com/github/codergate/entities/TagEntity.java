@@ -19,5 +19,5 @@ public class TagEntity {
 
     @ManyToOne
     @JoinColumn(name = "repositoryId")
-    private RepositoryEntity t;
+    private RepositoryEntity repositoryIdInTag;
 }

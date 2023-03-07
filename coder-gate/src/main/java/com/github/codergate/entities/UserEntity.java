@@ -22,10 +22,10 @@ public class UserEntity {
 
     @ManyToOne
     @JoinColumn(name = "repositoryId")
-    private RepositoryEntity r1;
+    private RepositoryEntity repositoryIdInUser;
 
-    @OneToMany(mappedBy = "u2", cascade = CascadeType.ALL)
-    private Set<EventEntity> e1;
+    @OneToMany(mappedBy = "userIdInEvent", cascade = CascadeType.ALL)
+    private Set<EventEntity> userAndEvent;
 
 }
 
