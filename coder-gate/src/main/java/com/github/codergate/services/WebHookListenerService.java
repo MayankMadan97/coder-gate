@@ -7,6 +7,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.codergate.dto.installation.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +24,27 @@ public class WebHookListenerService {
     @Autowired
     private RestClient restClient;
 
-    private static final String INSTALLATION_ADDED = "created";
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    RepositoryService repositoryService;
+
+    private static final String INSTALLATION_CREATED = "created";
     private static final String INSTALLATION_ACTION = "action";
+
+    private static final String INSTALLATION_ADDED = "added";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
     public void listen(Map<String, Object> webhookPayload) {
         // checking if the payload contains attributes for installation event
         if (webhookPayload.containsKey(INSTALLATION_ACTION)
-                && webhookPayload.get(INSTALLATION_ACTION).equals(INSTALLATION_ADDED)) {
+                && webhookPayload.get(INSTALLATION_ACTION).equals(INSTALLATION_CREATED)) {
             installationWebhookListener(webhookPayload);
+        } else if (webhookPayload.containsKey(INSTALLATION_ACTION)
+                && webhookPayload.get(INSTALLATION_ACTION).equals(INSTALLATION_ADDED)) {
+            installationAddWebhookListener(webhookPayload);
         } else {
             LOGGER.warn("webHookListener : Following webhook payload is not yet supported {}", webhookPayload);
         }
@@ -41,6 +53,7 @@ public class WebHookListenerService {
     private void installationWebhookListener(Map<String, Object> webhookPayload) {
         InstallationPayload payload = Mapper.getInstance().convertValue(webhookPayload,
                 InstallationPayload.class);
+//        userService.addUser(payload.getInstallation().getAccount());
         LOGGER.debug("webHookListener : Installation payload {}", payload);
         try {
             Map<String, Object> bodyParamForPost = new HashMap<>();
@@ -64,4 +77,29 @@ public class WebHookListenerService {
             LOGGER.error("installationWebhookListener : Failed to read github action file");
         }
     }
+
+    private void installationAddWebhookListener(Map<String, Object> webhookPayload) {
+        InstallationPayload payload = Mapper.getInstance().convertValue(webhookPayload,
+                InstallationPayload.class);
+        if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
+                && payload.getRepositoriesAdded() != null) {
+            Account user = userService.addUser(payload.getInstallation().getAccount());
+            repositoryService.addRepository(payload.getRepositoriesAdded(), user.getId());
+
+            repositoryService.getRepository(user.getId());
+            System.out.println( repositoryService.getRepository(user.getId()));
+
+//            userService.getUser(87960612L);
+//            userService.updateUser(87960612L);
+//            userService.deleteUserByID(87960612L);
+        }
+
+
+
+
+    }
+
+
+
 }
+

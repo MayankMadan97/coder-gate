@@ -22,8 +22,10 @@ public class RepositoryEntity {
     private String repositoryName;
     private boolean fork;
 
-    @OneToMany(mappedBy = "repositoryIdInUser", cascade = CascadeType.ALL)
-    private Set<UserEntity> userAndRepository;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private UserEntity userEntity;
 
     @OneToMany(mappedBy = "repositoryIdInBranch", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BranchEntity> branchEntities = new ArrayList<>();

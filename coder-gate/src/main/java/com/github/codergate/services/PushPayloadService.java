@@ -42,10 +42,10 @@ public class PushPayloadService {
             userEntity.setUserId(payload.getSender().getId());
             userEntity.setUserName(payload.getPusher().getName());
             userEntity.setEmail(payload.getPusher().getEmail());
-            userEntity.setRepositoryIdInUser(repositoryEntity);
 
             repositoryEntity.setRepositoryId(payload.getRepository().getId());
             repositoryEntity.setRepositoryName(payload.getRepository().getName());
+//            repositoryEntity.setUserEntity(payload.getSender().getId());
             repositoryEntity.setFork(payload.getRepository().getFork());
 
             branchEntity.setBranchUrl(payload.getRepository().getBranchesUrl());

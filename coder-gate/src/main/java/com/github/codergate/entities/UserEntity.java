@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,11 +21,11 @@ public class UserEntity {
     private String userName;
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "repositoryId")
-    private RepositoryEntity repositoryIdInUser;
+    @OneToMany(targetEntity = RepositoryEntity.class)
+    @JoinColumn(name ="UserId" )
+   private List<RepositoryEntity> repositoryEntity;
 
-    @OneToMany(mappedBy = "userIdInEvent", cascade = CascadeType.ALL)
+   @OneToMany(mappedBy = "userIdInEvent", cascade = CascadeType.ALL)
     private Set<EventEntity> userAndEvent;
 
 }
