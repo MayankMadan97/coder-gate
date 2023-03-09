@@ -46,17 +46,20 @@ public class WebHookListenerService {
             Map<String, Object> bodyParamForPost = new HashMap<>();
             Map<String, Object> comitter = new HashMap<>();
             bodyParamForPost.put("message", "Code scanning configured");
-            bodyParamForPost.put("content", Base64.getEncoder().encode(Files.readAllBytes(Path.of(
+            bodyParamForPost.put("content", Files.readAllBytes(Path.of(
                     System.getProperty("user.dir")
-                            + "/coder-gate/src/main/resources/codeql.yml"))));
+                            + "/coder-gate/src/main/resources/codeql.yml")));
             comitter.put("name", "codergate[bot]");
-            comitter.put("email", null);
+            comitter.put("email", "293667+codergate[bot]@users.noreply.github.com");
             bodyParamForPost.put("committer", comitter);
-            restClient.invokeForGet("https://api.github.com/users/CoderGate[bot]",
-                    JwtUtils.getGithubSpecificHeaders(), false);
-            restClient.invokeForPost(
-                    "https://api.github.com/repos/MayankMadan97/CoderGate/contents/codeql.yml", bodyParamForPost,
-                    JwtUtils.getGithubSpecificHeaders(), true);
+            if (payload.getInstallation() != null && payload.getInstallation().getId() != null) {
+                restClient.invokeForGet("https://api.github.com/repos/MayankMadan97/CoderGate/issues", null,
+                        payload.getInstallation().getId().toString());
+                restClient.invokeForPost(
+                        "https://api.github.com/repos/MayankMadan97/CoderGate/contents/.github/workflows/codeql.yml",
+                        bodyParamForPost,
+                        JwtUtils.getGithubSpecificHeaders(), payload.getInstallation().getId().toString());
+            }
         } catch (IOException e) {
             LOGGER.error("installationWebhookListener : Failed to read github action file");
         }
