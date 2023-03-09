@@ -3,7 +3,12 @@ package com.github.codergate.utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +27,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 @Component
 public class RestClient {
 
+    private static final String TOKEN = "token";
+    private static final String BEARER = "Bearer ";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+
     @Value("${github.app.id}")
     private String appId;
 
@@ -37,13 +46,13 @@ public class RestClient {
      * @return Object
      */
     public Object invokeForPost(String uri, Object bodyParams,
-            MultiValueMap<String, String> customHeaders, boolean authorize) {
+            MultiValueMap<String, String> customHeaders, String installationId) {
         LOGGER.debug("RestClient :: invokeForPost : Entering the method");
         Object response = null;
         HttpEntity<String> request = null;
         if (uri != null && URI.create(uri) != null) {
-            if (authorize) {
-                customHeaders = appendAuthenticationHeaders(customHeaders);
+            if (installationId != null) {
+                customHeaders = appendAuthenticationHeaders(customHeaders, installationId);
             }
             try {
                 request = new HttpEntity<>(
@@ -76,13 +85,13 @@ public class RestClient {
      * @param customHeaders
      * @return Object
      */
-    public Object invokeForGet(String uri, MultiValueMap<String, String> customHeaders, boolean authorize) {
+    public Object invokeForGet(String uri, MultiValueMap<String, String> customHeaders, String installationId) {
         LOGGER.debug("RestClient :: invokeForPost : Entering the method");
         Object response = null;
         try {
             if (uri != null && URI.create(URLEncoder.encode(uri, "UTF-8")) != null) {
-                if (authorize) {
-                    customHeaders = appendAuthenticationHeaders(customHeaders);
+                if (installationId != null) {
+                    customHeaders = appendAuthenticationHeaders(customHeaders, installationId);
                 }
                 HttpEntity<String> request = new HttpEntity<>(customHeaders);
                 ResponseEntity<String> apiResponse = restTemplate.exchange(uri, HttpMethod.GET, request, String.class);
@@ -112,12 +121,34 @@ public class RestClient {
      * @return MultiValueMap<String, String>
      */
     private MultiValueMap<String, String> appendAuthenticationHeaders(
-            MultiValueMap<String, String> existingHeaders) {
+            MultiValueMap<String, String> existingHeaders, String installationId) {
         if (existingHeaders == null) {
             existingHeaders = new LinkedMultiValueMap<>();
         }
-        existingHeaders.add("Authorization", "Bearer " + JwtUtils.generateJwtToken(appId));
+        String jwtToken = JwtUtils.generateJwtToken(appId);
+        existingHeaders.add(AUTHORIZATION_HEADER, BEARER + generateAccessFromJwtToken(jwtToken, installationId));
         return existingHeaders;
+    }
+
+    private String generateAccessFromJwtToken(String jwtToken, String installationId) {
+        LOGGER.debug("generateAccessFromJwtToken :: Entering the method with JWT token {}", jwtToken);
+        String accessToken = null;
+        if (jwtToken != null && !jwtToken.trim().isEmpty()) {
+            MultiValueMap<String, String> existingHeaders = JwtUtils.getGithubSpecificHeaders();
+            existingHeaders.add(AUTHORIZATION_HEADER, BEARER + jwtToken);
+            HttpEntity<String> request = new HttpEntity<>(null, existingHeaders);
+            ResponseEntity<String> apiResponse = restTemplate.exchange(
+                    "https://api.github.com/app/installations/" + installationId + "/access_tokens", HttpMethod.POST,
+                    request, String.class);
+            if (apiResponse.getBody() != null) {
+                JSONObject jsonifiedResponse = new JSONObject(apiResponse.getBody());
+                if (jsonifiedResponse.get(TOKEN) != null) {
+                    accessToken = jsonifiedResponse.get(TOKEN).toString();
+                }
+            }
+        }
+        LOGGER.debug("generateAccessFromJwtToken :: Exiting the method with access token {}", accessToken);
+        return accessToken;
     }
 
     private RestClient() {
