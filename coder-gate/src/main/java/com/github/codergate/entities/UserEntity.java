@@ -21,9 +21,10 @@ public class UserEntity {
     private String userName;
     private String email;
 
-    @OneToMany(targetEntity = RepositoryEntity.class)
-    @JoinColumn(name ="UserId" )
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL)
    private List<RepositoryEntity> repositoryEntity;
+
+
 
    @OneToMany(mappedBy = "userIdInEvent", cascade = CascadeType.ALL)
     private Set<EventEntity> userAndEvent;

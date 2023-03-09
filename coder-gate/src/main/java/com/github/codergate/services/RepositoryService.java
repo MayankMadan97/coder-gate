@@ -35,23 +35,40 @@ public class RepositoryService {
     public List<RepositoriesAdded> getRepository(int userId)
     {
         List<RepositoriesAdded> repositoriesAdded=null;
-        Optional<RepositoryEntity> repositoryEntity=repository.findById(userId);
-        if(repositoryEntity.isPresent())
+        List<RepositoryEntity> repositoryEntity=repository.findByUserId(userId);
+        if(repositoryEntity!=null)
         {
             List<RepositoryEntity> entity=new ArrayList<>();
-            entity.add(repositoryEntity.get());
+            entity.add(repositoryEntity.get(userId));
             repositoriesAdded=entityToDto(entity);
             LOGGER.info("RepositoryService : Getting the user information");
         }
 
         return repositoriesAdded;
     }
-//
-//    public List<RepositoriesAdded> updateRepository(int userId)
+
+//    public List<RepositoriesAdded> updateRepository(int repositoryId)
 //    {
+//        List<RepositoriesAdded> repositoriesAdded=null;
+////        List<RepositoryEntity> repositoryEntities=repository.findAllById()Id(repositoryId);
+//
+//
 //
 //        return null;
 //    }
+
+    public boolean deleteRepository(int repositoryId)
+    {
+        boolean isDeleted =false;
+        if(repositoryId!=0)
+        {
+            repository.deleteById(repositoryId);
+            isDeleted=true;
+            LOGGER.info("RepositoryService : Deleting the user information");
+        }
+
+        return isDeleted;
+    }
 
 
     private List<RepositoryEntity> dtoToEntity(List<RepositoriesAdded> repository,int userId) {
