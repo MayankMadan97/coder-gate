@@ -5,16 +5,21 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { GithubLoginComponent } from './github-login.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: '', component: GithubLoginComponent },
   { path: 'github-callback', component: GithubLoginComponent },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardComponent }
 ];
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    GithubLoginComponent
+    GithubLoginComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

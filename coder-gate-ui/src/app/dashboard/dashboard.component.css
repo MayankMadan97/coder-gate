@@ -1,0 +1,23 @@
+/* Navbar */
+.navbar {
+  margin-bottom: 20px;
+}
+
+/* Cards */
+.card {
+  margin-bottom: 20px;
+}
+
+.card-title {
+  margin-bottom: 10px;
+}
+
+.card-text {
+  margin-bottom: 20px;
+}
+
+/* Buttons */
+.btn-block {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
