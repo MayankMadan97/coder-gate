@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.github.codergate.dto.installation.Account;
+import com.github.codergate.dto.push.PushEventPayloadDTO;
+import com.github.codergate.dto.push.PusherPayloadDTO;
+import com.github.codergate.dto.push.SenderDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,8 @@ public class WebHookListenerService {
 
     private static final String INSTALLATION_ADDED = "added";
 
+    private static final String PUSH_PUSHER = "pusher";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
     public void listen(Map<String, Object> webhookPayload) {
@@ -45,6 +50,8 @@ public class WebHookListenerService {
         } else if (webhookPayload.containsKey(INSTALLATION_ACTION)
                 && webhookPayload.get(INSTALLATION_ACTION).equals(INSTALLATION_ADDED)) {
             installationAddWebhookListener(webhookPayload);
+        } else if (webhookPayload.containsKey(PUSH_PUSHER)) {
+            pushEventWebhookListener(webhookPayload);
         } else {
             LOGGER.warn("webHookListener : Following webhook payload is not yet supported {}", webhookPayload);
         }
@@ -97,6 +104,15 @@ public class WebHookListenerService {
 
 
 
+    }
+
+    private void pushEventWebhookListener(Map<String, Object> webhookPayload) {
+        PusherPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload,
+                PusherPayloadDTO.class);
+        if (payload != null && payload.getPusher() != null && payload.getSender() != null
+                && payload.getHeadCommit() != null) {
+            SenderDTO user = userService.addUser(payload.getSender());
+        }
     }
 
 

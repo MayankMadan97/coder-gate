@@ -1,6 +1,8 @@
 package com.github.codergate.services;
 
 import com.github.codergate.dto.installation.Account;
+import com.github.codergate.dto.installation.Sender;
+import com.github.codergate.dto.push.SenderDTO;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.repositories.UserRepository;
 import org.slf4j.Logger;
@@ -27,11 +29,20 @@ public class UserService {
     public Account addUser(Account user)
     {
         Account account;
-        UserEntity userEntity = dtoToEntity(user);
+        UserEntity userEntity = accountDtoToEntity(user);
         UserEntity saveEntity= userRepository.save(userEntity);
         LOGGER.info("UserService : The user information is added");
-        account = entityToDto(saveEntity);
+        account = entityToAccountDto(saveEntity);
         return account;
+    }
+    public SenderDTO addUser(SenderDTO user)
+    {
+        SenderDTO sender;
+        UserEntity userEntity = senderDtoToEntity(user);
+        UserEntity saveEntity = userRepository.save(userEntity);
+        LOGGER.info("UserService : The user information is added");
+        sender = entityToSenderDto(saveEntity);
+        return sender;
     }
 
     /***
@@ -45,7 +56,7 @@ public class UserService {
         Account account = null;
         Optional<UserEntity> userEntity = userRepository.findById(userId);
         if(userEntity.isPresent()){
-            account = entityToDto(userEntity.get());
+            account = entityToAccountDto(userEntity.get());
             LOGGER.info("UserService : Getting the user information");
         }
         return account;
@@ -65,7 +76,7 @@ public class UserService {
 //            userEntity.setUserName("alec");
             UserEntity saveEntity = userRepository.save(userEntity);
             LOGGER.info("UserService : Updating the user information");
-            account=entityToDto(saveEntity);
+            account= entityToAccountDto(saveEntity);
         }
         return account;
     }
@@ -93,7 +104,7 @@ public class UserService {
      * @param user dto
      * @return entity
      */
-    private UserEntity dtoToEntity(Account user)
+    private UserEntity accountDtoToEntity(Account user)
     {
         UserEntity userEntity=null;
         if(user!=null)
@@ -107,8 +118,30 @@ public class UserService {
             {
                 userEntity.setUserName(user.getLogin());
             }
-            LOGGER.info("UserService : DTO has been converted to Entity");
+            LOGGER.info("UserService : Account DTO has been converted to Entity");
         }else {
+            LOGGER.warn("UserService : User value is null ");
+        }
+        return userEntity;
+    }
+
+    private UserEntity senderDtoToEntity(SenderDTO senderDTO)
+    {
+        UserEntity userEntity = null;
+        if(senderDTO != null)
+        {
+            userEntity = new UserEntity();
+            if(senderDTO.getId() != null)
+            {
+                userEntity.setUserId(senderDTO.getId());
+            }
+            if(senderDTO.getLogin() != null)
+            {
+                userEntity.setUserName(senderDTO.getLogin());
+            }
+
+            LOGGER.info("UserService : Sender DTO has been converted to Entity");
+        } else {
             LOGGER.warn("UserService : User value is null ");
         }
         return userEntity;
@@ -119,7 +152,7 @@ public class UserService {
      * @param user user entity
      * @return dto
      */
-    private Account entityToDto(UserEntity user)
+    private Account entityToAccountDto(UserEntity user)
     {
         Account account = null;
         if(user!=null)
@@ -133,14 +166,33 @@ public class UserService {
             {
                 account.setLogin(user.getUserName());
             }
-            LOGGER.info("UserService : Entity has been converted to DTO");
+            LOGGER.info("UserService : Entity has been converted to Account DTO");
         }else {
             LOGGER.warn("UserService : User value is null ");
         }
         return account;
     }
 
-
+    private SenderDTO entityToSenderDto(UserEntity user)
+    {
+        SenderDTO sender = null;
+        if(user != null)
+        {
+            sender = new SenderDTO();
+            if(user.getUserId() != 0L)
+            {
+                sender.setId((int) user.getUserId());
+            }
+            if (user.getUserName() != null)
+            {
+                sender.setLogin(user.getUserName());
+            }
+            LOGGER.info("UserService : Entity has been converted to Sender DTO");
+        } else {
+            LOGGER.warn("UserService : User value is null ");
+        }
+        return sender;
+    }
 
 
 }
