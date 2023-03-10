@@ -1,7 +1,4 @@
 package com.github.codergate.services;
-
-import com.github.codergate.dto.installation.Account;
-import com.github.codergate.dto.installation.Installation;
 import com.github.codergate.dto.installation.InstallationPayload;
 import com.github.codergate.entities.EventEntity;
 import com.github.codergate.entities.RepositoryEntity;
@@ -11,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +20,13 @@ public class EventService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
+    /***
+     *  adds the required event done by user into the database
+     * @param event event name
+     * @param userId user id
+     * @param repositoryIdList repository ids
+     * @return dto class
+     */
     public InstallationPayload addEvent(String event,int userId,List<Integer>repositoryIdList)
     {
         InstallationPayload installationPayload;
@@ -34,6 +37,11 @@ public class EventService {
         return installationPayload;
     }
 
+    /****
+     * Gets the event information
+     * @param eventId event id
+     * @return entity class
+     */
     public EventEntity getEvent(Long eventId){
         EventEntity eventEntity = null;
         Optional<EventEntity> optionalEventEntity=eventRepository.findById(eventId.intValue());
@@ -45,6 +53,12 @@ public class EventService {
         return eventEntity;
     }
 
+
+    /***
+     *  Updates the even information
+     * @param eventId event id
+     * @return entity class
+     */
     public EventEntity updateEntity(Long eventId)
     {
         EventEntity eventEntity=eventRepository.findById(eventId.intValue()).orElse(null);
@@ -55,6 +69,12 @@ public class EventService {
         }
         return eventEntity;
     }
+
+    /***
+     * Delete the events
+     * @param eventId event id
+     * @return entity class
+     */
     public boolean deleteEvent(int eventId)
     {
         boolean isDeleted =false;
@@ -68,6 +88,13 @@ public class EventService {
     }
 
 
+    /***
+     *  converts dto class to entity
+     * @param event event name
+     * @param userId user id
+     * @param repositoryIdList repository ids
+     * @return entity
+     */
     private List<EventEntity> dtoToEntity(String event,int userId, List<Integer>repositoryIdList)
     {
         List<EventEntity> eventEntityList=new ArrayList<>();
@@ -93,7 +120,11 @@ public class EventService {
         return eventEntityList;
     }
 
-
+    /***
+     *  converts entity class to dto class
+     * @param event event information
+     * @return dto class
+     */
     private InstallationPayload entityToDto(List<EventEntity> event)
     {
         InstallationPayload installationPayload = null;

@@ -20,7 +20,12 @@ public class RepositoryService {
     Repository repository;
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
-
+    /***
+     *  adds the repository to the table
+     * @param repositories repository information
+     * @param userId user id
+     * @return RepositoriesAdded dto class
+     */
     public List<RepositoriesAdded> addRepository(List<RepositoriesAdded> repositories, int userId)
     {
         List<RepositoriesAdded> repositoriesAdded;
@@ -30,33 +35,54 @@ public class RepositoryService {
         return repositoriesAdded;
     }
 
-
-
-    public List<RepositoriesAdded> getRepository(int userId)
+    /***
+     * gets the repository information using id
+     * @param repositoryId repositoryId
+     * @return RepositoriesAdded dto class
+     */
+    public List<RepositoriesAdded> getRepository(List<Integer> repositoryId)
     {
         List<RepositoriesAdded> repositoriesAdded=null;
-        List<RepositoryEntity> repositoryEntity=repository.findByUserId(userId);
-        if(repositoryEntity!=null)
+        for(int id : repositoryId) {
+            Optional<RepositoryEntity> repositoryEntity = repository.findById(id);
+            if (repositoryEntity.isPresent()) {
+                List<RepositoryEntity> entity = new ArrayList<>();
+                entity.add(repositoryEntity.get());
+                repositoriesAdded = entityToDto(entity);
+                LOGGER.info("RepositoryService : Getting the user information");
+            }
+        }
+        return repositoriesAdded;
+    }
+
+
+    /***
+     * updates the repository table
+     * @param repositoryId repositoryId
+     * @return RepositoriesAdded dto class
+     */
+    public List<RepositoriesAdded> updateRepository(int repositoryId)
+    {
+        List<RepositoriesAdded> repositoriesAdded=null;
+        Optional<RepositoryEntity> repositoryEntities=repository.findById(repositoryId);
+        if(repositoryEntities.isPresent())
         {
-            List<RepositoryEntity> entity=new ArrayList<>();
-            entity.add(repositoryEntity.get(userId));
-            repositoriesAdded=entityToDto(entity);
-            LOGGER.info("RepositoryService : Getting the user information");
+            List<RepositoryEntity> repositoryEntityList =repositoryEntities.stream().map(i->{
+                i.setRepositoryId(repositoryId);
+                return i;
+            }).collect(Collectors.toList());
+            List<RepositoryEntity> saveEntity =repositoryEntityList.stream().map(items -> repository.save(items)).collect(Collectors.toList());
+            repositoriesAdded=entityToDto(saveEntity);
         }
 
         return repositoriesAdded;
     }
 
-//    public List<RepositoriesAdded> updateRepository(int repositoryId)
-//    {
-//        List<RepositoriesAdded> repositoriesAdded=null;
-////        List<RepositoryEntity> repositoryEntities=repository.findAllById()Id(repositoryId);
-//
-//
-//
-//        return null;
-//    }
-
+    /***
+     * deletes the repository information
+     * @param repositoryId repository id
+     * @return true or false
+     */
     public boolean deleteRepository(int repositoryId)
     {
         boolean isDeleted =false;
@@ -70,15 +96,19 @@ public class RepositoryService {
         return isDeleted;
     }
 
-
+    /***
+     * converts dto to entity
+     * @param repository dto class
+     * @param userId user id
+     * @return  RepositoryEntity
+     */
     private List<RepositoryEntity> dtoToEntity(List<RepositoriesAdded> repository,int userId) {
 
         List<RepositoryEntity> listOfRepositoryValues = null;
 
         if (repository != null && userId != 0) {
 
-
-              listOfRepositoryValues = repository.stream().map(i->{RepositoryEntity repositoryEntity =new RepositoryEntity();
+            listOfRepositoryValues = repository.stream().map(i->{RepositoryEntity repositoryEntity =new RepositoryEntity();
                 repositoryEntity.setRepositoryId(i.getId());
                 repositoryEntity.setRepositoryName(i.getName());
                 UserEntity userEntity=new UserEntity();
@@ -94,9 +124,13 @@ public class RepositoryService {
         return listOfRepositoryValues;
     }
 
-
-private List<RepositoriesAdded> entityToDto(List<RepositoryEntity> repositoryEntity)
-        {
+    /***
+     * converts entity to dto
+     * @param repositoryEntity RepositoryEntity class
+     * @return dto class
+     */
+    private List<RepositoriesAdded> entityToDto(List<RepositoryEntity> repositoryEntity)
+    {
         List<RepositoriesAdded> listOfRepositoryAddedDTOValues=null;
 
         if(repositoryEntity!=null) {
@@ -108,12 +142,12 @@ private List<RepositoriesAdded> entityToDto(List<RepositoryEntity> repositoryEnt
                 return repositories;
             }).collect(Collectors.toList());
 
-        LOGGER.info("UserService : Entity has been converted to DTO");
+            LOGGER.info("UserService : Entity has been converted to DTO");
         }
         else {
-        LOGGER.warn("UserService : User value is null ");
+            LOGGER.warn("UserService : User value is null ");
         }
 
         return listOfRepositoryAddedDTOValues;
-        }
-        }
+    }
+}
