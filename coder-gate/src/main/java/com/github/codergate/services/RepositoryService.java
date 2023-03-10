@@ -3,7 +3,7 @@ package com.github.codergate.services;
 import com.github.codergate.dto.installation.RepositoriesAdded;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
-import com.github.codergate.repositories.Repository;
+import com.github.codergate.repositories.RepositoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class RepositoryService {
 
     @Autowired
-    Repository repository;
+    RepositoryRepository repositoryRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
 
@@ -25,7 +25,7 @@ public class RepositoryService {
     {
         List<RepositoriesAdded> repositoriesAdded;
         List<RepositoryEntity> repositoryEntityList=dtoToEntity(repositories,userId);
-        List<RepositoryEntity>saveRepository= repositoryEntityList.stream().map(items -> repository.save(items)).collect(Collectors.toList());
+        List<RepositoryEntity>saveRepository= repositoryEntityList.stream().map(items -> repositoryRepository.save(items)).collect(Collectors.toList());
         repositoriesAdded = entityToDto(saveRepository);
         return repositoriesAdded;
     }
@@ -35,7 +35,7 @@ public class RepositoryService {
     public List<RepositoriesAdded> getRepository(int userId)
     {
         List<RepositoriesAdded> repositoriesAdded=null;
-        List<RepositoryEntity> repositoryEntity=repository.findByUserId(userId);
+        List<RepositoryEntity> repositoryEntity= repositoryRepository.findByUserId(userId);
         if(repositoryEntity!=null)
         {
             List<RepositoryEntity> entity=new ArrayList<>();
@@ -62,7 +62,7 @@ public class RepositoryService {
         boolean isDeleted =false;
         if(repositoryId!=0)
         {
-            repository.deleteById(repositoryId);
+            repositoryRepository.deleteById(repositoryId);
             isDeleted=true;
             LOGGER.info("RepositoryService : Deleting the user information");
         }

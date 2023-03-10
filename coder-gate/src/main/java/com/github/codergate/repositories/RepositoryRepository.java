@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 @org.springframework.stereotype.Repository
-public interface Repository extends JpaRepository<RepositoryEntity, Integer> {
+public interface RepositoryRepository extends JpaRepository<RepositoryEntity, Integer> {
 
     @Query(value = "SELECT * FROM repository r WHERE r.user_id =:userID ",nativeQuery = true)
     List<RepositoryEntity> findByUserId(@Param("userID")long userId);

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "Event")
@@ -31,6 +30,6 @@ public class EventEntity {
     private RepositoryEntity repositoryIdInEvent;
 
     @OneToOne(mappedBy = "eventIdInAnalysis")
-    private AnalysisEntity analysisAndRepository;
+    private Analysis analysisAndRepository;
 
 }

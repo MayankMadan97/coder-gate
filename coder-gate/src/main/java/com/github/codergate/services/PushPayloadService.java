@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PushPayloadService {
     @Autowired
-    private Repository repository;
+    private RepositoryRepository repositoryRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -60,7 +60,7 @@ public class PushPayloadService {
             eventEntity.setCommitId(payload.getHeadCommit().getId());
             eventEntity.setCommitMessage(payload.getHeadCommit().getMessage());
 
-            this.repository.save(repositoryEntity);
+            this.repositoryRepository.save(repositoryEntity);
             this.userRepository.save(userEntity);
             this.branchRepository.save(branchEntity);
             this.tagRepository.save(tagEntity);

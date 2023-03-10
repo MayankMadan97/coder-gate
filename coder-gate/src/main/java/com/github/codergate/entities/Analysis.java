@@ -14,10 +14,14 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnalysisEntity {
+public class Analysis {
     @Id
-    private int analysisID;
-    private String analysisType;
+    @Column(name = "analysisid")
+    private int id;
+
+    @Column(name = "analysis_type")
+    private String type;
+
     private int repositoryID;
 
     @OneToOne(cascade = CascadeType.ALL)
