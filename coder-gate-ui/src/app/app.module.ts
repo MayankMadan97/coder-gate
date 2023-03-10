@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { GithubLoginComponent } from './github-login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { FeaturesComponent } from './features/features.component';
 
 const routes: Routes = [
   { path: '', component: GithubLoginComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     GithubLoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    FeaturesComponent,
   ],
   imports: [
     BrowserModule,
