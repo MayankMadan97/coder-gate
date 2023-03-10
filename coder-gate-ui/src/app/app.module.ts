@@ -9,9 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { FeaturesComponent } from './features/features.component';
 
 const routes: Routes = [
-  { path: '', component: GithubLoginComponent },
   { path: 'github-callback', component: GithubLoginComponent },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent }
 ];
 
@@ -21,7 +19,7 @@ const routes: Routes = [
     AppComponent,
     GithubLoginComponent,
     DashboardComponent,
-    FeaturesComponent,
+    FeaturesComponent
   ],
   imports: [
     BrowserModule,
