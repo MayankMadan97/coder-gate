@@ -1,0 +1,13 @@
+.github-login-button {
+    padding-left: 1em;
+    border-radius: 2.2em;
+    background: linear-gradient(to right, #fab81b 50%, rgb(225 226 235) 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: all .5s ease-out;
+}
+
+
+.github-login-button:hover {
+    background-position: left bottom;
+}

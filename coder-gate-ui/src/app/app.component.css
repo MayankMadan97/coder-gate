@@ -1,57 +1,43 @@
-/* Set some global styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  background-color: #f5f5f5;
-  color: #333;
-}
-
-header {
-  background-color: #333;
-  color: #fff;
-  padding: 1rem;
-}
-
-nav ul {
-  list-style: none;
+.homepage-container .main-section .illustration-section {
+  height: calc(100vh - 6em);
   display: flex;
-  justify-content: space-between;
 }
 
-nav li {
-  margin-right: 1rem;
+.homepage-container .main-section .illustration-section .illustration {
+  height: 35em;
+  align-self: center;
 }
 
-nav a {
-  color: #fff;
-  text-decoration: none;
+.homepage-container .main-section .message-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-main {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 1rem;
+.homepage-container .main-section .tagline {
+  color: #4b4b4b;
+  font-size: 3.5em;
+  line-height: 1.1em;
+}
+.homepage-container .main-section .description {
+  color: #4b4b4b;
+  font-size: 1.3em;
+  line-height: 1.1em;
 }
 
-footer {
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 1rem;
+.outer {
+  margin: 50px;
 }
 
-footer p {
-  margin-bottom: 0;
-}
+.button {
+  border: 1px solid black;
+  border-radius: 3px;
+  width: 100px;
+  height: 30px;
+  display: block;
 
-/* Style the active link in the navigation bar */
-nav a.router-link-active {
-  font-weight: bold;
+  background: linear-gradient(to right, black 50%, white 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: all .5s ease-out;
 }

@@ -1,17 +1,46 @@
-<header>
-  <nav>
-    <ul>
-      <li><a routerLink="/">Home</a></li>
-      <li><a routerLink="/about">About</a></li>
-      <li><a routerLink="/contact">Contact</a></li>
-    </ul>
-  </nav>
-</header>
-
-<main>
-  <router-outlet></router-outlet>
-</main>
-
-<footer>
-  <p>&copy; Coder Gate</p>
-</footer>
+<section class="homepage-container container-fluid">
+  <header class="navbar-container row mt-3">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand mx-5 font-monospace" href="#">CoderGate</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+          aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item mx-4">
+              <a class="nav-link font-monospace" href="#">Features</a>
+            </li>
+            <li class="nav-item mx-4">
+              <a class="nav-link font-monospace" href="#">About</a>
+            </li>
+          </ul>
+          <span class="navbar-text mx-4">
+            <a class="nav-link font-monospace" href="#">Contact</a>
+          </span>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="main-section">
+    <div class="row">
+      <div class="col-6 illustration-section">
+        <img class="illustration" src="../assets/images/code-bot-illustration-v1.webp" alt="illustration-section">
+      </div>
+      <div class="col-5 message-section">
+        <div class="row">
+          <div class="col-9 tagline">
+            Integrate your code <i class="fa fa-long-arrow-right" aria-hidden="true"></i> automate your work
+          </div>
+          <div class="col-9 description my-4">
+            Evolve at the speed of your business with the leader in code review automation
+          </div>
+          <div>
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>

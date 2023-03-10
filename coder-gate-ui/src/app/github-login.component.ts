@@ -4,16 +4,15 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-github-login',
-  template: `
-    <button (click)="login()">Login with GitHub</button>
-  `,
+  templateUrl: './github-login.component.html',
+  styleUrls: ['./github-login.component.css']
 })
 export class GithubLoginComponent {
   private readonly clientId = '0386b3f4c4ac6c744a13';
   private readonly redirectUri = 'https://www.google.com';
   private readonly scope = 'user';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(): void {
     const authUrl = `https://github.com/login/oauth/authorize?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&scope=${this.scope}`;
