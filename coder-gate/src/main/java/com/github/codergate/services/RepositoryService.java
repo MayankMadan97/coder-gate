@@ -1,6 +1,7 @@
 package com.github.codergate.services;
 
 import com.github.codergate.dto.installation.RepositoriesAdded;
+import com.github.codergate.dto.push.RepositoryDTO;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.repositories.RepositoryRepository;
@@ -30,8 +31,62 @@ public class RepositoryService {
         return repositoriesAdded;
     }
 
+    public RepositoryDTO addRepository(RepositoryDTO repository) {
+        RepositoryDTO repositoryDTO;
+        RepositoryEntity repositoryEntity = dtoToEntityForPushEvent(repository);
+        RepositoryEntity saveEntity = repositoryRepository.save(repositoryEntity);
+        LOGGER.info("RepositoryService : The repository information is added");
+        repositoryDTO = entityToDtoForPushEvent(repositoryEntity);
+        return repositoryDTO;
+    }
 
+    private RepositoryEntity dtoToEntityForPushEvent(RepositoryDTO repository) {
+        RepositoryEntity repositoryEntity = null;
+        if (repository != null)
+        {
+            repositoryEntity = new RepositoryEntity();
+            if(repository.getId() != 0)
+            {
+                repositoryEntity.setRepositoryId(repository.getId());
+            }
+            if(repository.getName() != null)
+            {
+                repositoryEntity.setRepositoryName(repository.getName());
+            }
+            if(repository.getFork() != null)
+            {
+                repositoryEntity.setFork(repository.getFork());
+            }
+            LOGGER.info("RepositoryService : Repository DTO has been converted to Entity");
+        } else {
+            LOGGER.warn("RepositoryService : Repository value is null ");
+        }
+        return repositoryEntity;
+    }
 
+    private RepositoryDTO entityToDtoForPushEvent(RepositoryEntity repository) {
+        RepositoryDTO repositoryDTO = null;
+        if(repository != null)
+        {
+            repositoryDTO = new RepositoryDTO();
+            if(repository.getRepositoryId() != 0)
+            {
+                repositoryDTO.setId(repository.getRepositoryId());
+            }
+            if(repository.getRepositoryName() != null)
+            {
+                repositoryDTO.setName(repository.getRepositoryName());
+            }
+            if(repository.isFork())
+                repositoryDTO.setFork(repository.isFork());
+            else
+                repositoryDTO.setFork(false);
+            LOGGER.info("RepositoryService : Entity has been converted to Repository DTO");
+        } else {
+            LOGGER.warn("RepositoryService : Repository value is null ");
+        }
+        return repositoryDTO;
+    }
     public List<RepositoriesAdded> getRepository(int userId)
     {
         List<RepositoriesAdded> repositoriesAdded=null;
@@ -57,6 +112,18 @@ public class RepositoryService {
 //        return null;
 //    }
 
+    public RepositoryDTO updateRepository(int repositoryID, boolean fork) {
+        RepositoryDTO repositoryDTO = null;
+        RepositoryEntity repositoryEntity = repositoryRepository.findById(repositoryID).orElse(null);
+        if(repositoryEntity != null)
+        {
+            repositoryEntity.setFork(fork);
+            RepositoryEntity saveEntity = repositoryRepository.save(repositoryEntity);
+            LOGGER.info("UserService : Updating the repository information");
+            repositoryDTO = entityToDtoForPushEvent(saveEntity);
+        }
+        return repositoryDTO;
+    }
     public boolean deleteRepository(int repositoryId)
     {
         boolean isDeleted =false;

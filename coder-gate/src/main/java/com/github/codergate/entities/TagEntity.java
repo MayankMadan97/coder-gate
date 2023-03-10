@@ -15,6 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class TagEntity {
    @Id
+   @Column(name = "tag_url")
     private String tagUrl;
 
     @ManyToOne

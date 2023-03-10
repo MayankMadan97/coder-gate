@@ -16,6 +16,7 @@ import javax.persistence.*;
 public class BranchEntity {
 
     @Id
+    @Column(name = "branch_url")
     private String branchUrl;
 
     @ManyToOne

@@ -3,13 +3,12 @@ package com.github.codergate.services;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.github.codergate.dto.installation.Account;
-import com.github.codergate.dto.push.PushEventPayloadDTO;
 import com.github.codergate.dto.push.PusherPayloadDTO;
+import com.github.codergate.dto.push.RepositoryDTO;
 import com.github.codergate.dto.push.SenderDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +31,9 @@ public class WebHookListenerService {
 
     @Autowired
     RepositoryService repositoryService;
+
+    @Autowired
+    EventService eventService;
 
     private static final String INSTALLATION_CREATED = "created";
     private static final String INSTALLATION_ACTION = "action";
@@ -110,8 +112,11 @@ public class WebHookListenerService {
         PusherPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload,
                 PusherPayloadDTO.class);
         if (payload != null && payload.getPusher() != null && payload.getSender() != null
-                && payload.getHeadCommit() != null) {
+                && payload.getHeadCommit() != null && payload.getRepository() != null) {
             SenderDTO user = userService.addUser(payload.getSender());
+            RepositoryDTO repository = repositoryService.updateRepository(payload.getRepository().getId(), payload.getRepository().getFork());
+            //RepositoryDTO repository = repositoryService.addRepository(payload.getRepository());
+            eventService.addEvent(payload.getHeadCommit(), user.getId(), repository.getId());
         }
     }
 
