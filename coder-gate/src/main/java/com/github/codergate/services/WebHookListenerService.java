@@ -5,17 +5,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.codergate.dto.installation.Account;
 import com.github.codergate.dto.push.PusherPayloadDTO;
 import com.github.codergate.dto.push.RepositoryDTO;
 import com.github.codergate.dto.push.SenderDTO;
 import com.github.codergate.services.TagService;
+import com.github.codergate.dto.installation.RepositoriesAdded;
+import com.github.codergate.dto.installation.RepositoriesRemoved;
+import org.bouncycastle.util.Integers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.github.codergate.dto.installation.InstallationPayload;
 import com.github.codergate.utils.JwtUtils;
 import com.github.codergate.utils.Mapper;
@@ -41,35 +45,46 @@ public class WebHookListenerService {
 
     @Autowired
     BranchService branchService;
-
+    
     private static final String INSTALLATION_CREATED = "created";
     private static final String INSTALLATION_ACTION = "action";
-
-    private static final String INSTALLATION_ADDED = "added";
-
-    private static final String PUSH_PUSHER = "pusher";
-
+    private static final String INSTALLATION_DELETED = "deleted";
+    private static final String INSTALLATION_REPOSITORY_REMOVED = "removed";
+    private static final String INSTALLATION_REPOSITORY_ADDED = "added";
+    private static final String PUSH_EVENT = "push";
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
+
+    /***
+     * user action implementation are called in this method
+     * @param webhookPayload data
+     */
     public void listen(Map<String, Object> webhookPayload) {
-        // checking if the payload contains attributes for installation event
-        if (webhookPayload.containsKey(INSTALLATION_ACTION)
-                && webhookPayload.get(INSTALLATION_ACTION).equals(INSTALLATION_CREATED)) {
-            installationWebhookListener(webhookPayload);
-        } else if (webhookPayload.containsKey(INSTALLATION_ACTION)
-                && webhookPayload.get(INSTALLATION_ACTION).equals(INSTALLATION_ADDED)) {
-            installationAddWebhookListener(webhookPayload);
-        } else if (webhookPayload.containsKey(PUSH_PUSHER)) {
-            pushEventWebhookListener(webhookPayload);
-        } else {
-            LOGGER.warn("webHookListener : Following webhook payload is not yet supported {}", webhookPayload);
+        
+        String installationAction = (String) webhookPayload.get(INSTALLATION_ACTION);
+        switch (installationAction) {
+            case INSTALLATION_REPOSITORY_ADDED:
+            case INSTALLATION_CREATED:
+                installationAddRepositoryWebhookListener(webhookPayload);
+                break;
+            case INSTALLATION_DELETED:
+                installationDeleteWebhookListener(webhookPayload);
+                break;
+            case INSTALLATION_REPOSITORY_REMOVED:
+                installationRemoveRepositoryWebhookListener(webhookPayload);
+                break;
+            case PUSH_EVENT:
+//                implementation of push
+                break;
+            default:
+                LOGGER.warn("webHookListener : Following webhook payload is not yet supported {}", webhookPayload);
+                break;
         }
     }
 
     private void installationWebhookListener(Map<String, Object> webhookPayload) {
         InstallationPayload payload = Mapper.getInstance().convertValue(webhookPayload,
                 InstallationPayload.class);
-//        userService.addUser(payload.getInstallation().getAccount());
         LOGGER.debug("webHookListener : Installation payload {}", payload);
         try {
             Map<String, Object> bodyParamForPost = new HashMap<>();
@@ -94,24 +109,105 @@ public class WebHookListenerService {
         }
     }
 
-    private void installationAddWebhookListener(Map<String, Object> webhookPayload) {
+
+    /***
+     * When a user installs or adds this method will be implemented
+     * Create and Add action is implemented, which sets user, repository and event information.
+     * @param webhookPayload data
+     */
+    private void installationAddRepositoryWebhookListener(Map<String, Object> webhookPayload) {
+        InstallationPayload payload = Mapper.getInstance().convertValue(webhookPayload,
+                InstallationPayload.class);
+
+        if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
+                && payload.getRepositories() != null && payload.getAction()!=null) {
+
+            List<RepositoriesAdded> repositoriesAddedList= Mapper.getInstance().convertValue(payload.getRepositories(), new TypeReference<List<RepositoriesAdded>>() {
+            });
+
+            // adding user
+            Account user = userService.addUser(payload.getInstallation().getAccount());
+
+            // creating repository
+            repositoriesAddedList = repositoryService.addRepository(repositoriesAddedList,user.getId());
+
+            // getting repository id
+            List<Integer> repositoryIdList = repositoriesAddedList.stream()
+                    .map(x -> x.getId())
+                    .collect(Collectors.toList());
+
+            // adding events
+            eventService.addEvent(payload.getAction(), user.getId(), repositoryIdList);
+
+        }else if(payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
+                && payload.getRepositoriesAdded() != null && payload.getAction()!=null)
+        {
+
+            long userId = payload.getInstallation().getAccount().getId();
+            if(userId!=0){
+                Account user = userService.getUser(userId);
+                if(user!=null)
+                {
+                    List<RepositoriesAdded> repositoryList = repositoryService.addRepository(payload.getRepositoriesAdded(), user.getId());
+                    List<Integer> repositoryIdList = repositoryList.stream()
+                            .map(x -> x.getId())
+                            .collect(Collectors.toList());
+                    eventService.addEvent(payload.getAction(), user.getId(), repositoryIdList);
+                }
+            }
+
+        }
+    }
+
+    /***
+     * Removing repositories as per user request
+     * @param webhookPayload data
+     */
+    public void installationRemoveRepositoryWebhookListener(Map<String, Object> webhookPayload) {
         InstallationPayload payload = Mapper.getInstance().convertValue(webhookPayload,
                 InstallationPayload.class);
         if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
-                && payload.getRepositoriesAdded() != null) {
-            Account user = userService.addUser(payload.getInstallation().getAccount());
-            repositoryService.addRepository(payload.getRepositoriesAdded(), user.getId());
+                && payload.getRepositoriesRemoved() != null && payload.getAction() != null) {
 
-            repositoryService.getRepository(user.getId());
-            System.out.println( repositoryService.getRepository(user.getId()));
+            List<RepositoriesAdded> repositoriesAddedList = Mapper.getInstance().convertValue(payload.getRepositoriesRemoved(), new TypeReference<List<RepositoriesAdded>>() {
+            });
 
-//            userService.getUser(87960612L);
-//            userService.updateUser(87960612L);
-//            userService.deleteUserByID(87960612L);
+            List<Integer> repositoryIds = repositoriesAddedList.stream().map(i->{i.getId();return i.getId();}).collect(Collectors.toList());
+            if(repositoryIds!=null)
+            {
+                List<RepositoriesAdded> repositoryIdPresentInDb= repositoryService.getRepository(repositoryIds);
+                if(repositoryIdPresentInDb!=null)
+                {
+                    for(RepositoriesAdded id : repositoryIdPresentInDb)
+                    {
+                        repositoryService.deleteRepository(id.getId());
+                    }
+                }
+            }
         }
+    }
 
 
+    /***
+     * when user deletes the application, this implementation will be executed, which deletes all information about user
+     * @param webhookPayload data
+     */
+    public void installationDeleteWebhookListener(Map<String, Object> webhookPayload) {
+        InstallationPayload payload = Mapper.getInstance().convertValue(webhookPayload,
+                InstallationPayload.class);
+        if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
+                && payload.getRepositories() != null && payload.getAction()!=null) {
 
+            long userId = payload.getInstallation().getAccount().getId();
+            if(userService.getUser(userId)!=null)
+            {
+                userService.deleteUserByID(userId);
+
+            }else
+            {
+                LOGGER.error("installationWebhookListener : User doesn't exist");
+            }
+        }
 
     }
 
@@ -131,4 +227,8 @@ public class WebHookListenerService {
 
 
 }
+
+
+
+
 

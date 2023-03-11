@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "repository_selection",
         "repositories_added",
         "repositories_removed",
+        "repositories",
         "requester",
         "sender"
 })
@@ -35,6 +36,9 @@ public class InstallationPayload implements Serializable {
     private List<RepositoriesAdded> repositoriesAdded;
     @JsonProperty("repositories_removed")
     private List<Object> repositoriesRemoved;
+
+    @JsonProperty("repositories")
+    private List<Repositories> repositories;
     @JsonProperty("requester")
     private Object requester;
     @JsonProperty("sender")
@@ -45,13 +49,13 @@ public class InstallationPayload implements Serializable {
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public InstallationPayload() {
     }
 
     /**
-     * 
+     *
      * @param requester
      * @param sender
      * @param repositorySelection
@@ -130,6 +134,21 @@ public class InstallationPayload implements Serializable {
 
     public InstallationPayload withRepositoriesAdded(List<RepositoriesAdded> repositoriesAdded) {
         this.repositoriesAdded = repositoriesAdded;
+        return this;
+    }
+
+    @JsonProperty("repositories_created")
+    public List<Repositories> getRepositories (){
+        return repositories;
+    }
+
+    @JsonProperty("repositories_created")
+    public void setRepositories(List<Repositories> repositories) {
+        this.repositories = repositories;
+    }
+
+    public InstallationPayload withRepositoriesCreated(List<Repositories> repositories) {
+        this.repositories = repositories;
         return this;
     }
 
@@ -214,6 +233,10 @@ public class InstallationPayload implements Serializable {
         sb.append('=');
         sb.append(((this.repositoriesAdded == null) ? "<null>" : this.repositoriesAdded));
         sb.append(',');
+        sb.append("repositories");
+        sb.append('=');
+        sb.append(((this.repositories == null) ? "<null>" : this.repositories));
+        sb.append(',');
         sb.append("repositoriesRemoved");
         sb.append('=');
         sb.append(((this.repositoriesRemoved == null) ? "<null>" : this.repositoriesRemoved));
@@ -248,6 +271,7 @@ public class InstallationPayload implements Serializable {
         result = ((result * 31) + ((this.action == null) ? 0 : this.action.hashCode()));
         result = ((result * 31) + ((this.additionalProperties == null) ? 0 : this.additionalProperties.hashCode()));
         result = ((result * 31) + ((this.repositoriesAdded == null) ? 0 : this.repositoriesAdded.hashCode()));
+        result = ((result * 31) + ((this.repositories == null) ? 0 : this.repositories.hashCode()));
         result = ((result * 31) + ((this.repositoriesRemoved == null) ? 0 : this.repositoriesRemoved.hashCode()));
         return result;
     }
@@ -273,8 +297,10 @@ public class InstallationPayload implements Serializable {
                         && this.additionalProperties.equals(rhs.additionalProperties))))
                 && ((this.repositoriesAdded == rhs.repositoriesAdded)
                         || ((this.repositoriesAdded != null) && this.repositoriesAdded.equals(rhs.repositoriesAdded))))
+                && ((this.repositories == rhs.repositories)
+                || ((this.repositories != null) && this.repositories.equals(rhs.repositories))))
                 && ((this.repositoriesRemoved == rhs.repositoriesRemoved) || ((this.repositoriesRemoved != null)
-                        && this.repositoriesRemoved.equals(rhs.repositoriesRemoved))));
+                        && this.repositoriesRemoved.equals(rhs.repositoriesRemoved)));
     }
 
 }
