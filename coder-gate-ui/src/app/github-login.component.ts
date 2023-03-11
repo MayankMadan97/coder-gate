@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class GithubLoginComponent {
   private readonly clientId = '0386b3f4c4ac6c744a13';
-  private readonly redirectUri = 'https://www.google.com';
+  private readonly redirectUri = 'http://localhost:4200/dashboard';
   private readonly scope = 'user';
 
   constructor(private http: HttpClient, private router: Router) { }
