@@ -102,7 +102,7 @@ public class RepositoryService {
     {
         List<RepositoriesAdded> repositoriesAdded=null;
         for(int id : repositoryId) {
-            Optional<RepositoryEntity> repositoryEntity = repository.findById(id);
+            Optional<RepositoryEntity> repositoryEntity = repositoryRepository.findById(id);
             if (repositoryEntity.isPresent()) {
                 List<RepositoryEntity> entity = new ArrayList<>();
                 entity.add(repositoryEntity.get());
@@ -122,14 +122,14 @@ public class RepositoryService {
     public List<RepositoriesAdded> updateRepository(int repositoryId)
     {
         List<RepositoriesAdded> repositoriesAdded=null;
-        Optional<RepositoryEntity> repositoryEntities=repository.findById(repositoryId);
+        Optional<RepositoryEntity> repositoryEntities=repositoryRepository.findById(repositoryId);
         if(repositoryEntities.isPresent())
         {
             List<RepositoryEntity> repositoryEntityList =repositoryEntities.stream().map(i->{
                 i.setRepositoryId(repositoryId);
                 return i;
             }).collect(Collectors.toList());
-            List<RepositoryEntity> saveEntity =repositoryEntityList.stream().map(items -> repository.save(items)).collect(Collectors.toList());
+            List<RepositoryEntity> saveEntity =repositoryEntityList.stream().map(items -> repositoryRepository.save(items)).collect(Collectors.toList());
             repositoriesAdded=entityToDto(saveEntity);
         }
 

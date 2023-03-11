@@ -32,14 +32,18 @@ public class EventService {
         return headCommit;
     }
 
-    private EventEntity headCommitDtoToEntity(HeadCommitDTO headCommitDTO, int userID, int repositoryID) {
+    private EventEntity headCommitDtoToEntity(HeadCommitDTO headCommitDTO, int userID, int repositoryID)
+    {
         EventEntity eventEntity = null;
-        if (headCommitDTO != null && userID != 0 && repositoryID != 0) {
+        if(headCommitDTO != null && userID != 0 && repositoryID != 0)
+        {
             eventEntity = new EventEntity();
-            if (headCommitDTO.getId() != null) {
+            if(headCommitDTO.getId() != null)
+            {
                 eventEntity.setCommitId(headCommitDTO.getId());
             }
-            if (headCommitDTO.getMessage() != null) {
+            if(headCommitDTO.getMessage() != null)
+            {
                 eventEntity.setCommitMessage(headCommitDTO.getMessage());
             }
 
@@ -57,7 +61,7 @@ public class EventService {
         } else {
             LOGGER.warn("EventService : User value is null ");
         }
-
+        return eventEntity;
     }
     /***
      *  adds the required event done by user into the database
