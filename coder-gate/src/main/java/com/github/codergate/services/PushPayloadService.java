@@ -48,11 +48,11 @@ public class PushPayloadService {
 //            repositoryEntity.setUserEntity(payload.getSender().getId());
             repositoryEntity.setFork(payload.getRepository().getFork());
 
-            branchEntity.setBranchUrl(payload.getRepository().getBranchesUrl());
-            branchEntity.setRepositoryIdInBranch(repositoryEntity);
-
-            tagEntity.setTagUrl(payload.getRepository().getTagsUrl());
-            tagEntity.setRepositoryIdInTag(repositoryEntity);
+//            branchEntity.setBranchUrl(payload.getRepository().getBranchesUrl());
+//            branchEntity.setRepositoryIdInBranch(repositoryEntity);
+//
+//            tagEntity.setTagId(payload.getRepository().getTagsUrl());
+//            tagEntity.setRepositoryIdInTag(repositoryEntity);
 
             eventEntity.setRepositoryIdInEvent(repositoryEntity);
             eventEntity.setUserIdInEvent(userEntity);

@@ -32,9 +32,9 @@ public class RepositoryEntity {
 
 
 
-    @OneToMany(mappedBy = "repositoryIdInBranch", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "repositoryIdInBranch", cascade = CascadeType.ALL)
     private List<BranchEntity> branchEntities = new ArrayList<>();
-    @OneToMany(mappedBy = "repositoryIdInTag", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "repositoryIdInTag", cascade = CascadeType.ALL)
     private List<TagEntity> tagEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "repositoryIdInEvent", cascade = CascadeType.ALL)

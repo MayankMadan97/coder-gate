@@ -17,7 +17,8 @@ public class ThresholdEntity {
     @Id
     private int repositoryId;
     @OneToOne
-    @JoinColumn(name = "repositoryId", referencedColumnName = "repositoryId")
+    @MapsId
+    @JoinColumn(name = "repositoryId")
     private RepositoryEntity repositoryIdInThreshold;
     private int bugs;
     private int vulnerabilities;

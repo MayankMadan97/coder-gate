@@ -36,7 +36,7 @@ public class RepositoryService {
         RepositoryEntity repositoryEntity = dtoToEntityForPushEvent(repository);
         RepositoryEntity saveEntity = repositoryRepository.save(repositoryEntity);
         LOGGER.info("RepositoryService : The repository information is added");
-        repositoryDTO = entityToDtoForPushEvent(repositoryEntity);
+        repositoryDTO = entityToDtoForPushEvent(saveEntity);
         return repositoryDTO;
     }
 

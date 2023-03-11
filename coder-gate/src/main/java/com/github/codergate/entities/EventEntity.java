@@ -30,6 +30,6 @@ public class EventEntity {
     private RepositoryEntity repositoryIdInEvent;
 
     @OneToOne(mappedBy = "eventIdInAnalysis")
-    private Analysis analysisAndRepository;
+    private AnalysisEntity analysisEntityAndRepository;
 
 }

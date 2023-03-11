@@ -35,10 +35,10 @@ public class UserService {
         account = entityToAccountDto(saveEntity);
         return account;
     }
-    public SenderDTO addUser(SenderDTO user)
+    public SenderDTO addUser(SenderDTO user, String userEmail)
     {
         SenderDTO sender;
-        UserEntity userEntity = senderDtoToEntity(user);
+        UserEntity userEntity = senderDtoToEntity(user, userEmail);
         UserEntity saveEntity = userRepository.save(userEntity);
         LOGGER.info("UserService : The user information is added");
         sender = entityToSenderDto(saveEntity);
@@ -73,7 +73,6 @@ public class UserService {
         UserEntity userEntity=userRepository.findById(userId).orElse(null);
         if(userEntity!=null)
         {
-//            userEntity.setUserName("alec");
             UserEntity saveEntity = userRepository.save(userEntity);
             LOGGER.info("UserService : Updating the user information");
             account= entityToAccountDto(saveEntity);
@@ -125,7 +124,7 @@ public class UserService {
         return userEntity;
     }
 
-    private UserEntity senderDtoToEntity(SenderDTO senderDTO)
+    private UserEntity senderDtoToEntity(SenderDTO senderDTO, String userEmail)
     {
         UserEntity userEntity = null;
         if(senderDTO != null)
@@ -138,6 +137,10 @@ public class UserService {
             if(senderDTO.getLogin() != null)
             {
                 userEntity.setUserName(senderDTO.getLogin());
+            }
+            if(userEmail != null)
+            {
+                userEntity.setEmail(userEmail);
             }
 
             LOGGER.info("UserService : Sender DTO has been converted to Entity");
