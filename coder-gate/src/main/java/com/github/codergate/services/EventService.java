@@ -32,18 +32,14 @@ public class EventService {
         return headCommit;
     }
 
-    private EventEntity headCommitDtoToEntity(HeadCommitDTO headCommitDTO, int userID, int repositoryID)
-    {
+    private EventEntity headCommitDtoToEntity(HeadCommitDTO headCommitDTO, int userID, int repositoryID) {
         EventEntity eventEntity = null;
-        if(headCommitDTO != null && userID != 0 && repositoryID != 0)
-        {
+        if (headCommitDTO != null && userID != 0 && repositoryID != 0) {
             eventEntity = new EventEntity();
-            if(headCommitDTO.getId() != null)
-            {
+            if (headCommitDTO.getId() != null) {
                 eventEntity.setCommitId(headCommitDTO.getId());
             }
-            if(headCommitDTO.getMessage() != null)
-            {
+            if (headCommitDTO.getMessage() != null) {
                 eventEntity.setCommitMessage(headCommitDTO.getMessage());
             }
 
@@ -60,6 +56,9 @@ public class EventService {
             LOGGER.info("EventService : HeadCommit DTO has been converted to Entity");
         } else {
             LOGGER.warn("EventService : User value is null ");
+        }
+
+    }
     /***
      *  adds the required event done by user into the database
      * @param event event name

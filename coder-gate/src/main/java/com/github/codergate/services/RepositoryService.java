@@ -92,11 +92,7 @@ public class RepositoryService {
         }
         return repositoryDTO;
     }
-    public List<RepositoriesAdded> getRepository(int userId)
-    {
-        List<RepositoriesAdded> repositoriesAdded=null;
-        List<RepositoryEntity> repositoryEntity= repositoryRepository.findByUserId(userId);
-        if(repositoryEntity!=null)
+
     /***
      * gets the repository information using id
      * @param repositoryId repositoryId
