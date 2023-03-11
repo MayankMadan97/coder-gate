@@ -3,23 +3,20 @@ package com.github.codergate.services;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.*;
 import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.codergate.dto.installation.Account;
+import com.github.codergate.dto.installation.RepositoriesAdded;
 import com.github.codergate.dto.push.PusherPayloadDTO;
 import com.github.codergate.dto.push.RepositoryDTO;
 import com.github.codergate.dto.push.SenderDTO;
-import com.github.codergate.services.TagService;
-import com.github.codergate.dto.installation.RepositoriesAdded;
-import com.github.codergate.dto.installation.RepositoriesRemoved;
-import org.bouncycastle.util.Integers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.github.codergate.dto.installation.InstallationPayload;
 import com.github.codergate.utils.JwtUtils;
 import com.github.codergate.utils.Mapper;
@@ -45,7 +42,7 @@ public class WebHookListenerService {
 
     @Autowired
     BranchService branchService;
-    
+
     private static final String INSTALLATION_CREATED = "created";
     private static final String INSTALLATION_ACTION = "action";
     private static final String INSTALLATION_DELETED = "deleted";
@@ -60,9 +57,16 @@ public class WebHookListenerService {
      * @param webhookPayload data
      */
     public void listen(Map<String, Object> webhookPayload) {
-        
-        String installationAction = (String) webhookPayload.get(INSTALLATION_ACTION);
-        switch (installationAction) {
+
+
+        String Action;
+        // checking if the payload contains attributes for installation or push event
+        if(webhookPayload.containsKey("pusher"))
+            Action = PUSH_EVENT;
+        else
+            Action = (String) webhookPayload.get(INSTALLATION_ACTION);
+
+        switch (Action) {
             case INSTALLATION_REPOSITORY_ADDED:
             case INSTALLATION_CREATED:
                 installationAddRepositoryWebhookListener(webhookPayload);
@@ -74,7 +78,7 @@ public class WebHookListenerService {
                 installationRemoveRepositoryWebhookListener(webhookPayload);
                 break;
             case PUSH_EVENT:
-//                implementation of push
+                pushEventWebhookListener(webhookPayload);
                 break;
             default:
                 LOGGER.warn("webHookListener : Following webhook payload is not yet supported {}", webhookPayload);
@@ -112,7 +116,7 @@ public class WebHookListenerService {
 
     /***
      * When a user installs or adds this method will be implemented
-     * Create and Add action is implemented, which sets user, repository and event information.
+     * Create and Add action is implemented, which sets user, repositoryRepository and event information.
      * @param webhookPayload data
      */
     private void installationAddRepositoryWebhookListener(Map<String, Object> webhookPayload) {
@@ -128,10 +132,10 @@ public class WebHookListenerService {
             // adding user
             Account user = userService.addUser(payload.getInstallation().getAccount());
 
-            // creating repository
+            // creating repositoryRepository
             repositoriesAddedList = repositoryService.addRepository(repositoriesAddedList,user.getId());
 
-            // getting repository id
+            // getting repositoryRepository id
             List<Integer> repositoryIdList = repositoriesAddedList.stream()
                     .map(x -> x.getId())
                     .collect(Collectors.toList());
@@ -217,13 +221,12 @@ public class WebHookListenerService {
         if (payload != null && payload.getPusher() != null && payload.getSender() != null
                 && payload.getHeadCommit() != null && payload.getRepository() != null) {
             SenderDTO user = userService.addUser(payload.getSender(), payload.getPusher().getEmail());
-            RepositoryDTO repository = repositoryService.addRepository(payload.getRepository());
-            tagService.createTag(payload.getRepository());
-            branchService.createBranch(payload.getRepository());
+            RepositoryDTO repository = repositoryService.addRepository(payload.getRepository(), payload.getRepository().getOwner().getId());
+            tagService.addTag(payload.getRepository());
+            branchService.addBranch(payload.getRepository());
             eventService.addEvent(payload.getHeadCommit(), user.getId(), repository.getId());
         }
     }
-
 
 
 }

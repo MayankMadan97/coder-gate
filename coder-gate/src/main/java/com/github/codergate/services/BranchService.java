@@ -16,7 +16,12 @@ public class BranchService {
     BranchRepository branchRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
-    public RepositoryDTO createBranch(RepositoryDTO repository) {
+    /***
+     * adds branch information during push event
+     * @param repository RepositoryDTO object
+     * @return RepositoryDTO object
+     */
+    public RepositoryDTO addBranch(RepositoryDTO repository) {
         RepositoryDTO repositoryDTO;
         BranchEntity branchEntity = dtoToEntity(repository);
         BranchEntity saveEntity = branchRepository.save(branchEntity);
@@ -25,6 +30,11 @@ public class BranchService {
         return repositoryDTO;
     }
 
+    /***
+     * converts RepositoryDTO to Branch entity
+     * @param repositoryDTO RepositoryDTO object
+     * @return Branch entity
+     */
     private BranchEntity dtoToEntity(RepositoryDTO repositoryDTO) {
         BranchEntity branchEntity = null;
         if(repositoryDTO != null)
@@ -42,6 +52,11 @@ public class BranchService {
         return branchEntity;
     }
 
+    /***
+     * converts Branch entity to RepositoryDTO
+     * @param branch Branch entity
+     * @return RepositoryDTO object
+     */
     private RepositoryDTO entityToDto(BranchEntity branch) {
         RepositoryDTO repository = null;
         if(branch != null)

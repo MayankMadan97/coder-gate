@@ -16,7 +16,12 @@ public class TagService {
     TagRepository tagRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
-    public RepositoryDTO createTag(RepositoryDTO repository) {
+    /***
+     * adds tag information to table
+     * @param repository RepositoryDTO object
+     * @return RepositoryDTO object
+     */
+    public RepositoryDTO addTag(RepositoryDTO repository) {
         RepositoryDTO repositoryDTO;
         TagEntity tagEntity = dtoToEntity(repository);
         TagEntity saveEntity = tagRepository.save(tagEntity);
@@ -25,6 +30,11 @@ public class TagService {
         return repositoryDTO;
     }
 
+    /***
+     * converts RepositoryDTO to Tag Entity
+     * @param repositoryDTO RepositoryDTO object
+     * @return Tag Entity
+     */
     private TagEntity dtoToEntity(RepositoryDTO repositoryDTO) {
         TagEntity tagEntity = null;
         if(repositoryDTO != null)
@@ -42,6 +52,11 @@ public class TagService {
         return tagEntity;
     }
 
+    /***
+     * Converts Tag entity to RepositoryDTO
+     * @param tag Tag Entity
+     * @return RepositoryDTO Object
+     */
     private RepositoryDTO entityToDto(TagEntity tag) {
         RepositoryDTO repository = null;
         if(tag != null)

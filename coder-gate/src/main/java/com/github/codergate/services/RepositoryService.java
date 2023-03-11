@@ -22,7 +22,7 @@ public class RepositoryService {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
     /***
-     *  adds the repository to the table
+     *  adds the repository to the table during installation event
      * @param repositories repository information
      * @param userId user id
      * @return RepositoriesAdded dto class
@@ -30,67 +30,26 @@ public class RepositoryService {
     public List<RepositoriesAdded> addRepository(List<RepositoriesAdded> repositories, int userId)
     {
         List<RepositoriesAdded> repositoriesAdded;
-        List<RepositoryEntity> repositoryEntityList=dtoToEntity(repositories,userId);
+        List<RepositoryEntity> repositoryEntityList= dtoToEntityForInstallationEvent(repositories,userId);
         List<RepositoryEntity>saveRepository= repositoryEntityList.stream().map(items -> repositoryRepository.save(items)).collect(Collectors.toList());
         repositoriesAdded = entityToDto(saveRepository);
         return repositoriesAdded;
     }
 
-    public RepositoryDTO addRepository(RepositoryDTO repository) {
-        RepositoryDTO repositoryDTO;
-        RepositoryEntity repositoryEntity = dtoToEntityForPushEvent(repository);
+    /***
+     * adds the repository to the table during push event
+     * @param repositoryDTO repository DTO
+     * @param userId user id
+     * @return
+     */
+    public RepositoryDTO addRepository(RepositoryDTO repositoryDTO, int userId) {
+        RepositoryDTO repositoryDTO2;
+        RepositoryEntity repositoryEntity = dtoToEntityForPushEvent(repositoryDTO, userId);
+
         RepositoryEntity saveEntity = repositoryRepository.save(repositoryEntity);
-        LOGGER.info("RepositoryService : The repository information is added");
-        repositoryDTO = entityToDtoForPushEvent(saveEntity);
-        return repositoryDTO;
-    }
-
-    private RepositoryEntity dtoToEntityForPushEvent(RepositoryDTO repository) {
-        RepositoryEntity repositoryEntity = null;
-        if (repository != null)
-        {
-            repositoryEntity = new RepositoryEntity();
-            if(repository.getId() != 0)
-            {
-                repositoryEntity.setRepositoryId(repository.getId());
-            }
-            if(repository.getName() != null)
-            {
-                repositoryEntity.setRepositoryName(repository.getName());
-            }
-            if(repository.getFork() != null)
-            {
-                repositoryEntity.setFork(repository.getFork());
-            }
-            LOGGER.info("RepositoryService : Repository DTO has been converted to Entity");
-        } else {
-            LOGGER.warn("RepositoryService : Repository value is null ");
-        }
-        return repositoryEntity;
-    }
-
-    private RepositoryDTO entityToDtoForPushEvent(RepositoryEntity repository) {
-        RepositoryDTO repositoryDTO = null;
-        if(repository != null)
-        {
-            repositoryDTO = new RepositoryDTO();
-            if(repository.getRepositoryId() != 0)
-            {
-                repositoryDTO.setId(repository.getRepositoryId());
-            }
-            if(repository.getRepositoryName() != null)
-            {
-                repositoryDTO.setName(repository.getRepositoryName());
-            }
-            if(repository.isFork())
-                repositoryDTO.setFork(repository.isFork());
-            else
-                repositoryDTO.setFork(false);
-            LOGGER.info("RepositoryService : Entity has been converted to Repository DTO");
-        } else {
-            LOGGER.warn("RepositoryService : Repository value is null ");
-        }
-        return repositoryDTO;
+        LOGGER.info("RepositoryService : The repositoryRepository information is added");
+        repositoryDTO2 = entityToDtoForPushEvent(saveEntity);
+        return repositoryDTO2;
     }
 
     /***
@@ -122,7 +81,7 @@ public class RepositoryService {
     public List<RepositoriesAdded> updateRepository(int repositoryId)
     {
         List<RepositoriesAdded> repositoriesAdded=null;
-        Optional<RepositoryEntity> repositoryEntities=repositoryRepository.findById(repositoryId);
+        Optional<RepositoryEntity> repositoryEntities= repositoryRepository.findById(repositoryId);
         if(repositoryEntities.isPresent())
         {
             List<RepositoryEntity> repositoryEntityList =repositoryEntities.stream().map(i->{
@@ -155,12 +114,12 @@ public class RepositoryService {
     }
 
     /***
-     * converts dto to entity
+     * converts dto to entity during installation event
      * @param repository dto class
      * @param userId user id
      * @return  RepositoryEntity
      */
-    private List<RepositoryEntity> dtoToEntity(List<RepositoriesAdded> repository,int userId) {
+    private List<RepositoryEntity> dtoToEntityForInstallationEvent(List<RepositoriesAdded> repository, int userId) {
 
         List<RepositoryEntity> listOfRepositoryValues = null;
 
@@ -183,7 +142,43 @@ public class RepositoryService {
     }
 
     /***
-     * converts entity to dto
+     * converts dto to entity during push event
+     * @param repository dto class
+     * @param userID user id
+     * @return RepositoryEntity
+     */
+    private RepositoryEntity dtoToEntityForPushEvent(RepositoryDTO repository, int userID) {
+        RepositoryEntity repositoryEntity = null;
+        if (repository != null)
+        {
+            repositoryEntity = new RepositoryEntity();
+            if(repository.getId() != 0)
+            {
+                repositoryEntity.setRepositoryId(repository.getId());
+            }
+            if(repository.getName() != null)
+            {
+                repositoryEntity.setRepositoryName(repository.getName());
+            }
+            if(repository.getFork() != null)
+            {
+                repositoryEntity.setFork(repository.getFork());
+            }
+            if(userID != 0)
+            {
+                UserEntity userEntity = new UserEntity();
+                userEntity.setUserId(userID);
+                repositoryEntity.setUserEntity(userEntity);
+            }
+            LOGGER.info("RepositoryService : RepositoryRepository DTO has been converted to Entity");
+        } else {
+            LOGGER.warn("RepositoryService : RepositoryRepository value is null ");
+        }
+        return repositoryEntity;
+    }
+
+    /***
+     * converts entity to dto during installation event
      * @param repositoryEntity RepositoryEntity class
      * @return dto class
      */
@@ -208,4 +203,34 @@ public class RepositoryService {
 
         return listOfRepositoryAddedDTOValues;
     }
+
+    /***
+     * converts entity to dto during push event
+     * @param repository RepositoryEntity class
+     * @return dto class
+     */
+    private RepositoryDTO entityToDtoForPushEvent(RepositoryEntity repository) {
+        RepositoryDTO repositoryDTO = null;
+        if(repository != null)
+        {
+            repositoryDTO = new RepositoryDTO();
+            if(repository.getRepositoryId() != 0)
+            {
+                repositoryDTO.setId(repository.getRepositoryId());
+            }
+            if(repository.getRepositoryName() != null)
+            {
+                repositoryDTO.setName(repository.getRepositoryName());
+            }
+            if(repository.isFork())
+                repositoryDTO.setFork(repository.isFork());
+            else
+                repositoryDTO.setFork(false);
+            LOGGER.info("RepositoryService : Entity has been converted to RepositoryRepository DTO");
+        } else {
+            LOGGER.warn("RepositoryService : RepositoryRepository value is null ");
+        }
+        return repositoryDTO;
+    }
+
 }
