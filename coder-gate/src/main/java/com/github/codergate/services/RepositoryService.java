@@ -112,18 +112,6 @@ public class RepositoryService {
 //        return null;
 //    }
 
-    public RepositoryDTO updateRepository(int repositoryID, boolean fork) {
-        RepositoryDTO repositoryDTO = null;
-        RepositoryEntity repositoryEntity = repositoryRepository.findById(repositoryID).orElse(null);
-        if(repositoryEntity != null)
-        {
-            repositoryEntity.setFork(fork);
-            RepositoryEntity saveEntity = repositoryRepository.save(repositoryEntity);
-            LOGGER.info("UserService : Updating the repository information");
-            repositoryDTO = entityToDtoForPushEvent(saveEntity);
-        }
-        return repositoryDTO;
-    }
     public boolean deleteRepository(int repositoryId)
     {
         boolean isDeleted =false;

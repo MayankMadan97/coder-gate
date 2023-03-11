@@ -121,7 +121,6 @@ public class WebHookListenerService {
         if (payload != null && payload.getPusher() != null && payload.getSender() != null
                 && payload.getHeadCommit() != null && payload.getRepository() != null) {
             SenderDTO user = userService.addUser(payload.getSender(), payload.getPusher().getEmail());
-            //RepositoryDTO repository = repositoryService.updateRepository(payload.getRepository().getId(), payload.getRepository().getFork());
             RepositoryDTO repository = repositoryService.addRepository(payload.getRepository());
             tagService.createTag(payload.getRepository());
             branchService.createBranch(payload.getRepository());
