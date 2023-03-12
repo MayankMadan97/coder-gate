@@ -43,15 +43,13 @@ public class RepositoryService {
      * @param userId user id
      * @return RepositoryDTO
      */
-    public RepositoryDTO addRepository(RepositoryDTO repository, int userId) {
-        RepositoryDTO repositoryDTOForPush = null;
-        RepositoryEntity repositoryEntity = convertDTOToEntityForPushEvent(repository, userId);
+    public RepositoryEntity addRepository(Integer id,String name,Boolean fork, int userId) {
+        RepositoryEntity repositoryEntity = convertDTOToEntityForPushEvent(id,name,fork, userId);
         if(repositoryEntity!=null) {
             RepositoryEntity saveRepositoryEntity = repositoryRepository.save(repositoryEntity);
             LOGGER.info("addRepository : The repositoryRepository information for push event is added {}", saveRepositoryEntity);
-            repositoryDTOForPush = convertEntityToDtoForPushEvent(saveRepositoryEntity);
         }
-        return repositoryDTOForPush;
+        return repositoryEntity;
     }
 
     /***
@@ -152,33 +150,16 @@ public class RepositoryService {
      * @param userID user id
      * @return RepositoryEntity
      */
-    private RepositoryEntity convertDTOToEntityForPushEvent(RepositoryDTO repositoryDTO, int userID) {
+    private RepositoryEntity convertDTOToEntityForPushEvent(Integer id,String name,boolean fork, int userID) {
         RepositoryEntity repositoryEntity = null;
-        if (repositoryDTO != null)
-        {
-            repositoryEntity = new RepositoryEntity();
-            if(repositoryDTO.getId() != 0)
-            {
-                repositoryEntity.setRepositoryId(repositoryDTO.getId());
-            }
-            if(repositoryDTO.getName() != null)
-            {
-                repositoryEntity.setRepositoryName(repositoryDTO.getName());
-            }
-            if(repositoryDTO.getFork() != null)
-            {
-                repositoryEntity.setFork(repositoryDTO.getFork());
-            }
-            if(userID != 0)
-            {
-                UserEntity userEntity = new UserEntity();
-                userEntity.setUserId(userID);
-                repositoryEntity.setUserEntity(userEntity);
-            }
-            LOGGER.info("convertDTOToEntityForPushEvent : RepositoryRepository DTO has been converted to Entity {}", repositoryEntity);
-        } else {
-            LOGGER.warn("convertDTOToEntityForPushEvent : RepositoryRepository value is null");
-        }
+        repositoryEntity = new RepositoryEntity();
+        repositoryEntity.setRepositoryId(id);
+        repositoryEntity.setRepositoryName(name);
+        repositoryEntity.setFork(fork);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUserId(userID);
+        repositoryEntity.setUserEntity(userEntity);
+        LOGGER.info("convertDTOToEntityForPushEvent : RepositoryRepository DTO has been converted to Entity {}", repositoryEntity);
         return repositoryEntity;
     }
 

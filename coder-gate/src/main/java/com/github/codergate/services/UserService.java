@@ -1,5 +1,6 @@
 package com.github.codergate.services;
 import com.github.codergate.dto.installation.AccountDTO;
+import com.github.codergate.dto.installation.Sender;
 import com.github.codergate.dto.push.SenderDTO;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.repositories.UserRepository;
@@ -40,17 +41,17 @@ public class UserService {
      * @param userEmail email of User in String format
      * @return SenderDTO Object
      */
-    public SenderDTO addUser(SenderDTO user, String userEmail)
+    public UserEntity addUser(Integer userId,String login, String userEmail)
     {
         SenderDTO sender=null;
-        UserEntity userEntity = convertSenderDtoToEntity(user, userEmail);
+        UserEntity userEntity = convertSenderDtoToEntity(userId,login, userEmail);
         if(userEntity!=null) {
             UserEntity savedEntity = userRepository.save(userEntity);
             LOGGER.info("addUser : The user information email is added {}", savedEntity);
-            sender = convertEntityToSenderDTO(savedEntity);
         }
-        return sender;
+        return userEntity;
     }
+
 
     /***
      * Gets the user information from the table using id
@@ -136,33 +137,20 @@ public class UserService {
 
     /***
      * converts SenderDTO to User Entity during push event
-     * @param senderDTO SenderDTO Object
      * @param userEmail email of User in String format
      * @return User Entity
      */
-    private UserEntity convertSenderDtoToEntity(SenderDTO senderDTO, String userEmail)
+    private UserEntity convertSenderDtoToEntity(Integer id, String login, String userEmail)
     {
         UserEntity userEntity = null;
-        if(senderDTO != null)
-        {
-            userEntity = new UserEntity();
-            if(senderDTO.getId() != null)
-            {
-                userEntity.setUserId(senderDTO.getId());
-            }
-            if(senderDTO.getLogin() != null)
-            {
-                userEntity.setUserName(senderDTO.getLogin());
-            }
-            if(userEmail != null)
-            {
-                userEntity.setEmail(userEmail);
-            }
+        userEntity = new UserEntity();
+        userEntity.setUserId(id);
+        userEntity.setUserName(login);
+        userEntity.setEmail(userEmail);
+
 
             LOGGER.info("convertSenderDtoToEntity : Converted SenderDTO to Entity {}", userEntity);
-        } else {
-            LOGGER.warn("convertSenderDtoToEntity : SenderDTO value is null");
-        }
+
         return userEntity;
     }
 
