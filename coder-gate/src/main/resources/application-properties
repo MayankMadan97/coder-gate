@@ -1,7 +1,0 @@
-server.port=3000
-github.app.id=296450
-
-spring.datasource.url=jdbc:mysql://localhost:3306/asdc
-spring.datasource.username=root
-spring.datasource.password=Aadith1108@
-spring.jpa.hibernate.ddl-auto=update
