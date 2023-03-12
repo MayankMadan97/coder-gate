@@ -56,7 +56,7 @@ public class JwtUtils {
                                         .setExpiration(new Date(System.currentTimeMillis() + 600000))
                                         // issued b y coder gate app
                                         .setIssuer(appId)
-                                        // signed using RS 256 algorithm as reequired by github
+                                        // signed using RS 256 algorithm as required by github
                                         .signWith(SignatureAlgorithm.RS256, privKey)
                                         .compact();
                 } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {

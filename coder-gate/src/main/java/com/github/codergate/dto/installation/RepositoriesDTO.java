@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "private"
 })
 @Generated("jsonschema2pojo")
-public class Repositories implements Serializable
+public class RepositoriesDTO implements Serializable
 {
 
     @JsonProperty("id")
@@ -42,7 +42,7 @@ public class Repositories implements Serializable
      * No args constructor for use in serialization
      * 
      */
-    public Repositories() {
+    public RepositoriesDTO() {
     }
 
     /**
@@ -53,7 +53,7 @@ public class Repositories implements Serializable
      * @param id
      * @param nodeId
      */
-    public Repositories(Integer id, String nodeId, String name, String fullName, Boolean _private) {
+    public RepositoriesDTO(Integer id, String nodeId, String name, String fullName, Boolean _private) {
         super();
         this.id = id;
         this.nodeId = nodeId;
@@ -72,7 +72,7 @@ public class Repositories implements Serializable
         this.id = id;
     }
 
-    public Repositories withId(Integer id) {
+    public RepositoriesDTO withId(Integer id) {
         this.id = id;
         return this;
     }
@@ -87,7 +87,7 @@ public class Repositories implements Serializable
         this.nodeId = nodeId;
     }
 
-    public Repositories withNodeId(String nodeId) {
+    public RepositoriesDTO withNodeId(String nodeId) {
         this.nodeId = nodeId;
         return this;
     }
@@ -102,7 +102,7 @@ public class Repositories implements Serializable
         this.name = name;
     }
 
-    public Repositories withName(String name) {
+    public RepositoriesDTO withName(String name) {
         this.name = name;
         return this;
     }
@@ -117,7 +117,7 @@ public class Repositories implements Serializable
         this.fullName = fullName;
     }
 
-    public Repositories withFullName(String fullName) {
+    public RepositoriesDTO withFullName(String fullName) {
         this.fullName = fullName;
         return this;
     }
@@ -132,7 +132,7 @@ public class Repositories implements Serializable
         this._private = _private;
     }
 
-    public Repositories withPrivate(Boolean _private) {
+    public RepositoriesDTO withPrivate(Boolean _private) {
         this._private = _private;
         return this;
     }
@@ -147,7 +147,7 @@ public class Repositories implements Serializable
         this.additionalProperties.put(name, value);
     }
 
-    public Repositories withAdditionalProperty(String name, Object value) {
+    public RepositoriesDTO withAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
         return this;
     }
@@ -155,7 +155,7 @@ public class Repositories implements Serializable
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Repositories.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(RepositoriesDTO.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("id");
         sb.append('=');
         sb.append(((this.id == null)?"<null>":this.id));
@@ -205,10 +205,10 @@ public class Repositories implements Serializable
         if (other == this) {
             return true;
         }
-        if ((other instanceof Repositories) == false) {
+        if ((other instanceof RepositoriesDTO) == false) {
             return false;
         }
-        Repositories rhs = ((Repositories) other);
+        RepositoriesDTO rhs = ((RepositoriesDTO) other);
         return (((((((this._private == rhs._private)||((this._private!= null)&&this._private.equals(rhs._private)))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))))&&((this.fullName == rhs.fullName)||((this.fullName!= null)&&this.fullName.equals(rhs.fullName))))&&((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.nodeId == rhs.nodeId)||((this.nodeId!= null)&&this.nodeId.equals(rhs.nodeId))));
     }
 

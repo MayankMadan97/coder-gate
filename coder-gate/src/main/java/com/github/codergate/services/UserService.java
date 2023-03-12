@@ -1,5 +1,5 @@
 package com.github.codergate.services;
-import com.github.codergate.dto.installation.Account;
+import com.github.codergate.dto.installation.AccountDTO;
 import com.github.codergate.dto.push.SenderDTO;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.repositories.UserRepository;
@@ -15,21 +15,22 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
 
     /***
      * adds the value into the table using entity and returns the values in dto class during installation event
-     * @param user dto class
+     * @param userToAdd dto class
      * @return dto class with user values
      */
-    public Account addUser(Account user)
-    {
-        Account account;
-        UserEntity userEntity = accountDtoToEntity(user);
-        UserEntity saveEntity= userRepository.save(userEntity);
-        LOGGER.info("UserService : The user information is added");
-        account = entityToAccountDto(saveEntity);
+    public AccountDTO addUser(AccountDTO userToAdd) {
+        AccountDTO account=null;
+        UserEntity userEntity = convertAccountDtoToEntity(userToAdd);
+        if (userEntity != null) {
+            UserEntity savedEntity = userRepository.save(userEntity);
+            LOGGER.info("addUser : The user information is added {}", savedEntity);
+            account = convertEntityToAccountDto(savedEntity);
+        }
         return account;
     }
 
@@ -41,11 +42,13 @@ public class UserService {
      */
     public SenderDTO addUser(SenderDTO user, String userEmail)
     {
-        SenderDTO sender;
-        UserEntity userEntity = senderDtoToEntity(user, userEmail);
-        UserEntity saveEntity = userRepository.save(userEntity);
-        LOGGER.info("UserService : The user information is added");
-        sender = entityToSenderDto(saveEntity);
+        SenderDTO sender=null;
+        UserEntity userEntity = convertSenderDtoToEntity(user, userEmail);
+        if(userEntity!=null) {
+            UserEntity savedEntity = userRepository.save(userEntity);
+            LOGGER.info("addUser : The user information email is added {}", savedEntity);
+            sender = convertEntityToSenderDTO(savedEntity);
+        }
         return sender;
     }
 
@@ -55,13 +58,15 @@ public class UserService {
      * @return dto class with user information
      */
 
-    public Account getUser(Long userId)
+    public AccountDTO getUserById(Long userId)
     {
-        Account account = null;
+        AccountDTO account = null;
         Optional<UserEntity> userEntity = userRepository.findById(userId);
         if(userEntity.isPresent()){
-            account = entityToAccountDto(userEntity.get());
-            LOGGER.info("UserService : Getting the user information");
+            account = convertEntityToAccountDto(userEntity.get());
+            LOGGER.info("getUserById : Successfully retrieved account with ID: {}", userId);
+        }else {
+            LOGGER.warn("getAccountById: Account with ID: {} not found", userId);
         }
         return account;
     }
@@ -71,18 +76,17 @@ public class UserService {
      * @param userId userId
      * @return dto class
      */
-    public Account updateUser(Long userId)
+    public AccountDTO updateUserById(Long userId)
     {
-        Account account=null;
+        AccountDTO accountDto =null;
         UserEntity userEntity=userRepository.findById(userId).orElse(null);
         if(userEntity!=null)
         {
-//            userEntity.setUserName("alec");
-            UserEntity saveEntity = userRepository.save(userEntity);
-            LOGGER.info("UserService : Updating the user information");
-            account= entityToAccountDto(saveEntity);
+            UserEntity savedEntity = userRepository.save(userEntity);
+            LOGGER.info("updateUserById : Updating the user information");
+            accountDto = convertEntityToAccountDto(savedEntity);
         }
-        return account;
+        return accountDto;
     }
 
 
@@ -92,12 +96,12 @@ public class UserService {
      * @return true or false
      */
     public boolean deleteUserByID(Long userId) {
-        boolean isDeleted =false;
-        if(userId!=null)
+        boolean isDeleted = false;
+        if(userId != null)
         {
             userRepository.deleteById(userId);
             isDeleted=true;
-            LOGGER.info("UserService : Deleting the user information");
+            LOGGER.info("deleteUserByID : Deleting the user information {}", userId);
         }
         return isDeleted;
     }
@@ -105,29 +109,30 @@ public class UserService {
 
     /***
      * converts AccountDTO to User Entity
-     * @param user dto
+     * @param accountDTO dto
      * @return entity
      */
-    private UserEntity accountDtoToEntity(Account user)
+    private UserEntity convertAccountDtoToEntity(AccountDTO accountDTO)
     {
-        UserEntity userEntity=null;
-        if(user!=null)
+        UserEntity userEntity = null;
+        if(accountDTO != null)
         {
             userEntity = new UserEntity();
-            if(user.getId()!=null)
+            if(accountDTO.getId() != null)
             {
-                userEntity.setUserId(user.getId());
+                userEntity.setUserId(accountDTO.getId());
             }
-            if(user.getLogin()!=null)
+            if(accountDTO.getLogin()!= null)
             {
-                userEntity.setUserName(user.getLogin());
+                userEntity.setUserName(accountDTO.getLogin());
             }
-            LOGGER.info("UserService : DTO has been converted to Entity");
+            LOGGER.info("convertAccountDtoToEntity : Converted AccountDTO to Entity {}", userEntity);
         }else {
-            LOGGER.warn("UserService : User value is null ");
+            LOGGER.warn("convertAccountDtoToEntity : AccountDTO value is null");
         }
         return userEntity;
     }
+
 
     /***
      * converts SenderDTO to User Entity during push event
@@ -135,7 +140,7 @@ public class UserService {
      * @param userEmail email of User in String format
      * @return User Entity
      */
-    private UserEntity senderDtoToEntity(SenderDTO senderDTO, String userEmail)
+    private UserEntity convertSenderDtoToEntity(SenderDTO senderDTO, String userEmail)
     {
         UserEntity userEntity = null;
         if(senderDTO != null)
@@ -154,66 +159,63 @@ public class UserService {
                 userEntity.setEmail(userEmail);
             }
 
-            LOGGER.info("UserService : Sender DTO has been converted to Entity");
+            LOGGER.info("convertSenderDtoToEntity : Converted SenderDTO to Entity {}", userEntity);
         } else {
-            LOGGER.warn("UserService : User value is null ");
+            LOGGER.warn("convertSenderDtoToEntity : SenderDTO value is null");
         }
         return userEntity;
     }
 
     /***
      * converts User entity to AccountDTO
-     * @param user user entity
+     * @param userEntity user entity
      * @return AccountDTO
      */
-    private Account entityToAccountDto(UserEntity user)
+    private AccountDTO convertEntityToAccountDto(UserEntity userEntity)
     {
-        Account account = null;
-        if(user!=null)
+        AccountDTO accountDTO = null;
+        if(userEntity != null)
         {
-            account=new Account();
-            if(user.getUserId()!=0L)
+            accountDTO = new AccountDTO();
+            if(userEntity.getUserId() != 0L)
             {
-                account.setId((int) user.getUserId());
+                accountDTO.setId((int) userEntity.getUserId());
             }
-            if(user.getUserName()!=null)
+            if(userEntity.getUserName() != null)
             {
-                account.setLogin(user.getUserName());
+                accountDTO.setLogin(userEntity.getUserName());
             }
-            LOGGER.info("UserService : Entity has been converted to DTO");
+            LOGGER.info("convertEntityToAccountDto : Entity has been converted to AccountDTO {}", accountDTO );
         }else {
-            LOGGER.warn("UserService : User value is null ");
+            LOGGER.warn("convertEntityToAccountDto : User entity value is null");
         }
-        return account;
+        return accountDTO;
     }
 
     /***
      * converts User Entity to SenderDTO
-     * @param user User Entity
+     * @param userEntity User Entity
      * @return SenderDTO
      */
-    private SenderDTO entityToSenderDto(UserEntity user)
+    private SenderDTO convertEntityToSenderDTO(UserEntity userEntity)
     {
-        SenderDTO sender = null;
-        if(user != null)
+        SenderDTO senderDTO = null;
+        if(userEntity != null)
         {
-            sender = new SenderDTO();
-            if(user.getUserId() != 0L)
+            senderDTO = new SenderDTO();
+            if(userEntity.getUserId() != 0L)
             {
-                sender.setId((int) user.getUserId());
+                senderDTO.setId((int) userEntity.getUserId());
             }
-            if (user.getUserName() != null)
+            if (userEntity.getUserName() != null)
             {
-                sender.setLogin(user.getUserName());
+                senderDTO.setLogin(userEntity.getUserName());
             }
-            LOGGER.info("UserService : Entity has been converted to Sender DTO");
+            LOGGER.info("convertEntityToSenderDto : Entity has been converted to SenderDTO {}", senderDTO);
         } else {
-            LOGGER.warn("UserService : User value is null ");
+            LOGGER.warn("convertEntityToSenderDto : User entity value is null");
         }
-        return sender;
+        return senderDTO;
     }
-
-
-
 }
 

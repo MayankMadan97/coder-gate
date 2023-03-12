@@ -14,7 +14,7 @@ public class TagService {
 
     @Autowired
     TagRepository tagRepository;
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TagService.class);
 
     /***
      * adds tag information to table
@@ -22,11 +22,13 @@ public class TagService {
      * @return RepositoryDTO object
      */
     public RepositoryDTO addTag(RepositoryDTO repository) {
-        RepositoryDTO repositoryDTO;
-        TagEntity tagEntity = dtoToEntity(repository);
-        TagEntity saveEntity = tagRepository.save(tagEntity);
-        LOGGER.info("TagService : The tag information is added");
-        repositoryDTO = entityToDto(saveEntity);
+        RepositoryDTO repositoryDTO = null;
+        TagEntity tagEntity = convertDTOToEntity(repository);
+        if(tagEntity!=null) {
+            TagEntity savedEntity = tagRepository.save(tagEntity);
+            LOGGER.info("addTag : The tag information is added {}", savedEntity);
+            repositoryDTO = convertEntityToDTO(savedEntity);
+        }
         return repositoryDTO;
     }
 
@@ -35,8 +37,10 @@ public class TagService {
      * @param repositoryDTO RepositoryDTO object
      * @return Tag Entity
      */
-    private TagEntity dtoToEntity(RepositoryDTO repositoryDTO) {
+    private TagEntity convertDTOToEntity(RepositoryDTO repositoryDTO) {
+
         TagEntity tagEntity = null;
+
         if(repositoryDTO != null)
         {
             tagEntity = new TagEntity();
@@ -45,9 +49,9 @@ public class TagService {
                 TagId tagId = new TagId(repositoryDTO.getId(), repositoryDTO.getTagsUrl());
                 tagEntity.setTagId(tagId);
             }
-            LOGGER.info("TagService : Repository DTO has been converted to Tag Entity");
+            LOGGER.info("convertDTOToEntity : Repository DTO has been converted to Tag Entity {}", tagEntity);
         } else {
-            LOGGER.warn("TagService : Repository value is null");
+            LOGGER.warn("convertDTOToEntity : Repository dto doesn't have tag");
         }
         return tagEntity;
     }
@@ -57,21 +61,21 @@ public class TagService {
      * @param tag Tag Entity
      * @return RepositoryDTO Object
      */
-    private RepositoryDTO entityToDto(TagEntity tag) {
-        RepositoryDTO repository = null;
+    private RepositoryDTO convertEntityToDTO(TagEntity tag) {
+        RepositoryDTO repositoryDTO = null;
         if(tag != null)
         {
-            repository = new RepositoryDTO();
+            repositoryDTO = new RepositoryDTO();
             if(tag.getTagId() != null)
             {
                 TagId tagIdObject = tag.getTagId();
-                repository.setId(tagIdObject.getRepositoryId());
-                repository.setTagsUrl(tagIdObject.getTagUrl());
+                repositoryDTO.setId(tagIdObject.getRepositoryId());
+                repositoryDTO.setTagsUrl(tagIdObject.getTagUrl());
             }
-            LOGGER.info("TagService : Tag Entity has been converted to RepositoryDTO");
+            LOGGER.info("ConvertEntityToDto : Tag Entity has been converted to RepositoryDTO {}", repositoryDTO);
         } else {
-            LOGGER.warn("TagService : Tag value is null");
+            LOGGER.warn("ConvertEntityToDto : Tag entity value is null");
         }
-        return repository;
+        return repositoryDTO;
     }
 }

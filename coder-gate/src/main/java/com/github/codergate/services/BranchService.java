@@ -14,7 +14,7 @@ public class BranchService {
 
     @Autowired
     BranchRepository branchRepository;
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BranchService.class);
 
     /***
      * adds branch information during push event
@@ -22,11 +22,13 @@ public class BranchService {
      * @return RepositoryDTO object
      */
     public RepositoryDTO addBranch(RepositoryDTO repository) {
-        RepositoryDTO repositoryDTO;
-        BranchEntity branchEntity = dtoToEntity(repository);
-        BranchEntity saveEntity = branchRepository.save(branchEntity);
-        LOGGER.info("BranchService : The branch information is added");
-        repositoryDTO = entityToDto(saveEntity);
+        RepositoryDTO repositoryDTO = null;
+        BranchEntity branchEntity = convertDTOToEntity(repository);
+        if(branchEntity!=null) {
+            BranchEntity savedEntity = branchRepository.save(branchEntity);
+            LOGGER.info("addBranch : The branch information is added {}", savedEntity);
+            repositoryDTO = convertEntityToDto(savedEntity);
+        }
         return repositoryDTO;
     }
 
@@ -35,7 +37,7 @@ public class BranchService {
      * @param repositoryDTO RepositoryDTO object
      * @return Branch entity
      */
-    private BranchEntity dtoToEntity(RepositoryDTO repositoryDTO) {
+    private BranchEntity convertDTOToEntity(RepositoryDTO repositoryDTO) {
         BranchEntity branchEntity = null;
         if(repositoryDTO != null)
         {
@@ -45,9 +47,9 @@ public class BranchService {
                 BranchId branchId = new BranchId(repositoryDTO.getId(), repositoryDTO.getBranchesUrl());
                 branchEntity.setBranchId(branchId);
             }
-            LOGGER.info("BranchService : Repository DTO has been converted to Branch Entity");
+            LOGGER.info("convertDTOToEntity : Repository DTO has been converted to Branch Entity {}", branchEntity);
         } else {
-            LOGGER.warn("BranchService : Repository value is null");
+            LOGGER.warn("convertDTOToEntity : Repository branch value is null");
         }
         return branchEntity;
     }
@@ -57,21 +59,21 @@ public class BranchService {
      * @param branch Branch entity
      * @return RepositoryDTO object
      */
-    private RepositoryDTO entityToDto(BranchEntity branch) {
-        RepositoryDTO repository = null;
+    private RepositoryDTO convertEntityToDto(BranchEntity branch) {
+        RepositoryDTO repositoryDTO = null;
         if(branch != null)
         {
-            repository = new RepositoryDTO();
+            repositoryDTO = new RepositoryDTO();
             if(branch.getBranchId() != null)
             {
                 BranchId branchIdObject = branch.getBranchId();
-                repository.setId(branchIdObject.getRepositoryId());
-                repository.setBranchesUrl(branchIdObject.getBranchUrl());
+                repositoryDTO.setId(branchIdObject.getRepositoryId());
+                repositoryDTO.setBranchesUrl(branchIdObject.getBranchUrl());
             }
-            LOGGER.info("BranchService : Branch Entity has been converted to RepositoryDTO");
+            LOGGER.info("convertEntityToDto : Branch Entity has been converted to RepositoryDTO {}", repositoryDTO);
         } else {
-            LOGGER.warn("BranchService : Tag value is null");
+            LOGGER.warn("convertEntityToDto : Branch Entity value is null");
         }
-        return repository;
+        return repositoryDTO;
     }
 }

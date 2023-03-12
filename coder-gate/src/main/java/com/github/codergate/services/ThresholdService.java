@@ -12,11 +12,11 @@ public class ThresholdService {
         thresholdRepository.save(thresholdEntity);
     }
 
-    public void dtoToEntity() {
+    public void convertDTOToEntity() {
         ThresholdEntity thresholdEntity = new ThresholdEntity();
     }
 
-    public void entityToDto(ThresholdEntity thresholdEntity) {
+    public void convertEntityToDTO(ThresholdEntity thresholdEntity) {
 
     }
 }

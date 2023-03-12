@@ -40,7 +40,7 @@ public class Installation implements Serializable {
     @JsonProperty("id")
     private Integer id;
     @JsonProperty("account")
-    private Account account;
+    private AccountDTO accountDto;
     @JsonProperty("repository_selection")
     private String repositorySelection;
     @JsonProperty("access_tokens_url")
@@ -103,18 +103,18 @@ public class Installation implements Serializable {
      * @param id
      * @param suspendedBy
      * @param singleFileName
-     * @param account
+     * @param accountDto
      * @param events
      * @param updatedAt
      * @param hasMultipleSingleFiles
      */
-    public Installation(Integer id, Account account, String repositorySelection, String accessTokensUrl,
-            String repositoriesUrl, String htmlUrl, Integer appId, String appSlug, Integer targetId, String targetType,
-            Permissions permissions, List<String> events, String createdAt, String updatedAt, Object singleFileName,
-            Boolean hasMultipleSingleFiles, List<Object> singleFilePaths, Object suspendedBy, Object suspendedAt) {
+    public Installation(Integer id, AccountDTO accountDto, String repositorySelection, String accessTokensUrl,
+                        String repositoriesUrl, String htmlUrl, Integer appId, String appSlug, Integer targetId, String targetType,
+                        Permissions permissions, List<String> events, String createdAt, String updatedAt, Object singleFileName,
+                        Boolean hasMultipleSingleFiles, List<Object> singleFilePaths, Object suspendedBy, Object suspendedAt) {
         super();
         this.id = id;
-        this.account = account;
+        this.accountDto = accountDto;
         this.repositorySelection = repositorySelection;
         this.accessTokensUrl = accessTokensUrl;
         this.repositoriesUrl = repositoriesUrl;
@@ -150,17 +150,17 @@ public class Installation implements Serializable {
     }
 
     @JsonProperty("account")
-    public Account getAccount() {
-        return account;
+    public AccountDTO getAccount() {
+        return accountDto;
     }
 
     @JsonProperty("account")
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccount(AccountDTO accountDto) {
+        this.accountDto = accountDto;
     }
 
-    public Installation withAccount(Account account) {
-        this.account = account;
+    public Installation withAccount(AccountDTO accountDto) {
+        this.accountDto = accountDto;
         return this;
     }
 
@@ -445,7 +445,7 @@ public class Installation implements Serializable {
         sb.append(',');
         sb.append("account");
         sb.append('=');
-        sb.append(((this.account == null) ? "<null>" : this.account));
+        sb.append(((this.accountDto == null) ? "<null>" : this.accountDto));
         sb.append(',');
         sb.append("repositorySelection");
         sb.append('=');
@@ -546,7 +546,7 @@ public class Installation implements Serializable {
         result = ((result * 31) + ((this.suspendedBy == null) ? 0 : this.suspendedBy.hashCode()));
         result = ((result * 31) + ((this.additionalProperties == null) ? 0 : this.additionalProperties.hashCode()));
         result = ((result * 31) + ((this.singleFileName == null) ? 0 : this.singleFileName.hashCode()));
-        result = ((result * 31) + ((this.account == null) ? 0 : this.account.hashCode()));
+        result = ((result * 31) + ((this.accountDto == null) ? 0 : this.accountDto.hashCode()));
         result = ((result * 31) + ((this.events == null) ? 0 : this.events.hashCode()));
         result = ((result * 31) + ((this.updatedAt == null) ? 0 : this.updatedAt.hashCode()));
         result = ((result * 31) + ((this.hasMultipleSingleFiles == null) ? 0 : this.hasMultipleSingleFiles.hashCode()));
@@ -589,7 +589,7 @@ public class Installation implements Serializable {
                         && this.additionalProperties.equals(rhs.additionalProperties))))
                 && ((this.singleFileName == rhs.singleFileName)
                         || ((this.singleFileName != null) && this.singleFileName.equals(rhs.singleFileName))))
-                && ((this.account == rhs.account) || ((this.account != null) && this.account.equals(rhs.account))))
+                && ((this.accountDto == rhs.accountDto) || ((this.accountDto != null) && this.accountDto.equals(rhs.accountDto))))
                 && ((this.events == rhs.events) || ((this.events != null) && this.events.equals(rhs.events))))
                 && ((this.updatedAt == rhs.updatedAt)
                         || ((this.updatedAt != null) && this.updatedAt.equals(rhs.updatedAt))))

@@ -1,10 +1,10 @@
-
 package com.github.codergate.dto.installation;
+
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,13 +14,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "id",
-        "node_id",
-        "name",
-        "full_name",
-        "private"
+    "id",
+    "node_id",
+    "name",
+    "full_name",
+    "private"
 })
-public class RepositoriesAdded implements Serializable {
+@Generated("jsonschema2pojo")
+public class RepositoriesRemovedDTO implements Serializable
+{
 
     @JsonProperty("id")
     private Integer id;
@@ -34,13 +36,13 @@ public class RepositoriesAdded implements Serializable {
     private Boolean _private;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
-    private final static long serialVersionUID = -4726706613928656811L;
+    private final static long serialVersionUID = -2899608895598598365L;
 
     /**
      * No args constructor for use in serialization
      * 
      */
-    public RepositoriesAdded() {
+    public RepositoriesRemovedDTO() {
     }
 
     /**
@@ -51,7 +53,7 @@ public class RepositoriesAdded implements Serializable {
      * @param id
      * @param nodeId
      */
-    public RepositoriesAdded(Integer id, String nodeId, String name, String fullName, Boolean _private) {
+    public RepositoriesRemovedDTO(Integer id, String nodeId, String name, String fullName, Boolean _private) {
         super();
         this.id = id;
         this.nodeId = nodeId;
@@ -70,7 +72,7 @@ public class RepositoriesAdded implements Serializable {
         this.id = id;
     }
 
-    public RepositoriesAdded withId(Integer id) {
+    public RepositoriesRemovedDTO withId(Integer id) {
         this.id = id;
         return this;
     }
@@ -85,7 +87,7 @@ public class RepositoriesAdded implements Serializable {
         this.nodeId = nodeId;
     }
 
-    public RepositoriesAdded withNodeId(String nodeId) {
+    public RepositoriesRemovedDTO withNodeId(String nodeId) {
         this.nodeId = nodeId;
         return this;
     }
@@ -100,7 +102,7 @@ public class RepositoriesAdded implements Serializable {
         this.name = name;
     }
 
-    public RepositoriesAdded withName(String name) {
+    public RepositoriesRemovedDTO withName(String name) {
         this.name = name;
         return this;
     }
@@ -115,7 +117,7 @@ public class RepositoriesAdded implements Serializable {
         this.fullName = fullName;
     }
 
-    public RepositoriesAdded withFullName(String fullName) {
+    public RepositoriesRemovedDTO withFullName(String fullName) {
         this.fullName = fullName;
         return this;
     }
@@ -130,7 +132,7 @@ public class RepositoriesAdded implements Serializable {
         this._private = _private;
     }
 
-    public RepositoriesAdded withPrivate(Boolean _private) {
+    public RepositoriesRemovedDTO withPrivate(Boolean _private) {
         this._private = _private;
         return this;
     }
@@ -145,7 +147,7 @@ public class RepositoriesAdded implements Serializable {
         this.additionalProperties.put(name, value);
     }
 
-    public RepositoriesAdded withAdditionalProperty(String name, Object value) {
+    public RepositoriesRemovedDTO withAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
         return this;
     }
@@ -153,34 +155,33 @@ public class RepositoriesAdded implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(RepositoriesAdded.class.getName()).append('@')
-                .append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(RepositoriesRemovedDTO.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("id");
         sb.append('=');
-        sb.append(((this.id == null) ? "<null>" : this.id));
+        sb.append(((this.id == null)?"<null>":this.id));
         sb.append(',');
         sb.append("nodeId");
         sb.append('=');
-        sb.append(((this.nodeId == null) ? "<null>" : this.nodeId));
+        sb.append(((this.nodeId == null)?"<null>":this.nodeId));
         sb.append(',');
         sb.append("name");
         sb.append('=');
-        sb.append(((this.name == null) ? "<null>" : this.name));
+        sb.append(((this.name == null)?"<null>":this.name));
         sb.append(',');
         sb.append("fullName");
         sb.append('=');
-        sb.append(((this.fullName == null) ? "<null>" : this.fullName));
+        sb.append(((this.fullName == null)?"<null>":this.fullName));
         sb.append(',');
         sb.append("_private");
         sb.append('=');
-        sb.append(((this._private == null) ? "<null>" : this._private));
+        sb.append(((this._private == null)?"<null>":this._private));
         sb.append(',');
         sb.append("additionalProperties");
         sb.append('=');
-        sb.append(((this.additionalProperties == null) ? "<null>" : this.additionalProperties));
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
         sb.append(',');
-        if (sb.charAt((sb.length() - 1)) == ',') {
-            sb.setCharAt((sb.length() - 1), ']');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
         } else {
             sb.append(']');
         }
@@ -190,12 +191,12 @@ public class RepositoriesAdded implements Serializable {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result * 31) + ((this._private == null) ? 0 : this._private.hashCode()));
-        result = ((result * 31) + ((this.name == null) ? 0 : this.name.hashCode()));
-        result = ((result * 31) + ((this.fullName == null) ? 0 : this.fullName.hashCode()));
-        result = ((result * 31) + ((this.id == null) ? 0 : this.id.hashCode()));
-        result = ((result * 31) + ((this.additionalProperties == null) ? 0 : this.additionalProperties.hashCode()));
-        result = ((result * 31) + ((this.nodeId == null) ? 0 : this.nodeId.hashCode()));
+        result = ((result* 31)+((this._private == null)? 0 :this._private.hashCode()));
+        result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
+        result = ((result* 31)+((this.fullName == null)? 0 :this.fullName.hashCode()));
+        result = ((result* 31)+((this.id == null)? 0 :this.id.hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
+        result = ((result* 31)+((this.nodeId == null)? 0 :this.nodeId.hashCode()));
         return result;
     }
 
@@ -204,17 +205,11 @@ public class RepositoriesAdded implements Serializable {
         if (other == this) {
             return true;
         }
-        if ((other instanceof RepositoriesAdded) == false) {
+        if ((other instanceof RepositoriesRemovedDTO) == false) {
             return false;
         }
-        RepositoriesAdded rhs = ((RepositoriesAdded) other);
-        return (((((((this._private == rhs._private) || ((this._private != null) && this._private.equals(rhs._private)))
-                && ((this.name == rhs.name) || ((this.name != null) && this.name.equals(rhs.name))))
-                && ((this.fullName == rhs.fullName) || ((this.fullName != null) && this.fullName.equals(rhs.fullName))))
-                && ((this.id == rhs.id) || ((this.id != null) && this.id.equals(rhs.id))))
-                && ((this.additionalProperties == rhs.additionalProperties) || ((this.additionalProperties != null)
-                        && this.additionalProperties.equals(rhs.additionalProperties))))
-                && ((this.nodeId == rhs.nodeId) || ((this.nodeId != null) && this.nodeId.equals(rhs.nodeId))));
+        RepositoriesRemovedDTO rhs = ((RepositoriesRemovedDTO) other);
+        return (((((((this._private == rhs._private)||((this._private!= null)&&this._private.equals(rhs._private)))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))))&&((this.fullName == rhs.fullName)||((this.fullName!= null)&&this.fullName.equals(rhs.fullName))))&&((this.id == rhs.id)||((this.id!= null)&&this.id.equals(rhs.id))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.nodeId == rhs.nodeId)||((this.nodeId!= null)&&this.nodeId.equals(rhs.nodeId))));
     }
 
 }

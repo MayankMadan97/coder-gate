@@ -14,11 +14,11 @@ public class AnalysisService {
         analysisRepository.save(analysisEntity);
     }
 
-    public void dtoToEntity() {
+    public void convertDTOToEntity() {
         AnalysisEntity analysisEntity = new AnalysisEntity();
     }
 
-    public void entityToDto(AnalysisEntity analysisEntity) {
+    public void convertEntityToDto(AnalysisEntity analysisEntity) {
 
     }
 }

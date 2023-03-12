@@ -1,5 +1,5 @@
 package com.github.codergate.services;
-import com.github.codergate.dto.installation.InstallationPayload;
+import com.github.codergate.dto.installation.InstallationPayloadDTO;
 import com.github.codergate.dto.push.HeadCommitDTO;
 import com.github.codergate.entities.EventEntity;
 import com.github.codergate.entities.RepositoryEntity;
@@ -19,23 +19,23 @@ public class EventService {
     @Autowired
     EventRepository eventRepository;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
 
     /***
      *  adds the required event done by user into the database
-     * @param event event name
+     * @param eventType event name
      * @param userId user id
      * @param repositoryIdList repositoryRepository ids
      * @return dto class
      */
-    public InstallationPayload addEvent(String event,int userId,List<Integer>repositoryIdList)
+    public InstallationPayloadDTO addEvent(String eventType, int userId, List<Integer>repositoryIdList)
     {
-        InstallationPayload installationPayload;
-        List<EventEntity> eventEntity=dtoToEntity(event,userId,repositoryIdList);
-        List<EventEntity> saveEvent=eventRepository.saveAll(eventEntity);
-        LOGGER.info("EventService : adding the event information");
-        installationPayload=entityToDto(saveEvent);
-        return installationPayload;
+        InstallationPayloadDTO installationPayloadDTO;
+        List<EventEntity> eventEntity= convertDTOToEntity(eventType,userId,repositoryIdList);
+        List<EventEntity> savedEvent=eventRepository.saveAll(eventEntity);
+        LOGGER.info("addEvent : adding the event information {}", savedEvent);
+        installationPayloadDTO = convertEntityToDTO(savedEvent);
+        return installationPayloadDTO;
     }
 
     /***
@@ -47,11 +47,13 @@ public class EventService {
      */
     public HeadCommitDTO addEvent(HeadCommitDTO headCommitDTO, int userID, int repositoryID)
     {
-        HeadCommitDTO headCommit;
+        HeadCommitDTO headCommit = null;
         EventEntity eventEntity = headCommitDtoToEntity(headCommitDTO, userID, repositoryID);
-        EventEntity saveEntity = eventRepository.save(eventEntity);
-        LOGGER.info("EventService : The event information is added");
-        headCommit = entityToHeadCommitDto(saveEntity);
+        if(eventEntity!=null) {
+            EventEntity savedEntity = eventRepository.save(eventEntity);
+            LOGGER.info("addEvent : The event information for commit is added {}", savedEntity);
+            headCommit = entityToHeadCommitDto(savedEntity);
+        }
         return headCommit;
     }
 
@@ -60,13 +62,15 @@ public class EventService {
      * @param eventId event id
      * @return entity class
      */
-    public EventEntity getEvent(Long eventId){
+    public EventEntity getEventById(Long eventId){
         EventEntity eventEntity = null;
         Optional<EventEntity> optionalEventEntity=eventRepository.findById(eventId.intValue());
         if(optionalEventEntity.isPresent())
         {
             eventEntity = optionalEventEntity.get();
-            LOGGER.info("EventService : Getting the event information");
+            LOGGER.info("getEventById : Getting the event information {}", eventId);
+        }else {
+            LOGGER.warn("getEventById: Event with ID: {} not found", eventId);
         }
         return eventEntity;
     }
@@ -82,8 +86,9 @@ public class EventService {
         EventEntity eventEntity=eventRepository.findById(eventId.intValue()).orElse(null);
         if(eventEntity!=null)
         {
+            // perform further implementation when required
             EventEntity saveEvent = eventRepository.save(eventEntity);
-            LOGGER.info("EventService : Updating the event information");
+            LOGGER.info("updateEntity : Updating the event information");
         }
         return eventEntity;
     }
@@ -93,14 +98,14 @@ public class EventService {
      * @param eventId event id
      * @return entity class
      */
-    public boolean deleteEvent(int eventId)
+    public boolean deleteEventById(int eventId)
     {
-        boolean isDeleted =false;
-        if(eventId!=0)
+        boolean isDeleted = false;
+        if(eventId != 0)
         {
             eventRepository.deleteById(eventId);
             isDeleted=true;
-            LOGGER.info("EventService : Deleting the repositoryRepository information");
+            LOGGER.info("deleteEventById : Deleting the event information {}", eventId);
         }
         return isDeleted;
     }
@@ -108,32 +113,32 @@ public class EventService {
 
     /***
      *  converts dto class to entity
-     * @param event event name
+     * @param eventTypeName event name
      * @param userId user id
      * @param repositoryIdList repositoryRepository ids
      * @return entity
      */
-    private List<EventEntity> dtoToEntity(String event,int userId, List<Integer>repositoryIdList)
+    private List<EventEntity> convertDTOToEntity(String eventTypeName, int userId, List<Integer>repositoryIdList)
     {
-        List<EventEntity> eventEntityList=new ArrayList<>();
+        List<EventEntity> eventEntityList = new ArrayList<>();
         EventEntity eventEntity;
-        if(event!=null && userId!=0 && repositoryIdList!=null)
+        if(eventTypeName != null && userId !=0 && repositoryIdList != null)
         {
-            UserEntity userEntity=new UserEntity();
+            UserEntity userEntity = new UserEntity();
             userEntity.setUserId(userId);
-            for(int i:repositoryIdList)
+            for(int id:repositoryIdList)
             {
                 eventEntity = new EventEntity();
-                eventEntity.setEventName(event);
+                eventEntity.setEventName(eventTypeName);
                 RepositoryEntity repositoryEntity=new RepositoryEntity();
-                repositoryEntity.setRepositoryId(i);
+                repositoryEntity.setRepositoryId(id);
                 eventEntity.setRepositoryIdInEvent(repositoryEntity);
                 eventEntity.setUserIdInEvent(userEntity);
                 eventEntityList.add(eventEntity);
             }
-            LOGGER.info("EventService : DTO has been converted to Entity");
+            LOGGER.info("convertDTOToEntity : DTO has been converted to Entity {}", eventEntityList);
         }else {
-            LOGGER.warn("EventService : User value is null ");
+            LOGGER.warn("convertDTOToEntity : Event Entity value is null");
         }
         return eventEntityList;
     }
@@ -170,60 +175,60 @@ public class EventService {
             repositoryEntity.setRepositoryId(repositoryID);
             eventEntity.setRepositoryIdInEvent(repositoryEntity);
 
-            LOGGER.info("EventService : HeadCommit DTO has been converted to Entity");
+            LOGGER.info("headCommitDtoToEntity : HeadCommit DTO has been converted to Entity {}", eventEntity );
         } else {
-            LOGGER.warn("EventService : User value is null ");
+            LOGGER.warn("headCommitDtoToEntity : Event Entity for HeadCommit is null ");
         }
         return eventEntity;
     }
 
     /***
      *  converts entity class to dto class
-     * @param event event information
+     * @param eventType event information
      * @return dto class
      */
-    private InstallationPayload entityToDto(List<EventEntity> event)
+    private InstallationPayloadDTO convertEntityToDTO(List<EventEntity> eventType)
     {
-        InstallationPayload installationPayload = null;
-        if(event!=null)
+        InstallationPayloadDTO installationPayloadDTO = null;
+        if(eventType != null)
         {
-            installationPayload=new InstallationPayload();
-            if(event.get(0).getEventName()!=null)
+            installationPayloadDTO =new InstallationPayloadDTO();
+            if(eventType.get(0).getEventName()!=null)
             {
-                installationPayload.setAction(event.get(0).getEventName());
+                installationPayloadDTO.setAction(eventType.get(0).getEventName());
             }
 
-            LOGGER.info("EventService : Entity has been converted to DTO");
+            LOGGER.info("InstallationPayloadDTO : Entity has been converted to DTO {}", installationPayloadDTO);
         }else {
-            LOGGER.warn("EventService : event value is null ");
+            LOGGER.warn("InstallationPayloadDTO : converting entity to installationPayloadDTO is null ");
         }
-        return installationPayload;
+        return installationPayloadDTO;
     }
 
     /***
      * Converts Event Entity to HeadCommitDTO
-     * @param event Event Entity
+     * @param eventType Event Entity
      * @return HeadCommitDTO object
      */
-    private HeadCommitDTO entityToHeadCommitDto(EventEntity event)
+    private HeadCommitDTO entityToHeadCommitDto(EventEntity eventType)
     {
-        HeadCommitDTO headcommit = null;
-        if(event != null)
+        HeadCommitDTO headCommitDTO = null;
+        if(eventType != null)
         {
-            headcommit = new HeadCommitDTO();
-            if(event.getEventId() != 0L)
+            headCommitDTO = new HeadCommitDTO();
+            if(eventType.getEventId() != 0L)
             {
-                headcommit.setId(event.getCommitId());
+                headCommitDTO.setId(eventType.getCommitId());
             }
-            if(event.getCommitMessage() != null)
+            if(eventType.getCommitMessage() != null)
             {
-                headcommit.setMessage(event.getCommitMessage());
+                headCommitDTO.setMessage(eventType.getCommitMessage());
             }
-            LOGGER.info("EventService : Entity has been converted to HeadCommit DTO");
+            LOGGER.info("entityToHeadCommitDto : Entity has been converted to HeadCommit DTO {}", headCommitDTO);
         } else {
-            LOGGER.warn("EventService : User value is null ");
+            LOGGER.warn("entityToHeadCommitDto : converting entity to headCommitDTO is null");
         }
-        return headcommit;
+        return headCommitDTO;
     }
 
 }
