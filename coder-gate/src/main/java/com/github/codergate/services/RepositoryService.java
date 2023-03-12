@@ -203,6 +203,18 @@ public class RepositoryService {
 
         return listOfRepositoryAddedDTOValues;
     }
+    /***
+     * gets the repository information using userId
+     * @param userId userId
+     * @return RepositoriesAdded dto class
+     */
+    public List<RepositoriesAdded> getRepositoryFromUserId(Long userId)
+    {
+        List<RepositoryEntity> repositoriesByUserId = repositoryRepository.findByUserId(userId);
+        LOGGER.info("RepositoryService : Getting the repositories from user Id ");
+        List<RepositoriesAdded> repositoriesAdded = entityToDto(repositoriesByUserId);
+        return repositoriesAdded;
+    }
 
     /***
      * converts entity to dto during push event
