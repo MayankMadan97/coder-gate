@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-github-login',
@@ -29,6 +30,7 @@ export class GithubLoginComponent {
     }).subscribe((data: any) => {
       const accessToken = data.access_token;
       localStorage.setItem('github_access_token', accessToken);
+      AuthService.isAuthenticated = true;
       this.router.navigate(['/dashboard']);
     });
   }

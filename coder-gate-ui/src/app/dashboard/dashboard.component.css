@@ -1,23 +1,11 @@
-/* Navbar */
-.navbar {
-  margin-bottom: 20px;
-}
-
-/* Cards */
-.card {
-  margin-bottom: 20px;
-}
-
 .card-title {
-  margin-bottom: 10px;
+    font-size: 1.2em;
 }
 
-.card-text {
-  margin-bottom: 20px;
-}
-
-/* Buttons */
-.btn-block {
-  margin-top: 20px;
-  margin-bottom: 20px;
+.card-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

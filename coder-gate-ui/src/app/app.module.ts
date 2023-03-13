@@ -8,6 +8,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { FeaturesComponent } from './features/features.component';
 import { GithubLoginComponent } from './github-login.component';
 import { HomeComponent } from './home/home.component';
+import { NavBarComponent } from './navbar/navbar.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -22,12 +24,14 @@ const routes: Routes = [
     GithubLoginComponent,
     DashboardComponent,
     FeaturesComponent,
-    HomeComponent
+    HomeComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
+    MatTabsModule
   ],
   exports: [
     GithubLoginComponent,

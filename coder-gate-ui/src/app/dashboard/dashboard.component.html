@@ -1,66 +1,31 @@
-<header>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">My Dashboard</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Settings</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Logout</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</header>
-
-<main class="container mt-3">
+<div class="dashboard-container container-fluid">
   <div class="row">
-    <div class="col-md-4">
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">Card 1</h5>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec sapien sit amet massa fermentum ullamcorper.</p>
-          <a href="#" class="btn btn-primary">Learn More</a>
+    <div class="col-9">
+      <div class="row my-4">
+        <div class="col-6">
+          <mat-tab-group>
+            <mat-tab label="Repositories"></mat-tab>
+            <mat-tab label="Insights"></mat-tab>
+            <mat-tab label="Feedback"></mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 mx-2" *ngFor="let elem of repositoryStubData">
+          <div class="card cursor-pointer">
+            <div class="card-header">
+              {{elem.tag}}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{elem.title}}</h5>
+              <p class="card-description">{{elem.description}}</p>
+              <p class="card-text">{{elem.lastUpdatedOn}}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">Card 2</h5>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec sapien sit amet massa fermentum ullamcorper.</p>
-          <a href="#" class="btn btn-primary">Learn More</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">Card 3</h5>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec sapien sit amet massa fermentum ullamcorper.</p>
-          <a href="#" class="btn btn-primary">Learn More</a>
-        </div>
-      </div>
+    <div class="col-4">
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <button type="button" class="btn btn-primary btn-lg btn-block">Button 1</button>
-    </div>
-    <div class="col-md-6">
-      <button type="button" class="btn btn-secondary btn-lg btn-block">Button 2</button>
-    </div>
-  </div>
-</main>
+</div>
