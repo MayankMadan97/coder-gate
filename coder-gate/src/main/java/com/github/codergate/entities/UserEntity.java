@@ -29,5 +29,14 @@ public class UserEntity {
    @OneToMany(mappedBy = "userIdInEvent", cascade = CascadeType.ALL)
     private Set<EventEntity> userAndEvent;
 
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                '}';
+    }
+
 }
 

@@ -5,8 +5,7 @@ import com.github.codergate.dto.installation.InstallationPayloadDTO;
 import com.github.codergate.dto.installation.RepositoriesAddedDTO;
 import com.github.codergate.dto.pullRequest.PullRequestPayloadDTO;
 import com.github.codergate.dto.push.PusherPayloadDTO;
-import com.github.codergate.dto.push.RepositoryDTO;
-import com.github.codergate.dto.push.SenderDTO;
+
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.utils.Constants;
@@ -63,8 +62,7 @@ public class WebHookListenerService {
 
 
         switch (action) {
-//            case Constants.INSTALLATION_REPOSITORY_ADDED:
-
+            case Constants.INSTALLATION_REPOSITORY_ADDED:
             case Constants.INSTALLATION_CREATED:
                 installationAddRepositoryWebhookListener(webhookPayload);
                 break;
