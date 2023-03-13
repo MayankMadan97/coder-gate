@@ -1,14 +1,16 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { GithubLoginComponent } from './github-login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FeaturesComponent } from './features/features.component';
+import { GithubLoginComponent } from './github-login.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
+  { path: '', component: HomeComponent },
   { path: 'github-callback', component: GithubLoginComponent },
   { path: 'dashboard', component: DashboardComponent }
 ];
@@ -19,7 +21,8 @@ const routes: Routes = [
     AppComponent,
     GithubLoginComponent,
     DashboardComponent,
-    FeaturesComponent
+    FeaturesComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
