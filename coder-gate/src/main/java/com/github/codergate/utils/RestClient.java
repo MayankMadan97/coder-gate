@@ -3,10 +3,7 @@ package com.github.codergate.utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.Arrays;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -107,8 +104,7 @@ public class RestClient {
                 throw new IllegalArgumentException("Mandatory parameters not found");
             }
         } catch (RestClientException | UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.error("invokeForGet :: Failed to call api due to error {}", Arrays.toString(e.getStackTrace()));
         }
         LOGGER.debug("invokeForPost : Exiting the method");
         return response;
