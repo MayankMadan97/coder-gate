@@ -27,4 +27,34 @@ public class AnalysisEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "eventId")
     private EventEntity eventIdInAnalysis;
+
+    private int bugs;
+    private int vulnerabilities;
+    private int codeSmell;
+    private int testCoverage;
+    private int duplicatedLines;
+    private int cyclomaticComplexity;
+    private int documentedLines;
+
+    //Architecture Smells
+    private int cyclicDependency;
+    private int godComponents;
+
+    //Design Smells
+    private int cyclicallyDependentModularization;
+    private int insufficientModularization;
+    private int unnecessaryAbstraction;
+
+    //Implementation Smells
+    private int complexMethod;
+    private int complexConditional;
+    private int emptyCatchClause;
+
+    //Test Smells
+    private int missingAssertion;
+    private int emptyTest;
+
+    //Timestamp
+    private long timestamp;
+
 }
