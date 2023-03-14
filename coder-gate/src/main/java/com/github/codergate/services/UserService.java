@@ -1,6 +1,5 @@
 package com.github.codergate.services;
 import com.github.codergate.dto.installation.AccountDTO;
-import com.github.codergate.dto.installation.Sender;
 import com.github.codergate.dto.push.SenderDTO;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.repositories.UserRepository;
