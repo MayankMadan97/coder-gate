@@ -9,3 +9,51 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.sidebar-item {
+    font-size: 1.1em;
+}
+
+.sidebar {
+    height: calc(100vh - 9em);
+}
+
+.sidebar-item.active {
+    background-color: #fab81b;
+}
+
+.clickable {
+    box-shadow: 0px 5px 1px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 1px rgba(0, 0, 0, 0.14), 1px 4px 3px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 0;
+}
+
+.clickable:hover {
+    box-shadow: 0 8px 8px 8px rgba(0, 0, 0, .2), 0 8px 8px 0 rgba(0, 0, 0, .14), 0 8px 8px 0 rgba(0, 0, 0, .12) !important;
+    transform: translate3d(0, 0, 0);
+    transition: background .4s cubic-bezier(.25, .8, .25, 1), box-shadow 280ms cubic-bezier(.4, 0, .2, 1);
+    cursor: pointer;
+}
+
+.commit-chart {
+    height: 19em;
+    border: 1px solid#d9d9d9;
+}
+
+.repository-list {
+    max-height: 35vh;
+    overflow-y: scroll;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+  }
+  
+  .mat-mdc-row:hover .mat-mdc-cell {
+    border-color: currentColor;
+  }
+  
+  .demo-row-is-clicked {
+    font-weight: bold;
+  }

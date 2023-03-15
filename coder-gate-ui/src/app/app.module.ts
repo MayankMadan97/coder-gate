@@ -9,7 +9,8 @@ import { FeaturesComponent } from './features/features.component';
 import { GithubLoginComponent } from './github-login.component';
 import { HomeComponent } from './home/home.component';
 import { NavBarComponent } from './navbar/navbar.component';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -31,7 +32,8 @@ const routes: Routes = [
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
-    MatTabsModule
+    MatTableModule,
+    HighchartsChartModule
   ],
   exports: [
     GithubLoginComponent,
