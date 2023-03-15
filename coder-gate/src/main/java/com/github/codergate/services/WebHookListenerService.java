@@ -1,11 +1,14 @@
 package com.github.codergate.services;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.github.codergate.dto.analysis.AnalysisDTO;
 import com.github.codergate.dto.installation.AccountDTO;
 import com.github.codergate.dto.installation.InstallationPayloadDTO;
 import com.github.codergate.dto.installation.RepositoriesAddedDTO;
 import com.github.codergate.dto.pullRequest.PullRequestPayloadDTO;
 import com.github.codergate.dto.push.PusherPayloadDTO;
 
+import com.github.codergate.entities.AnalysisEntity;
+import com.github.codergate.entities.EventEntity;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.utils.Constants;
@@ -39,6 +42,9 @@ public class WebHookListenerService {
 
     @Autowired
     BranchService repositoryBranchService;
+
+    @Autowired
+    AnalysisService analysisService;
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
@@ -207,9 +213,13 @@ public class WebHookListenerService {
             RepositoryEntity repositoryEntity = repositoryService.addRepository(pushEventPayload.getRepository().getId(),pushEventPayload.getRepository().getName(),pushEventPayload.getRepository().getFork(), pushEventPayload.getRepository().getOwner().getId());
             repositoryTagService.addTag(pushEventPayload.getRepository());
             repositoryBranchService.addBranch(pushEventPayload.getRepository());
-            eventService.addEvent(pushEventPayload.getHeadCommit(), (int)userEntity.getUserId(), repositoryEntity.getRepositoryId());
+            EventEntity eventEntity = eventService.addEvent(pushEventPayload.getHeadCommit(), (int)userEntity.getUserId(), repositoryEntity.getRepositoryId());
             LOGGER.info("removeRepository : user has initialized a push event");
 
+            //Everytime a push event happens, we run analysis. So we call it here.
+//            AnalysisDTO analysisDTO = new AnalysisDTO("Code Smell", 497816347, 25, 13, 23, 90, 75, 3, 80, 12, 4, 17, 43, 32, 57, 54, 21, 29, 11);
+//            analysisService.addAnalysis(analysisDTO, eventEntity.getEventId());
+//            LOGGER.info("handlePushEvent : Analysis has been made and added to database");
         }
     }
 

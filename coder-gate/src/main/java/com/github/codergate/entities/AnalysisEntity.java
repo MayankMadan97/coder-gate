@@ -17,6 +17,7 @@ import javax.persistence.*;
 public class AnalysisEntity {
     @Id
     @Column(name = "analysisid")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "analysis_type")
@@ -24,7 +25,7 @@ public class AnalysisEntity {
 
     private int repositoryID;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "eventId")
     private EventEntity eventIdInAnalysis;
 
