@@ -22,7 +22,7 @@ public class PullRequestService {
     @Autowired
     PullRequestUtil pullRequestUtil;
 
-    Boolean pullRequestCheck(String owner, String repositoryName,Integer pullNumber,Integer repositoryId){
+    Boolean pullRequestCheck(Integer repositoryId){
         ThresholdEntity thresholdEntity = thresholdRepository.findById((long)repositoryId).get();
         AnalysisEntity analysisEntity = analysisRepository.findAnalysisByRepositoryId(repositoryId);
         return pullRequestUtil.checkThreshold(analysisEntity,thresholdEntity);

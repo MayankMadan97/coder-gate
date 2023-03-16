@@ -2,7 +2,9 @@ package com.github.codergate.services.utility;
 
 import com.github.codergate.entities.AnalysisEntity;
 import com.github.codergate.entities.ThresholdEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PullRequestUtil {
      public Boolean checkThreshold(AnalysisEntity analysisEntity, ThresholdEntity thresholdEntity){
         if(

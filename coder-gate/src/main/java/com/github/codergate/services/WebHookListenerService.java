@@ -11,6 +11,7 @@ import com.github.codergate.dto.push.RepositoryDTO;
 import com.github.codergate.dto.push.SenderDTO;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
+import com.github.codergate.services.utility.WebHookListenerUtil;
 import com.github.codergate.utils.Constants;
 import com.github.codergate.utils.Mapper;
 import org.slf4j.Logger;
@@ -45,6 +46,9 @@ public class WebHookListenerService {
 
     @Autowired
     PullRequestService pullRequestService;
+
+    @Autowired
+    WebHookListenerUtil webHookListenerUtil;
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
@@ -230,7 +234,14 @@ public class WebHookListenerService {
             List<Integer> repositoryEntitiesIds = new ArrayList<>();
             repositoryEntitiesIds.add(repositoryEntity.getRepositoryId());
             eventService.addEvent("Pull Request", (int)userEntity.getUserId(), repositoryEntitiesIds);
-            pullRequestService.pullRequestCheck(pullRequestPayload.getRepository().getOwner().getLogin(),pullRequestPayload.getRepository().getName(),pullRequestPayload.getPullRequest().getNumber(),pullRequestPayload.getRepository().getId());
+            Boolean pullRequestCheck = pullRequestService.pullRequestCheck(pullRequestPayload.getRepository().getId());
+            if(!pullRequestCheck){
+                String token = "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";
+                Boolean rejectPullRequest = webHookListenerUtil.rejectPullRequest(
+                        pullRequestPayload.getRepository().getOwner().getLogin(),
+                        pullRequestPayload.getRepository().getName(),
+                        pullRequestPayload.getPullRequest().getNumber(),token);
+            }
         }
     }
 }
