@@ -18,7 +18,6 @@ public class BranchService {
 
     /***
      * adds branch information during push event
-     * @param repository RepositoryDTO object
      * @return RepositoryDTO object
      */
     public void addBranch(String branchesUrl, Integer repositoryId) {
