@@ -4,11 +4,18 @@ import com.github.codergate.dto.installation.Sender;
 import com.github.codergate.dto.push.SenderDTO;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.repositories.UserRepository;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+import java.util.Scanner;
 
 @Service
 public class UserService {
@@ -204,6 +211,26 @@ public class UserService {
             LOGGER.warn("convertEntityToSenderDto : User entity value is null");
         }
         return senderDTO;
+    }
+    public String getUserImageUrl(String userName){
+        String apiUrl = String.format("https://api.github.com/users/%s", userName);
+        String avatarUrl = null;
+        try {
+            URL url = new URL(apiUrl);
+            String response = new Scanner(url.openStream(), StandardCharsets.UTF_8).useDelimiter("\\A").next();
+
+            // Extract the avatar URL from the response JSON
+            avatarUrl = new JSONObject(response).getString("avatar_url");
+
+            // Make a GET request to the avatar URL and retrieve the image as an InputStream
+//            InputStream inputStream = new URL(avatarUrl).openStream();
+
+            return avatarUrl;
+            // TODO: Process the InputStream as needed (e.g. save it to a file or display it in a UI)
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return avatarUrl;
     }
 }
 
