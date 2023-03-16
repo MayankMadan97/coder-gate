@@ -3,6 +3,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.codergate.dto.installation.AccountDTO;
 import com.github.codergate.dto.installation.InstallationPayloadDTO;
 import com.github.codergate.dto.installation.RepositoriesAddedDTO;
+import com.github.codergate.dto.pullRequest.Payload;
+import com.github.codergate.dto.pullRequest.PullRequest;
 import com.github.codergate.dto.pullRequest.PullRequestPayloadDTO;
 import com.github.codergate.dto.push.PusherPayloadDTO;
 import com.github.codergate.dto.push.RepositoryDTO;
@@ -41,6 +43,9 @@ public class WebHookListenerService {
     @Autowired
     BranchService repositoryBranchService;
 
+    @Autowired
+    PullRequestService pullRequestService;
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
@@ -54,7 +59,7 @@ public class WebHookListenerService {
 
         if (webhookPayload.containsKey("pusher"))
             action = Constants.PUSH_EVENT;
-        else if(webhookPayload.get("event").equals("pull_request")){
+        else if(webhookPayload.containsKey("pull_request")){
             action =Constants.PULL_REQUEST_EVENT;
         }
         else
@@ -207,8 +212,8 @@ public class WebHookListenerService {
 
             UserEntity userEntity = userService.addUser(pushEventPayload.getSender().getId(),pushEventPayload.getSender().getLogin(), pushEventPayload.getPusher().getEmail());
             RepositoryEntity repositoryEntity = repositoryService.addRepository(pushEventPayload.getRepository().getId(),pushEventPayload.getRepository().getName(),pushEventPayload.getRepository().getFork(), pushEventPayload.getRepository().getOwner().getId());
-            repositoryTagService.addTag(pushEventPayload.getRepository());
-            repositoryBranchService.addBranch(pushEventPayload.getRepository());
+            repositoryTagService.addTag(pushEventPayload.getRepository().getTagsUrl(),pushEventPayload.getRepository().getId());
+            repositoryBranchService.addBranch(pushEventPayload.getRepository().getBranchesUrl(),pushEventPayload.getRepository().getId());
             eventService.addEvent(pushEventPayload.getHeadCommit(), (int)userEntity.getUserId(), repositoryEntity.getRepositoryId());
             LOGGER.info("removeRepository : user has initialized a push event");
 
@@ -216,18 +221,16 @@ public class WebHookListenerService {
     }
 
     private void handlePullRequestEvent(Map<String, Object> webhookPayload) {
-        PullRequestPayloadDTO pullRequestPayloadDTO = Mapper.getInstance().convertValue(webhookPayload, PullRequestPayloadDTO.class);
-
-        if (pullRequestPayloadDTO != null && pullRequestPayloadDTO.getPayload() != null) {
-
-            UserEntity userEntity = userService.addUser(pullRequestPayloadDTO.getPayload().getSender().getId(), pullRequestPayloadDTO.getPayload().getSender().getLogin(), pullRequestPayloadDTO.getPayload().getSender().getUrl());
-            RepositoryEntity repositoryEntity = repositoryService.addRepository(pullRequestPayloadDTO.getPayload().getRepository().getId(), pullRequestPayloadDTO.getPayload().getRepository().getName(), pullRequestPayloadDTO.getPayload().getRepository().getFork(), pullRequestPayloadDTO.getPayload().getRepository().getOwner().getId());
-//            repositoryTagService.addTag(pullRequestPayloadDTO.getPayload().getRepository().getId());
-//            repositoryBranchService.addBranch(pullRequestPayloadDTO.getPayload().getRepository());
+        Payload pullRequestPayload = Mapper.getInstance().convertValue(webhookPayload, Payload.class);
+        if (pullRequestPayload != null) {
+            UserEntity userEntity = userService.addUser(pullRequestPayload.getSender().getId(), pullRequestPayload.getSender().getLogin(), pullRequestPayload.getSender().getUrl());
+            RepositoryEntity repositoryEntity = repositoryService.addRepository(pullRequestPayload.getRepository().getId(), pullRequestPayload.getRepository().getName(), pullRequestPayload.getRepository().getFork(), pullRequestPayload.getRepository().getOwner().getId());
+            repositoryTagService.addTag(pullRequestPayload.getRepository().getTagsUrl(),pullRequestPayload.getRepository().getId());
+            repositoryBranchService.addBranch(pullRequestPayload.getRepository().getBranchesUrl(),pullRequestPayload.getRepository().getId());
             List<Integer> repositoryEntitiesIds = new ArrayList<>();
             repositoryEntitiesIds.add(repositoryEntity.getRepositoryId());
-            eventService.addEvent(pullRequestPayloadDTO.getEvent(), (int)userEntity.getUserId(), repositoryEntitiesIds);
-
+            eventService.addEvent("Pull Request", (int)userEntity.getUserId(), repositoryEntitiesIds);
+            pullRequestService.pullRequestCheck(pullRequestPayload.getRepository().getOwner().getLogin(),pullRequestPayload.getRepository().getName(),pullRequestPayload.getPullRequest().getNumber(),pullRequestPayload.getRepository().getId());
         }
     }
 }
