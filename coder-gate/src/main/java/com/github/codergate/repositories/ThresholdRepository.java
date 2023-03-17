@@ -9,6 +9,4 @@ public interface ThresholdRepository extends JpaRepository<ThresholdEntity, Inte
     @Query(value = "SELECT * FROM threshold t WHERE t.repository_id =:repositoryID ;",nativeQuery = true)
     ThresholdEntity findByRepositoryId(@Param("repositoryID") int repositoryId);
 
-//    @Query(value = "DELETE FROM threshold t WHERE t.repository_id =:repositoryID", nativeQuery = true)
-//    ThresholdEntity deleteByRepositoryId(@Param("repositoryID") int repositoryId);
 }

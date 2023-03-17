@@ -1,17 +1,13 @@
 package com.github.codergate.services;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.github.codergate.dto.analysis.AnalysisDTO;
 import com.github.codergate.dto.installation.AccountDTO;
 import com.github.codergate.dto.installation.InstallationPayloadDTO;
 import com.github.codergate.dto.installation.RepositoriesAddedDTO;
 import com.github.codergate.dto.pullRequest.Payload;
-import com.github.codergate.dto.pullRequest.PullRequest;
-import com.github.codergate.dto.pullRequest.PullRequestPayloadDTO;
+
 import com.github.codergate.dto.push.PusherPayloadDTO;
 
 import com.github.codergate.dto.threshold.ThresholdDTO;
-import com.github.codergate.entities.AnalysisEntity;
-import com.github.codergate.entities.EventEntity;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.services.utility.WebHookListenerUtil;
@@ -26,9 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.apache.logging.log4j.ThreadContext.containsKey;
-
 @Service
 public class WebHookListenerService {
 

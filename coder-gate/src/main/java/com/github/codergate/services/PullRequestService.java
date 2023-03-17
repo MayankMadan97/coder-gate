@@ -7,9 +7,6 @@ import com.github.codergate.repositories.ThresholdRepository;
 import com.github.codergate.services.utility.PullRequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-
 @Service
 public class PullRequestService {
 

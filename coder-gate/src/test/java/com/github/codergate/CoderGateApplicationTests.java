@@ -8,16 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class CoderGateApplicationTests {
 
-    @Autowired
-    WebHookListenerUtil webHookListenerUtil;
-
-    @Test
-    void pullRequestReject(){
-        webHookListenerUtil.rejectPullRequest(
-                "limysh",
-                "lim",
-                8,"35166207");
-    }
 }
 
 
