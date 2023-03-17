@@ -21,8 +21,4 @@ export class GithubLoginComponent {
     }
   }
 
-  login(): void {
-    this.authService.login();
-  }
-
 }

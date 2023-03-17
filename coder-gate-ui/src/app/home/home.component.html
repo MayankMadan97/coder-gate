@@ -1,66 +1,69 @@
 <section class="homepage-container">
-    <header class="navbar-container row pt-3 fixed-top">
-      <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-          <a class="navbar-brand mx-5 font-monospace" href="#main-section">CoderGate</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item mx-4">
-                <a class="nav-link font-monospace" href="#features-section">Features</a>
-              </li>
-              <li class="nav-item mx-4">
-                <a class="nav-link font-monospace" href="#">About</a>
-              </li>
-              <li class="nav-item mx-4">
-                <a class="nav-link font-monospace" href="#">Contact</a>
-              </li>
-            </ul>
-            <span class="navbar-text mx-4">
-              <span class="font-monospace github-integrated" href="#">Integrated with GitHub</span>
-            </span>
+  <header class="navbar-container row pt-3 fixed-top">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand mx-5 font-monospace" href="#main-section">CoderGate</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+          aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item mx-4">
+              <a class="nav-link font-monospace" href="#features-section">Features</a>
+            </li>
+            <li class="nav-item mx-4">
+              <a class="nav-link font-monospace" href="#">About</a>
+            </li>
+            <li class="nav-item mx-4">
+              <a class="nav-link font-monospace" href="#">Contact</a>
+            </li>
+          </ul>
+          <span class="navbar-text mx-4">
+            <span class="font-monospace github-integrated" href="#">Integrated with GitHub</span>
+          </span>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="main-section mt-5" id="main-section">
+    <div class="row">
+      <div class="col-6 illustration-section">
+        <img class="illustration" src="../assets/images/code-bot-illustration-v1.webp" alt="illustration-section">
+      </div>
+      <div class="col-5 message-section">
+        <div class="row">
+          <div class="col-9 tagline">
+            Integrate your code <i class="fa fa-long-arrow-right" aria-hidden="true"></i> automate your work
           </div>
-        </div>
-      </nav>
-    </header>
-    <section class="main-section mt-5" id="main-section">
-      <div class="row">
-        <div class="col-6 illustration-section">
-          <img class="illustration" src="../assets/images/code-bot-illustration-v1.webp" alt="illustration-section">
-        </div>
-        <div class="col-5 message-section">
-          <div class="row">
-            <div class="col-9 tagline">
-              Integrate your code <i class="fa fa-long-arrow-right" aria-hidden="true"></i> automate your work
-            </div>
-            <div class="col-9 description my-4">
-              Evolve at the speed of your business with the leader in code review automation
-            </div>
-            <div>
-              <app-github-login></app-github-login>
-            </div>
+          <div class="col-9 description my-4">
+            Evolve at the speed of your business with the leader in code review automation
+          </div>
+          <div>
+            <button class="github-login-button btn d-inline py-1" (click)="login()">
+              <span class="text font-monospace">Login with </span>
+              <img src="../assets/images/github-mark.png" alt="Github logo" width="35em">
+            </button>
           </div>
         </div>
       </div>
-    </section>
-    <section class="features-section row py-5" id="features-section">
-      <app-features></app-features>
-    </section>
-    <footer class="row">
-      <div class="footer-content">
-        <h3>CoderGate</h3>
-        <p>Automate your workflow with extensive code quality and vulnerability scanning</p>
-        <ul class="socials">
-          <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-          <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-          <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-          <li><a href="#"><i class="fa fa-youtube"></i></a></li>
-          <li><a href="#"><i class="fa fa-linkedin-square"></i></a></li>
-        </ul>
-      </div>
-    </footer>
-    <router-outlet></router-outlet>
+    </div>
   </section>
+  <section class="features-section row py-5" id="features-section">
+    <app-features></app-features>
+  </section>
+  <footer class="row">
+    <div class="footer-content">
+      <h3>CoderGate</h3>
+      <p>Automate your workflow with extensive code quality and vulnerability scanning</p>
+      <ul class="socials">
+        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+        <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+        <li><a href="#"><i class="fa fa-linkedin-square"></i></a></li>
+      </ul>
+    </div>
+  </footer>
+  <router-outlet></router-outlet>
+</section>
