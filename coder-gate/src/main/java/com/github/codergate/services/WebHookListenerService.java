@@ -10,15 +10,18 @@ import com.github.codergate.dto.push.SenderDTO;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.utils.Constants;
+import com.github.codergate.utils.JwtUtils;
 import com.github.codergate.utils.Mapper;
+import com.github.codergate.utils.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.apache.logging.log4j.ThreadContext.containsKey;
@@ -41,6 +44,10 @@ public class WebHookListenerService {
     @Autowired
     BranchService repositoryBranchService;
 
+    @Autowired
+    private RestClient restClient;
+
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
@@ -54,8 +61,8 @@ public class WebHookListenerService {
 
         if (webhookPayload.containsKey("pusher"))
             action = Constants.PUSH_EVENT;
-        else if(webhookPayload.get("event").equals("pull_request")){
-            action =Constants.PULL_REQUEST_EVENT;
+        else if(webhookPayload.containsKey("event") && webhookPayload.get("event").equals("pull_request")) {
+            action = Constants.PULL_REQUEST_EVENT;
         }
         else
             action = (String) webhookPayload.get(Constants.INSTALLATION_ACTION);
@@ -63,8 +70,9 @@ public class WebHookListenerService {
 
 
         switch (action) {
-//            case Constants.INSTALLATION_REPOSITORY_ADDED:
-
+            case Constants.INSTALLATION_REPOSITORY_ADDED:
+                 installationWebhookListener(webhookPayload);
+                 break;
             case Constants.INSTALLATION_CREATED:
                 installationAddRepositoryWebhookListener(webhookPayload);
                 break;
@@ -230,6 +238,35 @@ public class WebHookListenerService {
 
         }
     }
+
+    private void installationWebhookListener(Map<String, Object> webhookPayload) {
+        InstallationPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload,
+                InstallationPayloadDTO.class);
+        LOGGER.debug("webHookListener : Installation payload {}", payload);
+        try {
+            Map<String, Object> bodyParamForPost = new HashMap<>();
+            Map<String, Object> comitter = new HashMap<>();
+            bodyParamForPost.put("message", "Code scanning configured");
+            bodyParamForPost.put("content", Files.readAllBytes(Path.of(
+                    System.getProperty("user.dir")
+                            + "/coder-gate/src/main/resources/application-designite.yml")));
+            comitter.put("name", payload.getInstallation().getAppSlug()+"[bot]");
+            comitter.put("email", payload.getInstallation().getAccount().getId()+payload.getInstallation().getAppSlug()+"[bot]@users.noreply.github.com");
+            bodyParamForPost.put("committer", comitter);
+            payload.getRepositoriesAdded().stream().filter(Objects::nonNull).forEach(repo -> {
+                if (payload.getInstallation() != null && payload.getInstallation().getId() != null) {
+                    restClient.invokeForPost(
+                            "https://api.github.com/repos/" + repo.getFullName()
+                                    + "/contents/.github/workflows/application-designite.yml",
+                            bodyParamForPost,
+                            JwtUtils.getGithubSpecificHeaders(), payload.getInstallation().getId().toString());
+                }
+            });
+        } catch (IOException e) {
+            LOGGER.error("installationWebhookListener : Failed to read github action file");
+        }
+    }
+
 }
 
 
