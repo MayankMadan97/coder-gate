@@ -45,7 +45,7 @@ public class EventService {
      * @param repositoryID ID of repository in integer format
      * @return HeadCommitDTO object
      */
-    public HeadCommitDTO addEvent(HeadCommitDTO headCommitDTO, int userID, int repositoryID)
+    public EventEntity addEvent(HeadCommitDTO headCommitDTO, int userID, int repositoryID)
     {
         HeadCommitDTO headCommit = null;
         EventEntity eventEntity = headCommitDtoToEntity(headCommitDTO, userID, repositoryID);
@@ -54,7 +54,7 @@ public class EventService {
             LOGGER.info("addEvent : The event information for commit is added {}", savedEntity);
             headCommit = entityToHeadCommitDto(savedEntity);
         }
-        return headCommit;
+        return eventEntity;
     }
 
     /****
