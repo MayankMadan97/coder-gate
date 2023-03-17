@@ -27,11 +27,6 @@ public class RepositoryEntity {
     @JoinColumn(name = "userId")
     private UserEntity userEntity;
 
-
-
-
-
-
     @OneToMany(mappedBy = "repositoryIdInBranch", cascade = CascadeType.ALL)
     private List<BranchEntity> branchEntities = new ArrayList<>();
     @OneToMany(mappedBy = "repositoryIdInTag", cascade = CascadeType.ALL)
@@ -43,4 +38,6 @@ public class RepositoryEntity {
     @OneToOne(mappedBy = "repositoryIdInThreshold")
     private ThresholdEntity thresholdAndRepository;
 
+    @OneToMany(mappedBy = "repositoryIdInAnalysis", cascade = CascadeType.ALL)
+    private Set<AnalysisEntity> analysisAndRepository;
 }

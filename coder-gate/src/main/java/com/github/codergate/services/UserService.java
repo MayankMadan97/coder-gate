@@ -1,6 +1,5 @@
 package com.github.codergate.services;
 import com.github.codergate.dto.installation.AccountDTO;
-import com.github.codergate.dto.installation.Sender;
 import com.github.codergate.dto.push.SenderDTO;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.repositories.UserRepository;
@@ -44,7 +43,7 @@ public class UserService {
 
     /***
      * adds user to the table during push event
-     * @param user SenderDTO Object
+     * @param  userId, login, userEmail
      * @param userEmail email of User in String format
      * @return SenderDTO Object
      */
@@ -117,10 +116,10 @@ public class UserService {
 
     /***
      * converts AccountDTO to User Entity
-     * @param accountDTO dto
+     * @param accountDTO dto, id and name check and set.
      * @return entity
      */
-    private UserEntity convertAccountDtoToEntity(AccountDTO accountDTO)
+    public UserEntity convertAccountDtoToEntity(AccountDTO accountDTO)
     {
         UserEntity userEntity = null;
         if(accountDTO != null)
@@ -147,16 +146,20 @@ public class UserService {
      * @param userEmail email of User in String format
      * @return User Entity
      */
-    private UserEntity convertSenderDtoToEntity(Integer id, String login, String userEmail)
+    public UserEntity convertSenderDtoToEntity(Integer id, String login, String userEmail)
     {
         UserEntity userEntity = null;
         userEntity = new UserEntity();
-        userEntity.setUserId(id);
-        userEntity.setUserName(login);
-        userEntity.setEmail(userEmail);
-
-
-            LOGGER.info("convertSenderDtoToEntity : Converted SenderDTO to Entity {}", userEntity);
+        if(id!=null) {
+            userEntity.setUserId(id);
+        }
+        if(login!=null) {
+            userEntity.setUserName(login);
+        }
+        if(userEmail!=null) {
+            userEntity.setEmail(userEmail);
+        }
+        LOGGER.info("convertSenderDtoToEntity : Converted SenderDTO to Entity {}", userEntity);
 
         return userEntity;
     }
@@ -166,7 +169,7 @@ public class UserService {
      * @param userEntity user entity
      * @return AccountDTO
      */
-    private AccountDTO convertEntityToAccountDto(UserEntity userEntity)
+    public AccountDTO convertEntityToAccountDto(UserEntity userEntity)
     {
         AccountDTO accountDTO = null;
         if(userEntity != null)
@@ -192,7 +195,7 @@ public class UserService {
      * @param userEntity User Entity
      * @return SenderDTO
      */
-    private SenderDTO convertEntityToSenderDTO(UserEntity userEntity)
+    public SenderDTO convertEntityToSenderDTO(UserEntity userEntity)
     {
         SenderDTO senderDTO = null;
         if(userEntity != null)

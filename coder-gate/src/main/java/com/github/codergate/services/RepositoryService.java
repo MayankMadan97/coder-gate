@@ -39,7 +39,7 @@ public class RepositoryService {
 // repositoryEntityList.stream().map(items -> repositoryRepository.save(items)).collect(Collectors.toList());
     /***
      * adds the repository to the table during push event
-     * @param repository repository DTO
+     * @param
      * @param userId user id
      * @return RepositoryDTO
      */
@@ -146,7 +146,7 @@ public class RepositoryService {
 
     /***
      * converts dto to entity during push event
-     * @param repositoryDTO dto class
+     * @param
      * @param userID user id
      * @return RepositoryEntity
      */
