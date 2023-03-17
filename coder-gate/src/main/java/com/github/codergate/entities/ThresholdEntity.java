@@ -15,9 +15,9 @@ import javax.persistence.*;
 public class ThresholdEntity {
 
     @Id
-    private int repositoryId;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int thresholdId;
     @OneToOne
-    @MapsId
     @JoinColumn(name = "repositoryId")
     private RepositoryEntity repositoryIdInThreshold;
     private int bugs;

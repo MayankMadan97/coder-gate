@@ -23,7 +23,9 @@ public class AnalysisEntity {
     @Column(name = "analysis_type")
     private String type;
 
-    private int repositoryID;
+    @ManyToOne
+    @JoinColumn(name = "repositoryId")
+    private RepositoryEntity repositoryIdInAnalysis;
 
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "eventId")

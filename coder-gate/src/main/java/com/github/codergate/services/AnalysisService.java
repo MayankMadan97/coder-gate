@@ -3,13 +3,13 @@ package com.github.codergate.services;
 import com.github.codergate.dto.analysis.AnalysisDTO;
 import com.github.codergate.entities.AnalysisEntity;
 import com.github.codergate.entities.EventEntity;
+import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.repositories.AnalysisRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 public class AnalysisService {
@@ -19,9 +19,9 @@ public class AnalysisService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AnalysisService.class);
 
-    public AnalysisDTO addAnalysis(AnalysisDTO analysisToAdd, long eventID) {
+    public AnalysisDTO addAnalysis(AnalysisDTO analysisToAdd, long eventID, int repositoryID) {
         AnalysisDTO analysisDTO = null;
-        AnalysisEntity analysisEntity = convertAnalysisDtoToEntity(analysisToAdd, eventID);
+        AnalysisEntity analysisEntity = convertAnalysisDtoToEntity(analysisToAdd, eventID, repositoryID);
         if(analysisEntity != null)
         {
             AnalysisEntity savedEntity = analysisRepository.save(analysisEntity);
@@ -31,44 +31,126 @@ public class AnalysisService {
         return analysisDTO;
     }
 
-    public AnalysisDTO getAnalysisByID(int analysisID) {
+    public AnalysisDTO getAnalysisByID(int repositoryID) {
         AnalysisDTO analysisDTO = null;
-        Optional<AnalysisEntity> analysisEntity = analysisRepository.findById(analysisID);
-        if(analysisEntity.isPresent())
+        AnalysisEntity analysisEntity = analysisRepository.findLatestAnalysisByRepositoryId(repositoryID);
+        if(analysisEntity != null)
         {
-            analysisDTO = convertAnalysisEntityToDto(analysisEntity.get());
-            LOGGER.info("getAnalysisByID : Successfully retrieved account with ID {}", analysisDTO);
+            analysisDTO = convertAnalysisEntityToDto(analysisEntity);
+            LOGGER.info("getAnalysisByID : Successfully retrieved latest analysis with repositoryID {}", repositoryID);
         } else {
-            LOGGER.warn("getAnalysisByID : Analysis with ID {} not found", analysisID);
+            LOGGER.warn("getAnalysisByID : Analysis with repositoryID {} not found", repositoryID);
         }
         return analysisDTO;
     }
 
-    public AnalysisDTO updateAnalysisByID(int analysisID, AnalysisDTO newInformationDto) {
+    public AnalysisDTO updateAnalysisByRepositoryID(int repositoryID, AnalysisDTO newInformation) {
         AnalysisDTO analysisDTO = null;
-        AnalysisEntity analysisEntity = analysisRepository.findById(analysisID).orElse(null);
+        AnalysisEntity analysisEntity = analysisRepository.findLatestAnalysisByRepositoryId(repositoryID);
         if(analysisEntity != null)
         {
-            AnalysisEntity updatedEntity = convertAnalysisDtoToEntity(newInformationDto, analysisEntity.getEventIdInAnalysis().getEventId());
-            AnalysisEntity savedEntity = analysisRepository.save(updatedEntity);
-            LOGGER.info("updateAnalysisByID : Updating the analysis information");
+            if(newInformation != null)
+            {
+                if(newInformation.getAnalysisType() != null)
+                {
+                    analysisEntity.setType(newInformation.getAnalysisType());
+                }
+                if(repositoryID != 0)
+                {
+                    RepositoryEntity repositoryEntity = new RepositoryEntity();
+                    repositoryEntity.setRepositoryId(repositoryID);
+                    analysisEntity.setRepositoryIdInAnalysis(repositoryEntity);
+                }
+                if(newInformation.getBugs() != 0)
+                {
+                    analysisEntity.setBugs(newInformation.getBugs());
+                }
+                if(newInformation.getVulnerabilities() != 0)
+                {
+                    analysisEntity.setVulnerabilities(newInformation.getVulnerabilities());
+                }
+                if(newInformation.getCodeSmell() != 0)
+                {
+                    analysisEntity.setCodeSmell(newInformation.getCodeSmell());
+                }
+                if(newInformation.getTestCoverage() != 0)
+                {
+                    analysisEntity.setTestCoverage(newInformation.getTestCoverage());
+                }
+                if(newInformation.getDuplicatedLines() != 0)
+                {
+                    analysisEntity.setDuplicatedLines(newInformation.getDuplicatedLines());
+                }
+                if(newInformation.getCyclomaticComplexity() != 0)
+                {
+                    analysisEntity.setCyclomaticComplexity(newInformation.getCyclomaticComplexity());
+                }
+                if(newInformation.getDocumentedLines() != 0)
+                {
+                    analysisEntity.setDocumentedLines(newInformation.getDocumentedLines());
+                }
+                if(newInformation.getCyclicDependency() != 0)
+                {
+                    analysisEntity.setCyclicDependency(newInformation.getCyclomaticComplexity());
+                }
+                if(newInformation.getGodComponents() != 0)
+                {
+                    analysisEntity.setGodComponents(newInformation.getGodComponents());
+                }
+                if(newInformation.getCyclicallyDependentModularization() != 0)
+                {
+                    analysisEntity.setCyclicallyDependentModularization(newInformation.getCyclicallyDependentModularization());
+                }
+                if(newInformation.getInsufficientModularization() != 0)
+                {
+                    analysisEntity.setInsufficientModularization(newInformation.getInsufficientModularization());
+                }
+                if(newInformation.getUnnecessaryAbstraction() != 0)
+                {
+                    analysisEntity.setUnnecessaryAbstraction(newInformation.getUnnecessaryAbstraction());
+                }
+                if(newInformation.getComplexMethod() != 0)
+                {
+                    analysisEntity.setComplexMethod(newInformation.getComplexMethod());
+                }
+                if(newInformation.getComplexConditional() != 0)
+                {
+                    analysisEntity.setComplexConditional(newInformation.getComplexConditional());
+                }
+                if(newInformation.getEmptyCatchClause() != 0)
+                {
+                    analysisEntity.setEmptyCatchClause(newInformation.getEmptyCatchClause());
+                }
+                if(newInformation.getMissingAssertion() != 0)
+                {
+                    analysisEntity.setMissingAssertion(newInformation.getMissingAssertion());
+                }
+                if(newInformation.getEmptyTest() != 0)
+                {
+                    analysisEntity.setEmptyTest(newInformation.getEmptyTest());
+                }
+                Date date = new Date();
+                analysisEntity.setTimestamp(date.getTime());
+            }
+            AnalysisEntity savedEntity = analysisRepository.save(analysisEntity);
+            LOGGER.info("updateAnalysisByID : Updating the analysis information with repositoryID {}", repositoryID);
             analysisDTO = convertAnalysisEntityToDto(savedEntity);
         }
         return analysisDTO;
     }
 
-    public boolean deleteAnalysisByID(int analysisID) {
-        boolean isDeleted = false;
-        if(analysisID != 0)
-        {
-            analysisRepository.deleteById(analysisID);
-            isDeleted = true;
-            LOGGER.info("deleteAnalysisByID : Deleting analysis information with ID {}", analysisID);
-        }
-        return isDeleted;
-    }
+//    public boolean deleteAnalysisByID(int repositoryID) {
+//        boolean isDeleted = false;
+//        if(repositoryID != 0)
+//        {
+//            analysisRepository.deleteByRepositoryId(repositoryID);
+//            isDeleted = true;
+//            LOGGER.info("deleteAnalysisByID : Deleting analysis information with repositoryID {}", repositoryID);
+//        }
+//        return isDeleted;
+//    }
 
-    public AnalysisEntity convertAnalysisDtoToEntity(AnalysisDTO analysisDTO, long eventID) {
+    public AnalysisEntity convertAnalysisDtoToEntity(AnalysisDTO analysisDTO, long eventID, int repositoryID) {
         AnalysisEntity analysisEntity = null;
 
         if(analysisDTO != null)
@@ -78,9 +160,11 @@ public class AnalysisService {
             {
                 analysisEntity.setType(analysisDTO.getAnalysisType());
             }
-            if(analysisDTO.getRepositoryID() != 0)
+            if(repositoryID != 0)
             {
-                analysisEntity.setRepositoryID(analysisDTO.getRepositoryID());
+                RepositoryEntity repositoryEntity = new RepositoryEntity();
+                repositoryEntity.setRepositoryId(repositoryID);
+                analysisEntity.setRepositoryIdInAnalysis(repositoryEntity);
             }
             if(analysisDTO.getBugs() != 0)
             {
@@ -150,9 +234,12 @@ public class AnalysisService {
             {
                 analysisEntity.setEmptyTest(analysisDTO.getEmptyTest());
             }
-            EventEntity eventEntity = new EventEntity();
-            eventEntity.setEventId(eventID);
-            analysisEntity.setEventIdInAnalysis(eventEntity);
+            if(eventID != 0)
+            {
+                EventEntity eventEntity = new EventEntity();
+                eventEntity.setEventId(eventID);
+                analysisEntity.setEventIdInAnalysis(eventEntity);
+            }
             Date date = new Date();
             analysisEntity.setTimestamp(date.getTime());
             LOGGER.info("convertAnalysisDtoToEntity : Converted AnalysisDTO to Entity {}", analysisEntity);
@@ -171,10 +258,6 @@ public class AnalysisService {
             if(analysisEntity.getType() != null)
             {
                 analysisDTO.setAnalysisType(analysisEntity.getType());
-            }
-            if(analysisEntity.getRepositoryID() != 0)
-            {
-                analysisDTO.setRepositoryID(analysisEntity.getRepositoryID());
             }
             if(analysisEntity.getBugs() != 0)
             {

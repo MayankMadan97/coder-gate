@@ -1,7 +1,6 @@
-package com.github.codergate.dto.analysis;
+package com.github.codergate.dto.threshold;
 
-public class AnalysisDTO {
-    private String analysisType;
+public class ThresholdDTO {
     private int bugs;
     private int vulnerabilities;
     private int codeSmell;
@@ -28,14 +27,13 @@ public class AnalysisDTO {
     private int missingAssertion;
     private int emptyTest;
 
-    public AnalysisDTO() {
+    public ThresholdDTO() {
     }
 
-    public AnalysisDTO(String analysisType, int repositoryID, int bugs, int vulnerabilities, int codeSmell, int testCoverage,
-                       int duplicatedLines, int cyclomaticComplexity, int documentedLines, int cyclicDependency, int godComponents,
-                       int cyclicallyDependentModularization, int insufficientModularization, int unnecessaryAbstraction,
-                       int complexMethod, int complexConditional, int emptyCatchClause, int missingAssertion, int emptyTest) {
-        this.analysisType = analysisType;
+    public ThresholdDTO(int bugs, int vulnerabilities, int codeSmell, int testCoverage, int duplicatedLines,
+                        int cyclomaticComplexity, int documentedLines, int cyclicDependency, int godComponents,
+                        int cyclicallyDependentModularization, int insufficientModularization, int unnecessaryAbstraction,
+                        int complexMethod, int complexConditional, int emptyCatchClause, int missingAssertion, int emptyTest) {
         this.bugs = bugs;
         this.vulnerabilities = vulnerabilities;
         this.codeSmell = codeSmell;
@@ -55,13 +53,6 @@ public class AnalysisDTO {
         this.emptyTest = emptyTest;
     }
 
-    public String getAnalysisType() {
-        return analysisType;
-    }
-
-    public void setAnalysisType(String analysisType) {
-        this.analysisType = analysisType;
-    }
 
     public int getBugs() {
         return bugs;
@@ -198,6 +189,4 @@ public class AnalysisDTO {
     public void setEmptyTest(int emptyTest) {
         this.emptyTest = emptyTest;
     }
-
-
 }
