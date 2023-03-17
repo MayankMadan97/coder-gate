@@ -1,5 +1,6 @@
 package com.github.codergate.entities;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +15,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BranchEntity {
-
-    @Id
-    private String branchUrl;
+    @EmbeddedId
+    @Column(name = "branchId")
+    private BranchId branchId;
 
     @ManyToOne
-    @JoinColumn(name = "repositoryId")
+    @JoinColumn(name = "repositoryId", insertable = false, updatable = false)
     private RepositoryEntity repositoryIdInBranch;
 }

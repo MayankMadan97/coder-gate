@@ -20,10 +20,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "repository_selection",
         "repositories_added",
         "repositories_removed",
+        "repositories",
         "requester",
         "sender"
 })
-public class InstallationPayload implements Serializable {
+public class InstallationPayloadDTO implements Serializable {
 
     @JsonProperty("action")
     private String action;
@@ -32,9 +33,12 @@ public class InstallationPayload implements Serializable {
     @JsonProperty("repository_selection")
     private String repositorySelection;
     @JsonProperty("repositories_added")
-    private List<RepositoriesAdded> repositoriesAdded;
+    private List<RepositoriesAddedDTO> repositoriesAddedDto;
     @JsonProperty("repositories_removed")
     private List<Object> repositoriesRemoved;
+
+    @JsonProperty("repositories")
+    private List<RepositoriesDTO> repositories;
     @JsonProperty("requester")
     private Object requester;
     @JsonProperty("sender")
@@ -45,29 +49,29 @@ public class InstallationPayload implements Serializable {
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
-    public InstallationPayload() {
+    public InstallationPayloadDTO() {
     }
 
     /**
-     * 
+     *
      * @param requester
      * @param sender
      * @param repositorySelection
      * @param installation
      * @param action
-     * @param repositoriesAdded
+     * @param repositoriesAddedDto
      * @param repositoriesRemoved
      */
-    public InstallationPayload(String action, Installation installation, String repositorySelection,
-            List<RepositoriesAdded> repositoriesAdded, List<Object> repositoriesRemoved, Object requester,
-            Sender sender) {
+    public InstallationPayloadDTO(String action, Installation installation, String repositorySelection,
+                                  List<RepositoriesAddedDTO> repositoriesAddedDto, List<Object> repositoriesRemoved, Object requester,
+                                  Sender sender) {
         super();
         this.action = action;
         this.installation = installation;
         this.repositorySelection = repositorySelection;
-        this.repositoriesAdded = repositoriesAdded;
+        this.repositoriesAddedDto = repositoriesAddedDto;
         this.repositoriesRemoved = repositoriesRemoved;
         this.requester = requester;
         this.sender = sender;
@@ -83,7 +87,7 @@ public class InstallationPayload implements Serializable {
         this.action = action;
     }
 
-    public InstallationPayload withAction(String action) {
+    public InstallationPayloadDTO withAction(String action) {
         this.action = action;
         return this;
     }
@@ -98,7 +102,7 @@ public class InstallationPayload implements Serializable {
         this.installation = installation;
     }
 
-    public InstallationPayload withInstallation(Installation installation) {
+    public InstallationPayloadDTO withInstallation(Installation installation) {
         this.installation = installation;
         return this;
     }
@@ -113,23 +117,38 @@ public class InstallationPayload implements Serializable {
         this.repositorySelection = repositorySelection;
     }
 
-    public InstallationPayload withRepositorySelection(String repositorySelection) {
+    public InstallationPayloadDTO withRepositorySelection(String repositorySelection) {
         this.repositorySelection = repositorySelection;
         return this;
     }
 
     @JsonProperty("repositories_added")
-    public List<RepositoriesAdded> getRepositoriesAdded() {
-        return repositoriesAdded;
+    public List<RepositoriesAddedDTO> getRepositoriesAdded() {
+        return repositoriesAddedDto;
     }
 
     @JsonProperty("repositories_added")
-    public void setRepositoriesAdded(List<RepositoriesAdded> repositoriesAdded) {
-        this.repositoriesAdded = repositoriesAdded;
+    public void setRepositoriesAdded(List<RepositoriesAddedDTO> repositoriesAddedDto) {
+        this.repositoriesAddedDto = repositoriesAddedDto;
     }
 
-    public InstallationPayload withRepositoriesAdded(List<RepositoriesAdded> repositoriesAdded) {
-        this.repositoriesAdded = repositoriesAdded;
+    public InstallationPayloadDTO withRepositoriesAdded(List<RepositoriesAddedDTO> repositoriesAddedDto) {
+        this.repositoriesAddedDto = repositoriesAddedDto;
+        return this;
+    }
+
+    @JsonProperty("repositories_created")
+    public List<RepositoriesDTO> getRepositories (){
+        return repositories;
+    }
+
+    @JsonProperty("repositories_created")
+    public void setRepositories(List<RepositoriesDTO> repositories) {
+        this.repositories = repositories;
+    }
+
+    public InstallationPayloadDTO withRepositoriesCreated(List<RepositoriesDTO> repositories) {
+        this.repositories = repositories;
         return this;
     }
 
@@ -143,7 +162,7 @@ public class InstallationPayload implements Serializable {
         this.repositoriesRemoved = repositoriesRemoved;
     }
 
-    public InstallationPayload withRepositoriesRemoved(List<Object> repositoriesRemoved) {
+    public InstallationPayloadDTO withRepositoriesRemoved(List<Object> repositoriesRemoved) {
         this.repositoriesRemoved = repositoriesRemoved;
         return this;
     }
@@ -158,7 +177,7 @@ public class InstallationPayload implements Serializable {
         this.requester = requester;
     }
 
-    public InstallationPayload withRequester(Object requester) {
+    public InstallationPayloadDTO withRequester(Object requester) {
         this.requester = requester;
         return this;
     }
@@ -173,7 +192,7 @@ public class InstallationPayload implements Serializable {
         this.sender = sender;
     }
 
-    public InstallationPayload withSender(Sender sender) {
+    public InstallationPayloadDTO withSender(Sender sender) {
         this.sender = sender;
         return this;
     }
@@ -188,7 +207,7 @@ public class InstallationPayload implements Serializable {
         this.additionalProperties.put(name, value);
     }
 
-    public InstallationPayload withAdditionalProperty(String name, Object value) {
+    public InstallationPayloadDTO withAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
         return this;
     }
@@ -196,7 +215,7 @@ public class InstallationPayload implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(InstallationPayload.class.getName()).append('@')
+        sb.append(InstallationPayloadDTO.class.getName()).append('@')
                 .append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("action");
         sb.append('=');
@@ -212,7 +231,11 @@ public class InstallationPayload implements Serializable {
         sb.append(',');
         sb.append("repositoriesAdded");
         sb.append('=');
-        sb.append(((this.repositoriesAdded == null) ? "<null>" : this.repositoriesAdded));
+        sb.append(((this.repositoriesAddedDto == null) ? "<null>" : this.repositoriesAddedDto));
+        sb.append(',');
+        sb.append("repositories");
+        sb.append('=');
+        sb.append(((this.repositories == null) ? "<null>" : this.repositories));
         sb.append(',');
         sb.append("repositoriesRemoved");
         sb.append('=');
@@ -247,7 +270,8 @@ public class InstallationPayload implements Serializable {
         result = ((result * 31) + ((this.installation == null) ? 0 : this.installation.hashCode()));
         result = ((result * 31) + ((this.action == null) ? 0 : this.action.hashCode()));
         result = ((result * 31) + ((this.additionalProperties == null) ? 0 : this.additionalProperties.hashCode()));
-        result = ((result * 31) + ((this.repositoriesAdded == null) ? 0 : this.repositoriesAdded.hashCode()));
+        result = ((result * 31) + ((this.repositoriesAddedDto == null) ? 0 : this.repositoriesAddedDto.hashCode()));
+        result = ((result * 31) + ((this.repositories == null) ? 0 : this.repositories.hashCode()));
         result = ((result * 31) + ((this.repositoriesRemoved == null) ? 0 : this.repositoriesRemoved.hashCode()));
         return result;
     }
@@ -257,10 +281,10 @@ public class InstallationPayload implements Serializable {
         if (other == this) {
             return true;
         }
-        if ((other instanceof InstallationPayload) == false) {
+        if ((other instanceof InstallationPayloadDTO) == false) {
             return false;
         }
-        InstallationPayload rhs = ((InstallationPayload) other);
+        InstallationPayloadDTO rhs = ((InstallationPayloadDTO) other);
         return (((((((((this.requester == rhs.requester)
                 || ((this.requester != null) && this.requester.equals(rhs.requester)))
                 && ((this.sender == rhs.sender) || ((this.sender != null) && this.sender.equals(rhs.sender))))
@@ -271,10 +295,12 @@ public class InstallationPayload implements Serializable {
                 && ((this.action == rhs.action) || ((this.action != null) && this.action.equals(rhs.action))))
                 && ((this.additionalProperties == rhs.additionalProperties) || ((this.additionalProperties != null)
                         && this.additionalProperties.equals(rhs.additionalProperties))))
-                && ((this.repositoriesAdded == rhs.repositoriesAdded)
-                        || ((this.repositoriesAdded != null) && this.repositoriesAdded.equals(rhs.repositoriesAdded))))
+                && ((this.repositoriesAddedDto == rhs.repositoriesAddedDto)
+                        || ((this.repositoriesAddedDto != null) && this.repositoriesAddedDto.equals(rhs.repositoriesAddedDto))))
+                && ((this.repositories == rhs.repositories)
+                || ((this.repositories != null) && this.repositories.equals(rhs.repositories))))
                 && ((this.repositoriesRemoved == rhs.repositoriesRemoved) || ((this.repositoriesRemoved != null)
-                        && this.repositoriesRemoved.equals(rhs.repositoriesRemoved))));
+                        && this.repositoriesRemoved.equals(rhs.repositoriesRemoved)));
     }
 
 }

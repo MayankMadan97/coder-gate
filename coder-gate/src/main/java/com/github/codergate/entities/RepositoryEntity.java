@@ -22,12 +22,14 @@ public class RepositoryEntity {
     private String repositoryName;
     private boolean fork;
 
-    @OneToMany(mappedBy = "repositoryIdInUser", cascade = CascadeType.ALL)
-    private Set<UserEntity> userAndRepository;
 
-    @OneToMany(mappedBy = "repositoryIdInBranch", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private UserEntity userEntity;
+
+    @OneToMany(mappedBy = "repositoryIdInBranch", cascade = CascadeType.ALL)
     private List<BranchEntity> branchEntities = new ArrayList<>();
-    @OneToMany(mappedBy = "repositoryIdInTag", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "repositoryIdInTag", cascade = CascadeType.ALL)
     private List<TagEntity> tagEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "repositoryIdInEvent", cascade = CascadeType.ALL)
@@ -36,4 +38,6 @@ public class RepositoryEntity {
     @OneToOne(mappedBy = "repositoryIdInThreshold")
     private ThresholdEntity thresholdAndRepository;
 
+    @OneToMany(mappedBy = "repositoryIdInAnalysis", cascade = CascadeType.ALL)
+    private Set<AnalysisEntity> analysisAndRepository;
 }

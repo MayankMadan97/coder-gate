@@ -15,9 +15,10 @@ import javax.persistence.*;
 public class ThresholdEntity {
 
     @Id
-    private int repositoryId;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int thresholdId;
     @OneToOne
-    @JoinColumn(name = "repositoryId", referencedColumnName = "repositoryId")
+    @JoinColumn(name = "repositoryId")
     private RepositoryEntity repositoryIdInThreshold;
     private int bugs;
     private int vulnerabilities;
@@ -26,5 +27,23 @@ public class ThresholdEntity {
     private int duplicatedLines;
     private int cyclomaticComplexity;
     private int documentedLines;
+
+    //Architecture Smells
+    private int cyclicDependency;
+    private int godComponents;
+
+    //Design Smells
+    private int cyclicallyDependentModularization;
+    private int insufficientModularization;
+    private int unnecessaryAbstraction;
+
+    //Implementation Smells
+    private int complexMethod;
+    private int complexConditional;
+    private int emptyCatchClause;
+
+    //Test Smells
+    private int missingAssertion;
+    private int emptyTest;
 
 }

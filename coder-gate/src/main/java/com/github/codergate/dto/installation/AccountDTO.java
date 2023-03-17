@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "type",
         "site_admin"
 })
-public class Account implements Serializable {
+public class AccountDTO implements Serializable {
 
     @JsonProperty("login")
     private String login;
@@ -79,7 +79,7 @@ public class Account implements Serializable {
      * No args constructor for use in serialization
      * 
      */
-    public Account() {
+    public AccountDTO() {
     }
 
     /**
@@ -103,10 +103,10 @@ public class Account implements Serializable {
      * @param eventsUrl
      * @param nodeId
      */
-    public Account(String login, Integer id, String nodeId, String avatarUrl, String gravatarId, String url,
-            String htmlUrl, String followersUrl, String followingUrl, String gistsUrl, String starredUrl,
-            String subscriptionsUrl, String organizationsUrl, String reposUrl, String eventsUrl,
-            String receivedEventsUrl, String type, Boolean siteAdmin) {
+    public AccountDTO(String login, Integer id, String nodeId, String avatarUrl, String gravatarId, String url,
+                      String htmlUrl, String followersUrl, String followingUrl, String gistsUrl, String starredUrl,
+                      String subscriptionsUrl, String organizationsUrl, String reposUrl, String eventsUrl,
+                      String receivedEventsUrl, String type, Boolean siteAdmin) {
         super();
         this.login = login;
         this.id = id;
@@ -138,7 +138,7 @@ public class Account implements Serializable {
         this.login = login;
     }
 
-    public Account withLogin(String login) {
+    public AccountDTO withLogin(String login) {
         this.login = login;
         return this;
     }
@@ -153,7 +153,7 @@ public class Account implements Serializable {
         this.id = id;
     }
 
-    public Account withId(Integer id) {
+    public AccountDTO withId(Integer id) {
         this.id = id;
         return this;
     }
@@ -168,7 +168,7 @@ public class Account implements Serializable {
         this.nodeId = nodeId;
     }
 
-    public Account withNodeId(String nodeId) {
+    public AccountDTO withNodeId(String nodeId) {
         this.nodeId = nodeId;
         return this;
     }
@@ -183,7 +183,7 @@ public class Account implements Serializable {
         this.avatarUrl = avatarUrl;
     }
 
-    public Account withAvatarUrl(String avatarUrl) {
+    public AccountDTO withAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
         return this;
     }
@@ -198,7 +198,7 @@ public class Account implements Serializable {
         this.gravatarId = gravatarId;
     }
 
-    public Account withGravatarId(String gravatarId) {
+    public AccountDTO withGravatarId(String gravatarId) {
         this.gravatarId = gravatarId;
         return this;
     }
@@ -213,7 +213,7 @@ public class Account implements Serializable {
         this.url = url;
     }
 
-    public Account withUrl(String url) {
+    public AccountDTO withUrl(String url) {
         this.url = url;
         return this;
     }
@@ -228,7 +228,7 @@ public class Account implements Serializable {
         this.htmlUrl = htmlUrl;
     }
 
-    public Account withHtmlUrl(String htmlUrl) {
+    public AccountDTO withHtmlUrl(String htmlUrl) {
         this.htmlUrl = htmlUrl;
         return this;
     }
@@ -243,7 +243,7 @@ public class Account implements Serializable {
         this.followersUrl = followersUrl;
     }
 
-    public Account withFollowersUrl(String followersUrl) {
+    public AccountDTO withFollowersUrl(String followersUrl) {
         this.followersUrl = followersUrl;
         return this;
     }
@@ -258,7 +258,7 @@ public class Account implements Serializable {
         this.followingUrl = followingUrl;
     }
 
-    public Account withFollowingUrl(String followingUrl) {
+    public AccountDTO withFollowingUrl(String followingUrl) {
         this.followingUrl = followingUrl;
         return this;
     }
@@ -273,7 +273,7 @@ public class Account implements Serializable {
         this.gistsUrl = gistsUrl;
     }
 
-    public Account withGistsUrl(String gistsUrl) {
+    public AccountDTO withGistsUrl(String gistsUrl) {
         this.gistsUrl = gistsUrl;
         return this;
     }
@@ -288,7 +288,7 @@ public class Account implements Serializable {
         this.starredUrl = starredUrl;
     }
 
-    public Account withStarredUrl(String starredUrl) {
+    public AccountDTO withStarredUrl(String starredUrl) {
         this.starredUrl = starredUrl;
         return this;
     }
@@ -303,7 +303,7 @@ public class Account implements Serializable {
         this.subscriptionsUrl = subscriptionsUrl;
     }
 
-    public Account withSubscriptionsUrl(String subscriptionsUrl) {
+    public AccountDTO withSubscriptionsUrl(String subscriptionsUrl) {
         this.subscriptionsUrl = subscriptionsUrl;
         return this;
     }
@@ -318,7 +318,7 @@ public class Account implements Serializable {
         this.organizationsUrl = organizationsUrl;
     }
 
-    public Account withOrganizationsUrl(String organizationsUrl) {
+    public AccountDTO withOrganizationsUrl(String organizationsUrl) {
         this.organizationsUrl = organizationsUrl;
         return this;
     }
@@ -333,7 +333,7 @@ public class Account implements Serializable {
         this.reposUrl = reposUrl;
     }
 
-    public Account withReposUrl(String reposUrl) {
+    public AccountDTO withReposUrl(String reposUrl) {
         this.reposUrl = reposUrl;
         return this;
     }
@@ -348,7 +348,7 @@ public class Account implements Serializable {
         this.eventsUrl = eventsUrl;
     }
 
-    public Account withEventsUrl(String eventsUrl) {
+    public AccountDTO withEventsUrl(String eventsUrl) {
         this.eventsUrl = eventsUrl;
         return this;
     }
@@ -363,7 +363,7 @@ public class Account implements Serializable {
         this.receivedEventsUrl = receivedEventsUrl;
     }
 
-    public Account withReceivedEventsUrl(String receivedEventsUrl) {
+    public AccountDTO withReceivedEventsUrl(String receivedEventsUrl) {
         this.receivedEventsUrl = receivedEventsUrl;
         return this;
     }
@@ -378,7 +378,7 @@ public class Account implements Serializable {
         this.type = type;
     }
 
-    public Account withType(String type) {
+    public AccountDTO withType(String type) {
         this.type = type;
         return this;
     }
@@ -393,7 +393,7 @@ public class Account implements Serializable {
         this.siteAdmin = siteAdmin;
     }
 
-    public Account withSiteAdmin(Boolean siteAdmin) {
+    public AccountDTO withSiteAdmin(Boolean siteAdmin) {
         this.siteAdmin = siteAdmin;
         return this;
     }
@@ -408,7 +408,7 @@ public class Account implements Serializable {
         this.additionalProperties.put(name, value);
     }
 
-    public Account withAdditionalProperty(String name, Object value) {
+    public AccountDTO withAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
         return this;
     }
@@ -416,7 +416,7 @@ public class Account implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Account.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this)))
+        sb.append(AccountDTO.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this)))
                 .append('[');
         sb.append("login");
         sb.append('=');
@@ -532,10 +532,10 @@ public class Account implements Serializable {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Account) == false) {
+        if ((other instanceof AccountDTO) == false) {
             return false;
         }
-        Account rhs = ((Account) other);
+        AccountDTO rhs = ((AccountDTO) other);
         return ((((((((((((((((((((this.receivedEventsUrl == rhs.receivedEventsUrl)
                 || ((this.receivedEventsUrl != null) && this.receivedEventsUrl.equals(rhs.receivedEventsUrl)))
                 && ((this.siteAdmin == rhs.siteAdmin)
