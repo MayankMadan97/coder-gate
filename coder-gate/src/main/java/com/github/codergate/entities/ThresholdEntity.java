@@ -15,9 +15,9 @@ import javax.persistence.*;
 public class ThresholdEntity {
 
     @Id
-    private int repositoryId;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int thresholdId;
     @OneToOne
-    @MapsId
     @JoinColumn(name = "repositoryId")
     private RepositoryEntity repositoryIdInThreshold;
     private int bugs;
@@ -28,6 +28,7 @@ public class ThresholdEntity {
     private int cyclomaticComplexity;
     private int documentedLines;
 
+<<<<<<< HEAD
     public int getRepositoryId() {
         return repositoryId;
     }
@@ -99,4 +100,24 @@ public class ThresholdEntity {
     public void setDocumentedLines(int documentedLines) {
         this.documentedLines = documentedLines;
     }
+=======
+    //Architecture Smells
+    private int cyclicDependency;
+    private int godComponents;
+
+    //Design Smells
+    private int cyclicallyDependentModularization;
+    private int insufficientModularization;
+    private int unnecessaryAbstraction;
+
+    //Implementation Smells
+    private int complexMethod;
+    private int complexConditional;
+    private int emptyCatchClause;
+
+    //Test Smells
+    private int missingAssertion;
+    private int emptyTest;
+
+>>>>>>> f79a1113bffc2b1a2a0c59dae712fe48151abdd0
 }

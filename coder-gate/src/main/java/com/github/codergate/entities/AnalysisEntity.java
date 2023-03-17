@@ -17,14 +17,17 @@ import javax.persistence.*;
 public class AnalysisEntity {
     @Id
     @Column(name = "analysisid")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "analysis_type")
     private String type;
 
-    private int repositoryID;
+    @ManyToOne
+    @JoinColumn(name = "repositoryId")
+    private RepositoryEntity repositoryIdInAnalysis;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "eventId")
     private EventEntity eventIdInAnalysis;
 
@@ -36,6 +39,7 @@ public class AnalysisEntity {
     private int cyclomaticComplexity;
     private int documentedLines;
 
+<<<<<<< HEAD
     public int getId() {
         return id;
     }
@@ -123,4 +127,27 @@ public class AnalysisEntity {
     public void setDocumentedLines(int documentedLines) {
         this.documentedLines = documentedLines;
     }
+=======
+    //Architecture Smells
+    private int cyclicDependency;
+    private int godComponents;
+
+    //Design Smells
+    private int cyclicallyDependentModularization;
+    private int insufficientModularization;
+    private int unnecessaryAbstraction;
+
+    //Implementation Smells
+    private int complexMethod;
+    private int complexConditional;
+    private int emptyCatchClause;
+
+    //Test Smells
+    private int missingAssertion;
+    private int emptyTest;
+
+    //Timestamp
+    private long timestamp;
+
+>>>>>>> f79a1113bffc2b1a2a0c59dae712fe48151abdd0
 }
