@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
     selector: 'app-navigator',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class NavBarComponent {
     public showUserMenu = false;
+
+    constructor(private authService: AuthService) {
+
+    }
+
+    logout() {
+        this.authService.logout();
+    }
 }

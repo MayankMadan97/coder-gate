@@ -12,12 +12,17 @@ export class GithubLoginComponent {
   constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    this.authService.handleCallback().subscribe(() => {
-      this.router.navigate(['/dashboard']);
-    });
+    const code = this.route.snapshot.queryParamMap.get('code');
+    if (code) {
+      this.authService.handleCallback().subscribe((response_: any) => {
+        localStorage.setItem("github_access_token",response_["access_token"]);
+        this.router.navigate(['/dashboard']);
+      });
+    }
   }
 
   login(): void {
     this.authService.login();
   }
+
 }
