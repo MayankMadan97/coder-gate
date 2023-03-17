@@ -227,14 +227,8 @@ public class WebHookListenerService {
             repositoryBranchService.addBranch(pushEventPayload.getRepository().getBranchesUrl(),pushEventPayload.getRepository().getId());
             eventService.addEvent(pushEventPayload.getHeadCommit(), (int)userEntity.getUserId(), repositoryEntity.getRepositoryId());
             LOGGER.info("removeRepository : user has initialized a push event");
-            EventEntity eventEntity = eventService.addEvent(pushEventPayload.getHeadCommit(), (int)userEntity.getUserId(), repositoryEntity.getRepositoryId());
+            eventService.addEvent(pushEventPayload.getHeadCommit(), (int)userEntity.getUserId(), repositoryEntity.getRepositoryId());
             LOGGER.info("handlePushEvent: user has initialized a push event");
-
-            //Everytime a push event happens, we run analysis. So we call it here. I have hard coded the values for DTO.
-//            AnalysisDTO analysisDTO = new AnalysisDTO("Code Smell", repositoryEntity.getRepositoryId(), 30, 13, 23, 90, 75, 3, 80, 12, 4, 17, 43, 32, 57, 54, 21, 29, 11);
-//            analysisService.addAnalysis(analysisDTO, eventEntity.getEventId(), repositoryEntity.getRepositoryId());
-//            LOGGER.info("handlePushEvent : Analysis has been stored database");
-
             //I have called Threshold service here because IDK where else to call it
             ThresholdDTO thresholdDTO = new ThresholdDTO(1, 1, 1, 90, 75, 3, 80, 12, 4, 17, 43, 32, 57, 54, 21, 29, 11);
             thresholdService.addThreshold(thresholdDTO, repositoryEntity.getRepositoryId());
@@ -252,13 +246,12 @@ public class WebHookListenerService {
             List<Integer> repositoryEntitiesIds = new ArrayList<>();
             repositoryEntitiesIds.add(repositoryEntity.getRepositoryId());
             eventService.addEvent("Pull Request", (int)userEntity.getUserId(), repositoryEntitiesIds);
-            Boolean pullRequestCheck = pullRequestService.pullRequestCheck(pullRequestPayload.getRepository().getId());
+            boolean pullRequestCheck = pullRequestService.pullRequestCheck(pullRequestPayload.getRepository().getId());
             if(!pullRequestCheck){
-                String token = "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";
-                Boolean rejectPullRequest = webHookListenerUtil.rejectPullRequest(
+                webHookListenerUtil.rejectPullRequest(
                         pullRequestPayload.getRepository().getOwner().getLogin(),
                         pullRequestPayload.getRepository().getName(),
-                        pullRequestPayload.getPullRequest().getNumber(),token);
+                        pullRequestPayload.getPullRequest().getNumber(),pullRequestPayload.getInstallation().getId().toString());
             }
         }
     }

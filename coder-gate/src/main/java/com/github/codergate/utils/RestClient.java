@@ -58,7 +58,7 @@ public class RestClient {
             } catch (JsonProcessingException e) {
                 LOGGER.error("RestClient :: invokeForPost : API request parsing failed");
             }
-            ResponseEntity<String> apiResponse = restTemplate.exchange(uri, HttpMethod.PUT, request, String.class);
+            ResponseEntity<String> apiResponse = restTemplate.exchange(uri, HttpMethod.POST, request, String.class);
             if (apiResponse.getBody() != null) {
                 try {
                     response = Mapper.getInstance().readValue(apiResponse.getBody(), new TypeReference<Object>() {

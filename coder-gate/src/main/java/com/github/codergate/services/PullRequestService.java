@@ -23,8 +23,8 @@ public class PullRequestService {
     PullRequestUtil pullRequestUtil;
 
     Boolean pullRequestCheck(Integer repositoryId){
-        ThresholdEntity thresholdEntity = thresholdRepository.findById((long)repositoryId).get();
-        AnalysisEntity analysisEntity = analysisRepository.findAnalysisByRepositoryId(repositoryId);
+        ThresholdEntity thresholdEntity = thresholdRepository.findByRepositoryId(repositoryId);
+        AnalysisEntity analysisEntity = analysisRepository.findLatestAnalysisByRepositoryId(repositoryId);
         return pullRequestUtil.checkThreshold(analysisEntity,thresholdEntity);
     }
 }

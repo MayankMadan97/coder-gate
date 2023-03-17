@@ -6,7 +6,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface ThresholdRepository extends JpaRepository<ThresholdEntity, Integer> {
 
-    @Query(value = "SELECT * FROM threshold t WHERE t.repository_id =:repositoryID", nativeQuery = true)
+    @Query(value = "SELECT * FROM threshold t WHERE t.repository_id =:repositoryID ;",nativeQuery = true)
     ThresholdEntity findByRepositoryId(@Param("repositoryID") int repositoryId);
 
 //    @Query(value = "DELETE FROM threshold t WHERE t.repository_id =:repositoryID", nativeQuery = true)
