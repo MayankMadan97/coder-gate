@@ -39,7 +39,6 @@ public class AnalysisEntity {
     private int cyclomaticComplexity;
     private int documentedLines;
 
-<<<<<<< HEAD
     public int getId() {
         return id;
     }
@@ -54,14 +53,6 @@ public class AnalysisEntity {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public int getRepositoryID() {
-        return repositoryID;
-    }
-
-    public void setRepositoryID(int repositoryID) {
-        this.repositoryID = repositoryID;
     }
 
     public EventEntity getEventIdInAnalysis() {
@@ -127,7 +118,6 @@ public class AnalysisEntity {
     public void setDocumentedLines(int documentedLines) {
         this.documentedLines = documentedLines;
     }
-=======
     //Architecture Smells
     private int cyclicDependency;
     private int godComponents;
@@ -149,5 +139,99 @@ public class AnalysisEntity {
     //Timestamp
     private long timestamp;
 
->>>>>>> f79a1113bffc2b1a2a0c59dae712fe48151abdd0
+    public RepositoryEntity getRepositoryIdInAnalysis() {
+        return repositoryIdInAnalysis;
+    }
+
+    public void setRepositoryIdInAnalysis(RepositoryEntity repositoryIdInAnalysis) {
+        this.repositoryIdInAnalysis = repositoryIdInAnalysis;
+    }
+
+    public int getCyclicDependency() {
+        return cyclicDependency;
+    }
+
+    public void setCyclicDependency(int cyclicDependency) {
+        this.cyclicDependency = cyclicDependency;
+    }
+
+    public int getGodComponents() {
+        return godComponents;
+    }
+
+    public void setGodComponents(int godComponents) {
+        this.godComponents = godComponents;
+    }
+
+    public int getCyclicallyDependentModularization() {
+        return cyclicallyDependentModularization;
+    }
+
+    public void setCyclicallyDependentModularization(int cyclicallyDependentModularization) {
+        this.cyclicallyDependentModularization = cyclicallyDependentModularization;
+    }
+
+    public int getInsufficientModularization() {
+        return insufficientModularization;
+    }
+
+    public void setInsufficientModularization(int insufficientModularization) {
+        this.insufficientModularization = insufficientModularization;
+    }
+
+    public int getUnnecessaryAbstraction() {
+        return unnecessaryAbstraction;
+    }
+
+    public void setUnnecessaryAbstraction(int unnecessaryAbstraction) {
+        this.unnecessaryAbstraction = unnecessaryAbstraction;
+    }
+
+    public int getComplexMethod() {
+        return complexMethod;
+    }
+
+    public void setComplexMethod(int complexMethod) {
+        this.complexMethod = complexMethod;
+    }
+
+    public int getComplexConditional() {
+        return complexConditional;
+    }
+
+    public void setComplexConditional(int complexConditional) {
+        this.complexConditional = complexConditional;
+    }
+
+    public int getEmptyCatchClause() {
+        return emptyCatchClause;
+    }
+
+    public void setEmptyCatchClause(int emptyCatchClause) {
+        this.emptyCatchClause = emptyCatchClause;
+    }
+
+    public int getMissingAssertion() {
+        return missingAssertion;
+    }
+
+    public void setMissingAssertion(int missingAssertion) {
+        this.missingAssertion = missingAssertion;
+    }
+
+    public int getEmptyTest() {
+        return emptyTest;
+    }
+
+    public void setEmptyTest(int emptyTest) {
+        this.emptyTest = emptyTest;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
 }

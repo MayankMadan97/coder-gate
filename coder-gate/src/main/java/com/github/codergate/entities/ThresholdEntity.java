@@ -28,15 +28,6 @@ public class ThresholdEntity {
     private int cyclomaticComplexity;
     private int documentedLines;
 
-<<<<<<< HEAD
-    public int getRepositoryId() {
-        return repositoryId;
-    }
-
-    public void setRepositoryId(int repositoryId) {
-        this.repositoryId = repositoryId;
-    }
-
     public RepositoryEntity getRepositoryIdInThreshold() {
         return repositoryIdInThreshold;
     }
@@ -100,7 +91,6 @@ public class ThresholdEntity {
     public void setDocumentedLines(int documentedLines) {
         this.documentedLines = documentedLines;
     }
-=======
     //Architecture Smells
     private int cyclicDependency;
     private int godComponents;
@@ -119,5 +109,91 @@ public class ThresholdEntity {
     private int missingAssertion;
     private int emptyTest;
 
->>>>>>> f79a1113bffc2b1a2a0c59dae712fe48151abdd0
+    public int getThresholdId() {
+        return thresholdId;
+    }
+
+    public void setThresholdId(int thresholdId) {
+        this.thresholdId = thresholdId;
+    }
+
+    public int getCyclicDependency() {
+        return cyclicDependency;
+    }
+
+    public void setCyclicDependency(int cyclicDependency) {
+        this.cyclicDependency = cyclicDependency;
+    }
+
+    public int getGodComponents() {
+        return godComponents;
+    }
+
+    public void setGodComponents(int godComponents) {
+        this.godComponents = godComponents;
+    }
+
+    public int getCyclicallyDependentModularization() {
+        return cyclicallyDependentModularization;
+    }
+
+    public void setCyclicallyDependentModularization(int cyclicallyDependentModularization) {
+        this.cyclicallyDependentModularization = cyclicallyDependentModularization;
+    }
+
+    public int getInsufficientModularization() {
+        return insufficientModularization;
+    }
+
+    public void setInsufficientModularization(int insufficientModularization) {
+        this.insufficientModularization = insufficientModularization;
+    }
+
+    public int getUnnecessaryAbstraction() {
+        return unnecessaryAbstraction;
+    }
+
+    public void setUnnecessaryAbstraction(int unnecessaryAbstraction) {
+        this.unnecessaryAbstraction = unnecessaryAbstraction;
+    }
+
+    public int getComplexMethod() {
+        return complexMethod;
+    }
+
+    public void setComplexMethod(int complexMethod) {
+        this.complexMethod = complexMethod;
+    }
+
+    public int getComplexConditional() {
+        return complexConditional;
+    }
+
+    public void setComplexConditional(int complexConditional) {
+        this.complexConditional = complexConditional;
+    }
+
+    public int getEmptyCatchClause() {
+        return emptyCatchClause;
+    }
+
+    public void setEmptyCatchClause(int emptyCatchClause) {
+        this.emptyCatchClause = emptyCatchClause;
+    }
+
+    public int getMissingAssertion() {
+        return missingAssertion;
+    }
+
+    public void setMissingAssertion(int missingAssertion) {
+        this.missingAssertion = missingAssertion;
+    }
+
+    public int getEmptyTest() {
+        return emptyTest;
+    }
+
+    public void setEmptyTest(int emptyTest) {
+        this.emptyTest = emptyTest;
+    }
 }
