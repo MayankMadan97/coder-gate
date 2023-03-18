@@ -27,6 +27,9 @@ public class RestClient {
     private static final String TOKEN = "token";
     private static final String BEARER = "Bearer ";
     private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String PARAMETERS_NOT_FOUND = "Mandatory parameters not found";
+    private static final String API_FAIL = "invokeForGet : Failed to map api response to the required type";
+    private static final String ENTER_POST = "RestClient :: invokeForPost : Entering the method";
 
     @Value("${github.app.id}")
     private String appId;
@@ -44,7 +47,7 @@ public class RestClient {
      */
     public Object invokeForPost(String uri, Object bodyParams,
             MultiValueMap<String, String> customHeaders, String installationId) {
-        LOGGER.debug("RestClient :: invokeForPost : Entering the method");
+        LOGGER.debug(ENTER_POST);
         Object response = null;
         HttpEntity<String> request = null;
         if (uri != null && URI.create(uri) != null) {
@@ -64,19 +67,19 @@ public class RestClient {
                     response = Mapper.getInstance().readValue(apiResponse.getBody(), new TypeReference<Object>() {
                     });
                 } catch (JsonProcessingException e) {
-                    LOGGER.error("invokeForGet : Failed to map api response to the required type");
+                    LOGGER.error(API_FAIL);
                 }
             }
 
         } else {
-            throw new IllegalArgumentException("Mandatory parameters not found");
+            throw new IllegalArgumentException(PARAMETERS_NOT_FOUND);
         }
         LOGGER.debug("RestClient :: invokeForPost : Exiting the method");
         return response;
     }
     public Object invokeForPut(String uri, Object bodyParams,
             MultiValueMap<String, String> customHeaders, String installationId) {
-        LOGGER.debug("RestClient :: invokeForPost : Entering the method");
+        LOGGER.debug(ENTER_POST);
         Object response = null;
         HttpEntity<String> request = null;
         if (uri != null && URI.create(uri) != null) {
@@ -96,12 +99,12 @@ public class RestClient {
                     response = Mapper.getInstance().readValue(apiResponse.getBody(), new TypeReference<Object>() {
                     });
                 } catch (JsonProcessingException e) {
-                    LOGGER.error("invokeForGet : Failed to map api response to the required type");
+                    LOGGER.error(API_FAIL);
                 }
             }
 
         } else {
-            throw new IllegalArgumentException("Mandatory parameters not found");
+            throw new IllegalArgumentException(PARAMETERS_NOT_FOUND);
         }
         LOGGER.debug("RestClient :: invokeForPost : Exiting the method");
         return response;
@@ -115,7 +118,7 @@ public class RestClient {
      * @return Object
      */
     public Object invokeForGet(String uri, MultiValueMap<String, String> customHeaders, String installationId) {
-        LOGGER.debug("RestClient :: invokeForPost : Entering the method");
+        LOGGER.debug(ENTER_POST);
         Object response = null;
         try {
             if (uri != null && URI.create(URLEncoder.encode(uri, "UTF-8")) != null) {
@@ -129,11 +132,11 @@ public class RestClient {
                         response = Mapper.getInstance().readValue(apiResponse.getBody(), new TypeReference<Object>() {
                         });
                     } catch (JsonProcessingException e) {
-                        LOGGER.error("invokeForGet : Failed to map api response to the required type");
+                        LOGGER.error(API_FAIL);
                     }
                 }
             } else {
-                throw new IllegalArgumentException("Mandatory parameters not found");
+                throw new IllegalArgumentException(PARAMETERS_NOT_FOUND);
             }
         } catch (RestClientException | UnsupportedEncodingException e) {
             LOGGER.error("invokeForGet :: Failed to call api due to error {}", Arrays.toString(e.getStackTrace()));
