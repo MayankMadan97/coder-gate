@@ -1,15 +1,3 @@
-.card-title {
-    font-size: 1.2em;
-}
-
-.card-description {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 .sidebar-item {
     font-size: 1.1em;
 }
@@ -34,13 +22,39 @@
     cursor: pointer;
 }
 
-.commit-chart {
-    height: 19em;
-    border: 1px solid#d9d9d9;
+.metric {
+    max-width: 30%;
+    height: 20vh;
+    line-height: 1.6em;
+}
+
+.metric-value {
+    font-size: 2em;
+}
+
+.metric-name {
+    font-size: 1.2em;
+    font-weight: lighter;
+}
+
+.repository-metric {
+    background-color: #c5cdff;
+}
+
+.collaborator-metric {
+    background-color: #dbf9a5;
+}
+
+.scan-metric {
+    background-color: #ffce94;
+}
+
+.metric-icon {
+    height: 2em;
 }
 
 .repository-list {
-    max-height: 35vh;
+    height: 61vh;
     overflow-y: scroll;
 }
 
@@ -48,12 +62,12 @@
     border-bottom: 1px solid transparent;
     border-top: 1px solid transparent;
     cursor: pointer;
-  }
-  
-  .mat-mdc-row:hover .mat-mdc-cell {
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
     border-color: currentColor;
-  }
-  
-  .demo-row-is-clicked {
+}
+
+.demo-row-is-clicked {
     font-weight: bold;
-  }
+}

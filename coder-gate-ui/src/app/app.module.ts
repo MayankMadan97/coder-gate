@@ -1,6 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { FeaturesComponent } from './features/features.component';
@@ -30,6 +31,7 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes),
     MainModule,
+    BrowserAnimationsModule,
     OAuthModule.forRoot({
       resourceServer: {
         allowedUrls: ['https://api.github.com'],
