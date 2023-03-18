@@ -74,6 +74,38 @@ public class RestClient {
         LOGGER.debug("RestClient :: invokeForPost : Exiting the method");
         return response;
     }
+    public Object invokeForPut(String uri, Object bodyParams,
+            MultiValueMap<String, String> customHeaders, String installationId) {
+        LOGGER.debug("RestClient :: invokeForPost : Entering the method");
+        Object response = null;
+        HttpEntity<String> request = null;
+        if (uri != null && URI.create(uri) != null) {
+            if (installationId != null) {
+                customHeaders = appendAuthenticationHeaders(customHeaders, installationId);
+            }
+            try {
+                request = new HttpEntity<>(
+                        bodyParams != null ? Mapper.getInstance().writeValueAsString(bodyParams) : null,
+                        customHeaders);
+            } catch (JsonProcessingException e) {
+                LOGGER.error("RestClient :: invokeForPost : API request parsing failed");
+            }
+            ResponseEntity<String> apiResponse = restTemplate.exchange(uri, HttpMethod.PUT, request, String.class);
+            if (apiResponse.getBody() != null) {
+                try {
+                    response = Mapper.getInstance().readValue(apiResponse.getBody(), new TypeReference<Object>() {
+                    });
+                } catch (JsonProcessingException e) {
+                    LOGGER.error("invokeForGet : Failed to map api response to the required type");
+                }
+            }
+
+        } else {
+            throw new IllegalArgumentException("Mandatory parameters not found");
+        }
+        LOGGER.debug("RestClient :: invokeForPost : Exiting the method");
+        return response;
+    }
 
     /**
      * utility method to make get calls to an external api
