@@ -1,6 +1,7 @@
 package com.github.codergate.controllers;
 
 import com.github.codergate.dto.analysis.AnalysisDTO;
+import com.github.codergate.entities.AnalysisEntity;
 import com.github.codergate.services.AnalysisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +24,12 @@ public class AnalysisController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AnalysisController.class);
 
     @PostMapping(value = "/analysis")
-    public ResponseEntity<String> convertXmlToJson(@RequestParam("file") MultipartFile file) throws Exception {
+    public ResponseEntity<AnalysisEntity> convertXmlToJson(@RequestParam("file") MultipartFile file) throws Exception {
         LOGGER.debug("convertXmlToJson : Entering the method");
-        //AnalysisDTO analysisDTO = new AnalysisDTO();
         if (file != null && !file.isEmpty()) {
-            String json = analysisService.processAnalysis(file);
+            AnalysisEntity analysisEntity = analysisService.processAnalysis(file);
             LOGGER.debug("convertXmlToJson : Exiting the method");
-            return ResponseEntity.ok(json);
+            return ResponseEntity.ok(analysisEntity);
         } else {
             return ResponseEntity.badRequest().build();
         }
