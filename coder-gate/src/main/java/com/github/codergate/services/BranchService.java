@@ -42,7 +42,7 @@ public class BranchService {
         if(repositoryDTO != null)
         {
             branchEntity = new BranchEntity();
-            if(repositoryDTO.getTagsUrl() != null && repositoryDTO.getId() != null)
+            if(repositoryDTO.getBranchesUrl() != null && repositoryDTO.getId() != null)
             {
                 BranchId branchId = new BranchId(repositoryDTO.getId(), repositoryDTO.getBranchesUrl());
                 branchEntity.setBranchId(branchId);

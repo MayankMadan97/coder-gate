@@ -5,8 +5,8 @@ import com.github.codergate.dto.installation.InstallationPayloadDTO;
 import com.github.codergate.dto.installation.RepositoriesAddedDTO;
 import com.github.codergate.dto.pullRequest.PullRequestPayloadDTO;
 import com.github.codergate.dto.push.PusherPayloadDTO;
-import com.github.codergate.dto.push.RepositoryDTO;
-import com.github.codergate.dto.push.SenderDTO;
+import com.github.codergate.dto.threshold.ThresholdDTO;
+import com.github.codergate.entities.EventEntity;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.utils.Constants;
@@ -17,14 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static org.apache.logging.log4j.ThreadContext.containsKey;
 
 @Service
 public class WebHookListenerService {
@@ -48,6 +45,12 @@ public class WebHookListenerService {
     private RestClient restClient;
 
 
+    @Autowired
+    AnalysisService analysisService;
+
+    @Autowired
+    ThresholdService thresholdService;
+
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
@@ -61,8 +64,8 @@ public class WebHookListenerService {
 
         if (webhookPayload.containsKey("pusher"))
             action = Constants.PUSH_EVENT;
-        else if(webhookPayload.containsKey("event") && webhookPayload.get("event").equals("pull_request")) {
-            action = Constants.PULL_REQUEST_EVENT;
+        else if(webhookPayload.get("action").equals("requested")){
+            action =Constants.PULL_REQUEST_EVENT;
         }
         else
             action = (String) webhookPayload.get(Constants.INSTALLATION_ACTION);
@@ -217,9 +220,18 @@ public class WebHookListenerService {
             RepositoryEntity repositoryEntity = repositoryService.addRepository(pushEventPayload.getRepository().getId(),pushEventPayload.getRepository().getName(),pushEventPayload.getRepository().getFork(), pushEventPayload.getRepository().getOwner().getId());
             repositoryTagService.addTag(pushEventPayload.getRepository());
             repositoryBranchService.addBranch(pushEventPayload.getRepository());
-            eventService.addEvent(pushEventPayload.getHeadCommit(), (int)userEntity.getUserId(), repositoryEntity.getRepositoryId());
-            LOGGER.info("removeRepository : user has initialized a push event");
+            EventEntity eventEntity = eventService.addEvent(pushEventPayload.getHeadCommit(), (int)userEntity.getUserId(), repositoryEntity.getRepositoryId());
+            LOGGER.info("handlePushEvent: user has initialized a push event");
 
+            //Everytime a push event happens, we run analysis. So we call it here. I have hard coded the values for DTO.
+//            AnalysisDTO analysisDTO = new AnalysisDTO("Code Smell", repositoryEntity.getRepositoryId(), 30, 13, 23, 90, 75, 3, 80, 12, 4, 17, 43, 32, 57, 54, 21, 29, 11);
+//            analysisService.addAnalysis(analysisDTO, eventEntity.getEventId(), repositoryEntity.getRepositoryId());
+//            LOGGER.info("handlePushEvent : Analysis has been stored database");
+
+            //I have called Threshold service here because IDK where else to call it
+            ThresholdDTO thresholdDTO = new ThresholdDTO(1, 1, 1, 90, 75, 3, 80, 12, 4, 17, 43, 32, 57, 54, 21, 29, 11);
+            thresholdService.addThreshold(thresholdDTO, repositoryEntity.getRepositoryId());
+            LOGGER.info("handlePushEvent : Threshold has been stored in database");
         }
     }
 

@@ -37,4 +37,16 @@ public class WebhookListenerController {
         return ResponseEntity.ok(null);
     }
 
+    @PostMapping(value = "/test")
+    public ResponseEntity<String> webHookTest(@RequestBody Map<String, Object> webhookPayload) {
+        LOGGER.debug("webHookListener : Entering the method");
+        if (webhookPayload != null && !webhookPayload.isEmpty()) {
+            service.handleIncomingRequest(webhookPayload);
+        }
+        LOGGER.debug("webHookListener : Exiting the method");
+        return ResponseEntity.ok(null);
+    }
+
+
+
 }
