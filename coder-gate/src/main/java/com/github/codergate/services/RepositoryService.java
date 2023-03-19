@@ -1,9 +1,12 @@
 package com.github.codergate.services;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.codergate.dto.controller.RepositoryResponse;
 import com.github.codergate.dto.installation.RepositoriesAddedDTO;
 import com.github.codergate.dto.push.RepositoryDTO;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.repositories.RepositoryRepository;
+import com.github.codergate.services.utility.RepositoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,9 @@ public class RepositoryService {
 
     @Autowired
     RepositoryRepository repositoryRepository;
+
+    @Autowired
+    RepositoryUtil repositoryUtil;
     private static final Logger LOGGER = LoggerFactory.getLogger(RepositoryService.class);
 
     /***
@@ -202,6 +208,17 @@ public class RepositoryService {
         LOGGER.info("getRepositoryFromUserId : Getting the repositories from user Id {}", repositoriesByUserId);
         repositoriesAddedDto = convertEntityToDTO(repositoriesByUserId);
         return repositoriesAddedDto;
+    }
+
+    public RepositoryResponse getRepositoryResponse(Long userId) throws JsonProcessingException {
+        RepositoryResponse repositoryResponse = new RepositoryResponse();
+        List<RepositoriesAddedDTO> repositoriesAddedDto;
+        List<RepositoryEntity> repositoriesByUserId = repositoryRepository.findByUserId(userId);
+        LOGGER.info("getRepositoryFromUserId : Getting the repositories from user Id {}", repositoriesByUserId);
+        repositoriesAddedDto = convertEntityToDTO(repositoriesByUserId);
+//        repositoryResponse.setRepositoriesAddedDTOList(repositoriesAddedDto);
+        repositoryResponse.setCommitsInformation(repositoryUtil.getCommitsInformation(repositoriesByUserId.get(0).getInstallationId(),repositoriesByUserId.get(0).getRepositoryId()));
+        return repositoryResponse;
     }
 
     /***
