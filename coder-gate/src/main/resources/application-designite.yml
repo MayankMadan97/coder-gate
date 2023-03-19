@@ -24,3 +24,11 @@ jobs:
         with:
           name: DesigniteAnalysis
           path: Designite_output/DesigniteAnalysis.xml
+      - name: Download DesigniteAnalysis artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: DesigniteAnalysis
+          path: Designite_output
+      - name: Send DesigniteAnalysis.xml to Analysis controller
+        run: |
+          curl -X POST -F 'file=@Designite_output/DesigniteAnalysis.xml' https://4a68-24-138-74-93.ngrok.io/analysis
