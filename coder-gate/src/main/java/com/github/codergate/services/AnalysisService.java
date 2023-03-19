@@ -1,11 +1,14 @@
 package com.github.codergate.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.codergate.dto.analysis.AnalysisDTO;
+import com.github.codergate.dto.push.PusherPayloadDTO;
 import com.github.codergate.entities.AnalysisEntity;
 import com.github.codergate.entities.EventEntity;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.repositories.AnalysisRepository;
+import com.github.codergate.utils.Mapper;
 import org.json.JSONObject;
 import org.json.XML;
 import org.slf4j.Logger;
@@ -340,13 +343,23 @@ public class AnalysisService {
         return analysisDTO;
     }
 
-    public void processAnalysis(MultipartFile file) throws Exception {
+    public String processAnalysis(MultipartFile file) throws Exception {
         try (InputStream inputStream = file.getInputStream()) {
             byte[] bytes = inputStream.readAllBytes();
             String xml = new String(bytes);
             JSONObject jsonObject = XML.toJSONObject(xml);
-            LinkedHashMap<String, Object> analysisPayload = new ObjectMapper()
+            LinkedHashMap<String, Object> orderedMap = new ObjectMapper()
                     .readValue(jsonObject.toString(), LinkedHashMap.class);
+            String orderedJson = new ObjectMapper()
+                    .enable(SerializationFeature.INDENT_OUTPUT)
+                    .writeValueAsString(orderedMap);
+            System.out.println(orderedMap.get("Analysis").toString());
+            return orderedJson;
+           // AnalysisDTO analyzedPayload = Mapper.getInstance().convertValue(jsonObject, AnalysisDTO.class);
+//            LinkedHashMap<String, Object> analysisPayload = new ObjectMapper()
+//                    .readValue(jsonObject.toString(), LinkedHashMap.class);
+//            JSONObject analysisObject = new JSONObject(analysisPayload.get("Analysis"));
+            //return analyzedPayload;
         }
     }
 
