@@ -33,7 +33,7 @@ public class AnalysisEntity {
 
     private int bugs;
     private int vulnerabilities;
-    private int codeSmell;
+    private double codeSmell;
     private int testCoverage;
     private int duplicatedLines;
     private int cyclomaticComplexity;
@@ -53,11 +53,17 @@ public class AnalysisEntity {
     private int complexConditional;
     private int emptyCatchClause;
 
+
     //Test Smells
     private int missingAssertion;
     private int emptyTest;
 
     //Timestamp
     private long timestamp;
+
+    public AnalysisEntity(double codeSmell, int duplicatedLines) {
+        this.codeSmell = codeSmell;
+        this.duplicatedLines = duplicatedLines;
+    }
 
 }
