@@ -16,7 +16,7 @@ public class ThresholdEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int thresholdId;
+    private Long thresholdId;
     @OneToOne
     @JoinColumn(name = "repositoryId")
     private RepositoryEntity repositoryIdInThreshold;
