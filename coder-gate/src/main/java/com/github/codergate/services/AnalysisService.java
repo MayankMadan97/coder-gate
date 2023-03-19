@@ -3,6 +3,7 @@ package com.github.codergate.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.codergate.dto.analysis.AnalysisDTO;
+import com.github.codergate.dto.installation.InstallationPayloadDTO;
 import com.github.codergate.dto.push.PusherPayloadDTO;
 import com.github.codergate.entities.AnalysisEntity;
 import com.github.codergate.entities.EventEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Date;
+import java.util.Map;
 
 @Service
 public class AnalysisService {
@@ -343,23 +345,17 @@ public class AnalysisService {
         return analysisDTO;
     }
 
-    public String processAnalysis(MultipartFile file) throws Exception {
+    public AnalysisEntity processAnalysis(MultipartFile file) throws Exception {
         try (InputStream inputStream = file.getInputStream()) {
             byte[] bytes = inputStream.readAllBytes();
             String xml = new String(bytes);
             JSONObject jsonObject = XML.toJSONObject(xml);
-            LinkedHashMap<String, Object> orderedMap = new ObjectMapper()
-                    .readValue(jsonObject.toString(), LinkedHashMap.class);
-            String orderedJson = new ObjectMapper()
-                    .enable(SerializationFeature.INDENT_OUTPUT)
-                    .writeValueAsString(orderedMap);
-            System.out.println(orderedMap.get("Analysis").toString());
-            return orderedJson;
-           // AnalysisDTO analyzedPayload = Mapper.getInstance().convertValue(jsonObject, AnalysisDTO.class);
-//            LinkedHashMap<String, Object> analysisPayload = new ObjectMapper()
-//                    .readValue(jsonObject.toString(), LinkedHashMap.class);
-//            JSONObject analysisObject = new JSONObject(analysisPayload.get("Analysis"));
-            //return analyzedPayload;
+            JSONObject analysisObject = jsonObject.getJSONObject("Analysis");
+            JSONObject solutionObject = analysisObject.getJSONObject("Solution");
+            double smellDensity = solutionObject.getDouble("SmellDensity");
+            int codeDuplication = solutionObject.getInt("CodeDuplication");
+            AnalysisEntity analysisEntity = new AnalysisEntity(smellDensity,codeDuplication);
+            return analysisRepository.save(analysisEntity);
         }
     }
 
