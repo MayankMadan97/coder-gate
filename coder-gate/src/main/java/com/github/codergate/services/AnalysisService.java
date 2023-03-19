@@ -33,7 +33,7 @@ public class AnalysisService {
 
     public AnalysisDTO getAnalysisByID(int repositoryID) {
         AnalysisDTO analysisDTO = null;
-        AnalysisEntity analysisEntity = analysisRepository.findLatestAnalysisByRepositoryId(repositoryID);
+        AnalysisEntity analysisEntity = analysisRepository.findAnalysisByRepositoryId(repositoryID);
         if(analysisEntity != null)
         {
             analysisDTO = convertAnalysisEntityToDto(analysisEntity);

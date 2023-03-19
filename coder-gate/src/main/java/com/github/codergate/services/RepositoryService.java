@@ -43,8 +43,8 @@ public class RepositoryService {
      * @param userId user id
      * @return RepositoryDTO
      */
-    public RepositoryEntity addRepository(Integer id,String name,Boolean fork, int userId) {
-        RepositoryEntity repositoryEntity = convertDTOToEntityForPushEvent(id,name,fork, userId);
+    public RepositoryEntity addRepository(Integer id,String name,Boolean fork, int userId,String installationId) {
+        RepositoryEntity repositoryEntity = convertDTOToEntityForPushEvent(id,name,fork, userId,installationId);
         if(repositoryEntity!=null) {
             RepositoryEntity saveRepositoryEntity = repositoryRepository.save(repositoryEntity);
             LOGGER.info("addRepository : The repositoryRepository information for push event is added {}", saveRepositoryEntity);
@@ -150,7 +150,7 @@ public class RepositoryService {
      * @param userID user id
      * @return RepositoryEntity
      */
-    private RepositoryEntity convertDTOToEntityForPushEvent(Integer id,String name,boolean fork, int userID) {
+    private RepositoryEntity convertDTOToEntityForPushEvent(Integer id,String name,boolean fork, int userID,String installationId) {
         RepositoryEntity repositoryEntity = null;
         repositoryEntity = new RepositoryEntity();
         repositoryEntity.setRepositoryId(id);
@@ -159,6 +159,7 @@ public class RepositoryService {
         UserEntity userEntity = new UserEntity();
         userEntity.setUserId(userID);
         repositoryEntity.setUserEntity(userEntity);
+        repositoryEntity.setInstallationId(installationId);
         LOGGER.info("convertDTOToEntityForPushEvent : RepositoryRepository DTO has been converted to Entity {}", repositoryEntity);
         return repositoryEntity;
     }

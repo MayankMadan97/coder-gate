@@ -215,7 +215,7 @@ public class WebHookListenerService {
                 && pushEventPayload.getHeadCommit() != null && pushEventPayload.getRepository() != null) {
 
             UserEntity userEntity = userService.addUser(pushEventPayload.getSender().getId(),pushEventPayload.getSender().getLogin(), pushEventPayload.getPusher().getEmail());
-            RepositoryEntity repositoryEntity = repositoryService.addRepository(pushEventPayload.getRepository().getId(),pushEventPayload.getRepository().getName(),pushEventPayload.getRepository().getFork(), pushEventPayload.getRepository().getOwner().getId());
+            RepositoryEntity repositoryEntity = repositoryService.addRepository(pushEventPayload.getRepository().getId(),pushEventPayload.getRepository().getName(),pushEventPayload.getRepository().getFork(), pushEventPayload.getRepository().getOwner().getId(),pushEventPayload.getInstallation().getId().toString());
             repositoryTagService.addTag(pushEventPayload.getRepository().getTagsUrl(),pushEventPayload.getRepository().getId());
             repositoryBranchService.addBranch(pushEventPayload.getRepository().getBranchesUrl(),pushEventPayload.getRepository().getId());
             eventService.addEvent(pushEventPayload.getHeadCommit(), (int)userEntity.getUserId(), repositoryEntity.getRepositoryId());
@@ -233,7 +233,7 @@ public class WebHookListenerService {
         Payload pullRequestPayload = Mapper.getInstance().convertValue(webhookPayload, Payload.class);
         if (pullRequestPayload != null) {
             UserEntity userEntity = userService.addUser(pullRequestPayload.getSender().getId(), pullRequestPayload.getSender().getLogin(), pullRequestPayload.getSender().getUrl());
-            RepositoryEntity repositoryEntity = repositoryService.addRepository(pullRequestPayload.getRepository().getId(), pullRequestPayload.getRepository().getName(), pullRequestPayload.getRepository().getFork(), pullRequestPayload.getRepository().getOwner().getId());
+            RepositoryEntity repositoryEntity = repositoryService.addRepository(pullRequestPayload.getRepository().getId(), pullRequestPayload.getRepository().getName(), pullRequestPayload.getRepository().getFork(), pullRequestPayload.getRepository().getOwner().getId(),pullRequestPayload.getInstallation().getId().toString());
             repositoryTagService.addTag(pullRequestPayload.getRepository().getTagsUrl(),pullRequestPayload.getRepository().getId());
             repositoryBranchService.addBranch(pullRequestPayload.getRepository().getBranchesUrl(),pullRequestPayload.getRepository().getId());
             List<Integer> repositoryEntitiesIds = new ArrayList<>();
