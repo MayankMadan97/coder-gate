@@ -15,6 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BranchEntity {
+    
     @EmbeddedId
     @Column(name = "branchId")
     private BranchId branchId;

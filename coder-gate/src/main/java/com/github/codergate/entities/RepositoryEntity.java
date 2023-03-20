@@ -38,6 +38,4 @@ public class RepositoryEntity {
     @OneToOne(mappedBy = "repositoryIdInThreshold")
     private ThresholdEntity thresholdAndRepository;
 
-    @OneToMany(mappedBy = "repositoryIdInAnalysis", cascade = CascadeType.ALL)
-    private Set<AnalysisEntity> analysisAndRepository;
 }
