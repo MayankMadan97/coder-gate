@@ -41,6 +41,4 @@ public class RepositoryEntity {
 
     private String installationId;
 
-    @OneToMany(mappedBy = "repositoryIdInAnalysis", cascade = CascadeType.ALL)
-    private Set<AnalysisEntity> analysisAndRepository;
 }

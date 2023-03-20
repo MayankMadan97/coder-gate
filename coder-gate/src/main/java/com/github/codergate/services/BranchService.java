@@ -41,16 +41,15 @@ public class BranchService {
 
     /***
      * converts Branch entity to RepositoryDTO
+     * 
      * @param branch Branch entity
      * @return RepositoryDTO object
      */
     private RepositoryDTO convertEntityToDto(BranchEntity branch) {
         RepositoryDTO repositoryDTO = null;
-        if(branch != null)
-        {
+        if (branch != null) {
             repositoryDTO = new RepositoryDTO();
-            if(branch.getBranchId() != null)
-            {
+            if (branch.getBranchId() != null) {
                 BranchId branchIdObject = branch.getBranchId();
                 repositoryDTO.setId(branchIdObject.getRepositoryId());
                 repositoryDTO.setBranchesUrl(branchIdObject.getBranchUrl());

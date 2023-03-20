@@ -1,29 +1,43 @@
 package com.github.codergate.services;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.github.codergate.dto.installation.AccountDTO;
-import com.github.codergate.dto.installation.InstallationPayloadDTO;
-import com.github.codergate.dto.installation.RepositoriesAddedDTO;
-import com.github.codergate.dto.pullRequest.Payload;
 
-import com.github.codergate.dto.push.PusherPayloadDTO;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-import com.github.codergate.dto.threshold.ThresholdDTO;
-import com.github.codergate.entities.RepositoryEntity;
-import com.github.codergate.entities.UserEntity;
-import com.github.codergate.services.utility.WebHookListenerUtil;
-import com.github.codergate.utils.Constants;
-import com.github.codergate.utils.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.github.codergate.dto.installation.AccountDTO;
+import com.github.codergate.dto.installation.InstallationPayloadDTO;
+import com.github.codergate.dto.installation.RepositoriesAddedDTO;
+import com.github.codergate.dto.installation.RepositoriesDTO;
+import com.github.codergate.dto.pullRequest.Payload;
+import com.github.codergate.dto.push.PusherPayloadDTO;
+import com.github.codergate.dto.threshold.ThresholdDTO;
+import com.github.codergate.entities.EventEntity;
+import com.github.codergate.entities.RepositoryEntity;
+import com.github.codergate.entities.UserEntity;
+import com.github.codergate.services.utility.WebHookListenerUtil;
+import com.github.codergate.utils.Constants;
+import com.github.codergate.utils.JwtUtils;
+import com.github.codergate.utils.Mapper;
+import com.github.codergate.utils.RestClient;
+
 @Service
 public class WebHookListenerService {
+
+    private static final String REQUESTED = "requested";
+    private static final String ACTION = "action";
+    private static final String PUSHER = "pusher";
 
     @Autowired
     UserService userService;
@@ -41,6 +55,9 @@ public class WebHookListenerService {
     BranchService repositoryBranchService;
 
     @Autowired
+    private RestClient restClient;
+
+    @Autowired
     PullRequestService pullRequestService;
 
     @Autowired
@@ -50,31 +67,28 @@ public class WebHookListenerService {
     @Autowired
     ThresholdService thresholdService;
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(WebHookListenerService.class);
 
     /***
      * user action implementation are called in this method,
      * It checks the event if it is push or installation.
+     * 
      * @param webhookPayload data
      */
     public void handleIncomingRequest(Map<String, Object> webhookPayload) {
         String action;
 
-        if (webhookPayload.containsKey("pusher"))
+        if (webhookPayload.containsKey(PUSHER))
             action = Constants.PUSH_EVENT;
-        else if(webhookPayload.containsKey("pull_request")){
+        else if (webhookPayload.containsKey("pull_request")) {
 
-            action =Constants.PULL_REQUEST_EVENT;
-        }
-        else
+            action = Constants.PULL_REQUEST_EVENT;
+        } else
             action = (String) webhookPayload.get(Constants.INSTALLATION_ACTION);
-
-
-
         switch (action) {
             case Constants.INSTALLATION_REPOSITORY_ADDED:
             case Constants.INSTALLATION_CREATED:
+                installationWebhookListener(webhookPayload);
                 installationAddRepositoryWebhookListener(webhookPayload);
                 break;
             case Constants.INSTALLATION_DELETED:
@@ -90,15 +104,17 @@ public class WebHookListenerService {
                 handlePullRequestEvent(webhookPayload);
                 break;
             default:
-                LOGGER.warn("handleIncomingRequest : Following webhook payload is not yet supported {}", webhookPayload);
+                LOGGER.warn("handleIncomingRequest : Following webhook payload is not yet supported {}",
+                        webhookPayload);
                 break;
         }
     }
 
-
     /***
      * When a user installs or adds this method will be implemented
-     * Create and Add action is implemented, which sets user, repositoryRepository and event information.
+     * Create and Add action is implemented, which sets user, repositoryRepository
+     * and event information.
+     * 
      * @param webhookPayload data
      */
     private void installationAddRepositoryWebhookListener(Map<String, Object> webhookPayload) {
@@ -112,9 +128,8 @@ public class WebHookListenerService {
             handleInstallationCreation(payload);
             LOGGER.info("installationAddRepositoryWebhookListener : user has installed the application");
 
-
-
-        } else if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
+        } else if (payload != null && payload.getInstallation() != null
+                && payload.getInstallation().getAccount() != null
                 && payload.getRepositoriesAdded() != null && payload.getAction() != null) {
 
             addRepository(payload);
@@ -123,13 +138,13 @@ public class WebHookListenerService {
         }
     }
 
-
     private void addRepository(InstallationPayloadDTO payload) {
         long userId = payload.getInstallation().getAccount().getId();
         if (userId != 0) {
             AccountDTO user = userService.getUserById(userId);
             if (user != null) {
-                List<RepositoriesAddedDTO> repositoryList = repositoryService.addRepository(payload.getRepositoriesAdded(), user.getId());
+                List<RepositoriesAddedDTO> repositoryList = repositoryService
+                        .addRepository(payload.getRepositoriesAdded(), user.getId());
                 List<Integer> repositoryIdList = repositoryList.stream()
                         .map(RepositoriesAddedDTO::getId)
                         .collect(Collectors.toList());
@@ -139,7 +154,9 @@ public class WebHookListenerService {
     }
 
     private void handleInstallationCreation(InstallationPayloadDTO payload) {
-        List<RepositoriesAddedDTO> repositoriesAddedDTOList = Mapper.getInstance().convertValue(payload.getRepositories(), new TypeReference<>() {});
+        List<RepositoriesAddedDTO> repositoriesAddedDTOList = Mapper.getInstance()
+                .convertValue(payload.getRepositories(), new TypeReference<>() {
+                });
 
         // adding user
         AccountDTO user = userService.addUser(payload.getInstallation().getAccount());
@@ -157,23 +174,30 @@ public class WebHookListenerService {
     }
 
     /***
-     * Note we are using List<RepositoriesAdded> here, as the attributes of RepositoriesRemoved is sames as added, we are
+     * Note we are using List<RepositoriesAdded> here, as the attributes of
+     * RepositoriesRemoved is sames as added, we are
      * using one dto class.
      * Removing repositories as per user request
+     * 
      * @param webhookPayload data
      */
     private void removeRepository(Map<String, Object> webhookPayload) {
 
-        InstallationPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload, InstallationPayloadDTO.class);
+        InstallationPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload,
+                InstallationPayloadDTO.class);
 
         if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
                 && payload.getRepositoriesRemoved() != null && payload.getAction() != null) {
-            List<RepositoriesAddedDTO> removedRepositories = Mapper.getInstance().convertValue(payload.getRepositoriesRemoved(), new TypeReference<>() {});
+            List<RepositoriesAddedDTO> removedRepositories = Mapper.getInstance()
+                    .convertValue(payload.getRepositoriesRemoved(), new TypeReference<>() {
+                    });
 
-            List<Integer> removedRepositoryIds = removedRepositories.stream().map(RepositoriesAddedDTO::getId).collect(Collectors.toList());
+            List<Integer> removedRepositoryIds = removedRepositories.stream().map(RepositoriesAddedDTO::getId)
+                    .collect(Collectors.toList());
 
             if (!removedRepositoryIds.isEmpty()) {
-                List<RepositoriesAddedDTO> repositoriesToRemove = repositoryService.getRepositoryById(removedRepositoryIds);
+                List<RepositoriesAddedDTO> repositoriesToRemove = repositoryService
+                        .getRepositoryById(removedRepositoryIds);
                 if (repositoriesToRemove != null) {
                     for (RepositoriesAddedDTO repositoryId : repositoriesToRemove) {
                         repositoryService.deleteRepositoryById(repositoryId.getId());
@@ -185,12 +209,15 @@ public class WebHookListenerService {
     }
 
     /***
-     * when user deletes the application, this implementation will be executed, which deletes all information about user
+     * when user deletes the application, this implementation will be executed,
+     * which deletes all information about user
+     * 
      * @param webhookPayload data
      */
     private void handleInstallationDeletion(Map<String, Object> webhookPayload) {
 
-        InstallationPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload, InstallationPayloadDTO.class);
+        InstallationPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload,
+                InstallationPayloadDTO.class);
 
         if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
                 && payload.getRepositories() != null && payload.getAction() != null) {
@@ -229,28 +256,66 @@ public class WebHookListenerService {
         }
     }
 
+
     private void handlePullRequestEvent(Map<String, Object> webhookPayload) {
         Payload pullRequestPayload = Mapper.getInstance().convertValue(webhookPayload, Payload.class);
         if (pullRequestPayload != null) {
-            UserEntity userEntity = userService.addUser(pullRequestPayload.getSender().getId(), pullRequestPayload.getSender().getLogin(), pullRequestPayload.getSender().getUrl());
-            RepositoryEntity repositoryEntity = repositoryService.addRepository(pullRequestPayload.getRepository().getId(), pullRequestPayload.getRepository().getName(), pullRequestPayload.getRepository().getFork(), pullRequestPayload.getRepository().getOwner().getId(),pullRequestPayload.getInstallation().getId().toString());
-            repositoryTagService.addTag(pullRequestPayload.getRepository().getTagsUrl(),pullRequestPayload.getRepository().getId());
-            repositoryBranchService.addBranch(pullRequestPayload.getRepository().getBranchesUrl(),pullRequestPayload.getRepository().getId());
+            UserEntity userEntity = userService.addUser(pullRequestPayload.getSender().getId(),
+                    pullRequestPayload.getSender().getLogin(), pullRequestPayload.getSender().getUrl());
+            RepositoryEntity repositoryEntity = repositoryService.addRepository(
+                    pullRequestPayload.getRepository().getId(), pullRequestPayload.getRepository().getName(),
+                    pullRequestPayload.getRepository().getFork(), pullRequestPayload.getRepository().getOwner().getId(),
+                    pullRequestPayload.getInstallation().getId().toString());
+            repositoryTagService.addTag(pullRequestPayload.getRepository().getTagsUrl(),
+                    pullRequestPayload.getRepository().getId());
+            repositoryBranchService.addBranch(pullRequestPayload.getRepository().getBranchesUrl(),
+                    pullRequestPayload.getRepository().getId());
             List<Integer> repositoryEntitiesIds = new ArrayList<>();
             repositoryEntitiesIds.add(repositoryEntity.getRepositoryId());
-            eventService.addEvent("Pull Request", (int)userEntity.getUserId(), repositoryEntitiesIds);
+            eventService.addEvent("Pull Request", (int) userEntity.getUserId(), repositoryEntitiesIds);
             boolean pullRequestCheck = pullRequestService.pullRequestCheck(pullRequestPayload.getRepository().getId());
-            if(!pullRequestCheck){
+            if (!pullRequestCheck) {
                 webHookListenerUtil.rejectPullRequest(
                         pullRequestPayload.getRepository().getOwner().getLogin(),
                         pullRequestPayload.getRepository().getName(),
-                        pullRequestPayload.getPullRequest().getNumber(),pullRequestPayload.getInstallation().getId().toString());
+                        pullRequestPayload.getPullRequest().getNumber(),
+                        pullRequestPayload.getInstallation().getId().toString());
             }
         }
     }
+
+    private void installationWebhookListener(Map<String, Object> webhookPayload) {
+        InstallationPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload,
+                InstallationPayloadDTO.class);
+        LOGGER.debug("webHookListener : Installation payload {}", payload);
+        try {
+            Map<String, Object> bodyParamForPost = new HashMap<>();
+            Map<String, Object> comitter = new HashMap<>();
+            bodyParamForPost.put("message", "Code scanning configured");
+            bodyParamForPost.put("content", Files.readAllBytes(Path.of(
+                    System.getProperty("user.dir")
+                            + "/coder-gate/src/main/resources/application-designite.yml")));
+            comitter.put("name", payload.getInstallation().getAppSlug() + "[bot]");
+            comitter.put("email", payload.getInstallation().getAccount().getId()
+                    + payload.getInstallation().getAppSlug() + "[bot]@users.noreply.github.com");
+            bodyParamForPost.put("committer", comitter);
+            List<RepositoriesDTO> repositoriesToUpdate = payload.getRepositoriesAdded() != null ? Mapper.getInstance()
+                    .convertValue(payload.getRepositoriesAdded(), new TypeReference<List<RepositoriesDTO>>() {
+                    }) : payload.getRepositories();
+            if (repositoriesToUpdate != null && !repositoriesToUpdate.isEmpty()) {
+                repositoriesToUpdate.stream().filter(Objects::nonNull).forEach(repo -> {
+                    if (payload.getInstallation() != null && payload.getInstallation().getId() != null) {
+                        restClient.invokeForPut(
+                                "https://api.github.com/repos/" + repo.getFullName()
+                                        + "/contents/.github/workflows/application-designite.yml",
+                                bodyParamForPost,
+                                JwtUtils.getGithubSpecificHeaders(), payload.getInstallation().getId().toString());
+                    }
+                });
+            }
+        } catch (IOException e) {
+            LOGGER.error("installationWebhookListener : Failed to read github action file");
+        }
+    }
+
 }
-
-
-
-
-

@@ -41,7 +41,7 @@ public class JwtUtils {
                         // reading private key from resources directory
                         String rsaPrivateKey = readPrivateKey(Path.of(
                                         System.getProperty("user.dir")
-                                                        + "/src/main/resources/private-key.pem")
+                                                        + "/coder-gate/src/main/resources/private-key.pem")
                                         .toFile());
                         // base64 decoding and re-encoding private key using RSA
                         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(
