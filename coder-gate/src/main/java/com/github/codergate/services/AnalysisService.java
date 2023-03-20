@@ -43,7 +43,7 @@ public class AnalysisService {
 
     public AnalysisDTO getAnalysisByID(int repositoryID) {
         AnalysisDTO analysisDTO = null;
-        AnalysisEntity analysisEntity = analysisRepository.findLatestAnalysisByRepositoryId(repositoryID);
+        AnalysisEntity analysisEntity = analysisRepository.findAnalysisByRepositoryId(repositoryID);
         if (analysisEntity != null) {
             analysisDTO = convertAnalysisEntityToDto(analysisEntity);
             LOGGER.info("getAnalysisByID : Successfully retrieved latest analysis with repositoryID {}", repositoryID);
@@ -277,7 +277,7 @@ public class AnalysisService {
             JSONObject solutionObject = analysisObject.getJSONObject("Solution");
             double smellDensity = solutionObject.getDouble("SmellDensity");
             int codeDuplication = solutionObject.getInt("CodeDuplication");
-            branchService.addBranch(new RepositoryDTO(repo, branch));
+            branchService.addBranch(branch, repo);
             AnalysisEntity analysisEntity = new AnalysisEntity(repo, branch, smellDensity, codeDuplication,
                     System.currentTimeMillis());
             return analysisRepository.save(analysisEntity);

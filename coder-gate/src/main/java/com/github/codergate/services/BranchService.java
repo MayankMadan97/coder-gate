@@ -18,39 +18,24 @@ public class BranchService {
 
     /***
      * adds branch information during push event
-     * 
-     * @param repository RepositoryDTO object
      * @return RepositoryDTO object
      */
-    public RepositoryDTO addBranch(RepositoryDTO repository) {
-        RepositoryDTO repositoryDTO = null;
-        BranchEntity branchEntity = convertDTOToEntity(repository);
-        if (branchEntity != null) {
+    public void addBranch(String branchesUrl, Integer repositoryId) {
+        BranchEntity branchEntity = convertDTOToEntity(branchesUrl,repositoryId);
             BranchEntity savedEntity = branchRepository.save(branchEntity);
             LOGGER.info("addBranch : The branch information is added {}", savedEntity);
-            repositoryDTO = convertEntityToDto(savedEntity);
-        }
-        return repositoryDTO;
     }
 
     /***
      * converts RepositoryDTO to Branch entity
-     * 
-     * @param repositoryDTO RepositoryDTO object
      * @return Branch entity
      */
-    private BranchEntity convertDTOToEntity(RepositoryDTO repositoryDTO) {
+    private BranchEntity convertDTOToEntity(String branchesUrl, Integer reposirotyId) {
         BranchEntity branchEntity = null;
-        if (repositoryDTO != null) {
             branchEntity = new BranchEntity();
-            if (repositoryDTO.getName() != null && repositoryDTO.getId() != null) {
-                BranchId branchId = new BranchId(repositoryDTO.getId(), repositoryDTO.getName());
-                branchEntity.setBranchId(branchId);
-            }
+            BranchId branchId = new BranchId(reposirotyId, branchesUrl);
+            branchEntity.setBranchId(branchId);
             LOGGER.info("convertDTOToEntity : Repository DTO has been converted to Branch Entity {}", branchEntity);
-        } else {
-            LOGGER.warn("convertDTOToEntity : Repository branch value is null");
-        }
         return branchEntity;
     }
 

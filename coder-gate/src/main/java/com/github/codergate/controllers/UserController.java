@@ -1,8 +1,7 @@
 package com.github.codergate.controllers;
 
 import com.github.codergate.dto.controller.UserRequest;
-import com.github.codergate.dto.installation.RepositoriesAddedDTO;
-import com.github.codergate.services.RepositoryService;
+import com.github.codergate.dto.controller.UserResponse;
 import com.github.codergate.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,20 +11,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
 public class UserController {
     @Autowired
     UserService userService;
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    @GetMapping("/getUserImage")
-    public ResponseEntity<String> getUserImageUrl(@RequestBody UserRequest userRequest) {
+    @GetMapping("/getUserDetails")
+    public ResponseEntity<UserResponse> getUser(@RequestBody UserRequest userRequest) {
         LOGGER.debug("getUserImage : Entering the method");
-        String userImageUrl = userService.getUserImageUrl(userRequest.getUserName());
+        UserResponse userResponse = userService.getUserResponse(userRequest.getUserName());
         LOGGER.debug("getUserImage : Exiting the method");
-        return ResponseEntity.ok(userImageUrl);
+        return ResponseEntity.ok(userResponse);
     }
 }
