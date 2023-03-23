@@ -95,40 +95,4 @@ public class Head {
         this.additionalProperties.put(name, value);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Head.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("label");
-        sb.append('=');
-        sb.append(((this.label == null)?"<null>":this.label));
-        sb.append(',');
-        sb.append("ref");
-        sb.append('=');
-        sb.append(((this.ref == null)?"<null>":this.ref));
-        sb.append(',');
-        sb.append("sha");
-        sb.append('=');
-        sb.append(((this.sha == null)?"<null>":this.sha));
-        sb.append(',');
-        sb.append("user");
-        sb.append('=');
-        sb.append(((this.user == null)?"<null>":this.user));
-        sb.append(',');
-        sb.append("repo");
-        sb.append('=');
-        sb.append(((this.repo == null)?"<null>":this.repo));
-        sb.append(',');
-        sb.append("additionalProperties");
-        sb.append('=');
-        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
-        sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
-        }
-        return sb.toString();
-    }
-
 }

@@ -108,44 +108,4 @@ public class Payload {
         this.additionalProperties.put(name, value);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Payload.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("action");
-        sb.append('=');
-        sb.append(((this.action == null)?"<null>":this.action));
-        sb.append(',');
-        sb.append("number");
-        sb.append('=');
-        sb.append(((this.number == null)?"<null>":this.number));
-        sb.append(',');
-        sb.append("pullRequest");
-        sb.append('=');
-        sb.append(((this.pullRequest == null)?"<null>":this.pullRequest));
-        sb.append(',');
-        sb.append("repository");
-        sb.append('=');
-        sb.append(((this.repository == null)?"<null>":this.repository));
-        sb.append(',');
-        sb.append("sender");
-        sb.append('=');
-        sb.append(((this.sender == null)?"<null>":this.sender));
-        sb.append(',');
-        sb.append("installation");
-        sb.append('=');
-        sb.append(((this.installation == null)?"<null>":this.installation));
-        sb.append(',');
-        sb.append("additionalProperties");
-        sb.append('=');
-        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
-        sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
-        }
-        return sb.toString();
-    }
-
 }

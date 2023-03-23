@@ -1,10 +1,9 @@
 package com.github.codergate.dto.controller;
 
-import com.github.codergate.dto.installation.RepositoriesAddedDTO;
-import com.github.codergate.dto.pullRequest.CommitsInformation;
-
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import com.github.codergate.dto.installation.RepositoriesAddedDTO;
 
 public class RepositoryResponse {
     RepositoriesAddedDTO repositoriesAddedDTO;

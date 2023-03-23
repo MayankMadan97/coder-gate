@@ -77,49 +77,4 @@ public class PushEventPayloadDTO implements Serializable
         this.additionalProperties.put(name, value);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(PushEventPayloadDTO.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("event");
-        sb.append('=');
-        sb.append(((this.event == null)?"<null>":this.event));
-        sb.append(',');
-        sb.append("payload");
-        sb.append('=');
-        sb.append(((this.pusherPayloadDTO == null)?"<null>":this.pusherPayloadDTO));
-        sb.append(',');
-        sb.append("additionalProperties");
-        sb.append('=');
-        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
-        sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 1;
-        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
-        result = ((result* 31)+((this.event == null)? 0 :this.event.hashCode()));
-        result = ((result* 31)+((this.pusherPayloadDTO == null)? 0 :this.pusherPayloadDTO.hashCode()));
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if ((other instanceof PushEventPayloadDTO) == false) {
-            return false;
-        }
-        PushEventPayloadDTO rhs = ((PushEventPayloadDTO) other);
-        return ((((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties)))&&((this.event == rhs.event)||((this.event!= null)&&this.event.equals(rhs.event))))&&((this.pusherPayloadDTO == rhs.pusherPayloadDTO)||((this.pusherPayloadDTO != null)&&this.pusherPayloadDTO.equals(rhs.pusherPayloadDTO))));
-    }
-
 }

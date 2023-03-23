@@ -77,6 +77,14 @@ public class RestClient {
         LOGGER.debug("RestClient :: invokeForPost : Exiting the method");
         return response;
     }
+
+    /**
+     * @param uri
+     * @param bodyParams
+     * @param customHeaders
+     * @param installationId
+     * @return Object
+     */
     public Object invokeForPut(String uri, Object bodyParams,
             MultiValueMap<String, String> customHeaders, String installationId) {
         LOGGER.debug(ENTER_POST);
@@ -161,16 +169,23 @@ public class RestClient {
         return existingHeaders;
     }
 
+    /**
+     * method fetches access token from Github by passing it generated JWT Token
+     * 
+     * @param jwtToken
+     * @param installationId
+     * @return String
+     */
     private String generateAccessFromJwtToken(String jwtToken, String installationId) {
         LOGGER.debug("generateAccessFromJwtToken :: Entering the method with JWT token {}", jwtToken);
         String accessToken = null;
         if (jwtToken != null && !jwtToken.trim().isEmpty()) {
+            String url = "https://api.github.com/app/installations/" + installationId + "/access_tokens";
             MultiValueMap<String, String> existingHeaders = JwtUtils.getGithubSpecificHeaders();
             existingHeaders.add(AUTHORIZATION_HEADER, BEARER + jwtToken);
             HttpEntity<String> request = new HttpEntity<>(null, existingHeaders);
             ResponseEntity<String> apiResponse = restTemplate.exchange(
-                    "https://api.github.com/app/installations/" + installationId + "/access_tokens", HttpMethod.POST,
-                    request, String.class);
+                    url, HttpMethod.POST, request, String.class);
             if (apiResponse.getBody() != null) {
                 JSONObject jsonifiedResponse = new JSONObject(apiResponse.getBody());
                 if (jsonifiedResponse.get(TOKEN) != null) {
