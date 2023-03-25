@@ -33,7 +33,7 @@ build-frontend:
   stage: build
   image: node:latest
   script:
-    - cd frontend
+    - cd coder-gate-ui
     - npm install
     - ng build --prod
   artifacts:
