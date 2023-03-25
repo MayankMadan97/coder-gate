@@ -1,0 +1,90 @@
+<app-navigator></app-navigator>
+<div class="dashboard-container">
+  <div class="row py-4">
+    <div class="col-2 border-end sidebar">
+      <div class="row insights-sidebar-item sidebar-item p-3 active" role="button">
+        <i class="col-2 fa fa-code align-self-center" aria-hidden="true"></i>
+        <div class="col-10">Repositories</div>
+      </div>
+      <div class="row insights-sidebar-item sidebar-item p-3" role="button">
+        <i class="col-2 fa fa-lightbulb-o align-self-center" aria-hidden="true"></i>
+        <div class="col-10">Insights</div>
+      </div>
+      <div class="row insights-sidebar-item sidebar-item p-3" role="button">
+        <i class="col-2 fa fa-comments-o align-self-center" aria-hidden="true"></i>
+        <div class="col-10">Feedback</div>
+      </div>
+    </div>
+    <div class="col-7" *ngIf="!showThresholdView">
+      <div class="row mb-3 px-4 d-flex justify-content-between">
+        <div class="p-3 metric repository-metric">
+          <img src="../../../assets/images/repo.png" class="metric-icon" alt="repositories">
+          <div class="metric-value mt-4">13</div>
+          <div class="metric-name">Repositories</div>
+        </div>
+        <div class="p-3 metric collaborator-metric">
+          <img src="../../../assets/images/coder-head.png" class="metric-icon" alt="collaborators">
+          <div class="metric-value mt-4">27</div>
+          <div class="metric-name">Collaborators</div>
+        </div>
+        <div class="p-3 metric scan-metric">
+          <img src="../../../assets/images/loupe.png" class="metric-icon" alt="scanning">
+          <div class="metric-value mt-4">297</div>
+          <div class="metric-name">Code scanning</div>
+        </div>
+      </div>
+      <div class="px-4 py-1 repository-list row">
+        <div class="col-12 p-0">
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let element">{{element.title}}</td>
+            </ng-container>
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="Last updated">
+              <th mat-header-cell *matHeaderCellDef>Last updated on</th>
+              <td mat-cell *matCellDef="let element">{{element.lastUpdatedOn}}</td>
+            </ng-container>
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="health">
+              <th mat-header-cell *matHeaderCellDef>Health</th>
+              <td mat-cell *matCellDef="let element">{{element.health}}%</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row (click)="onRepoClick(row.title)" *matRowDef="let row; columns: displayedColumns;" role="button">
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-7 threshold-form-view" *ngIf="showThresholdView">
+      <div class="row">
+        <div class="col-12 d-flex align-self-center" role="button" (click)="showThresholdView = false">
+          <img src="../../assets/images/back.png" height="20" alt="back arrow"
+            class="back-arrow mx-2 align-self-center">
+          <span class="repo-title">
+            Threshold
+          </span>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-12">
+          <!-- my-form.component.html -->
+
+          <form *ngIf="myForm" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+            <mat-form-field class="col-12">
+              <input matInput placeholder="{{selectedRepo}}" formControlName="repository">
+            </mat-form-field>
+              <mat-slider min="1" max="5" step="0.5" value="1.5" class="col-12">
+                <input matSliderThumb formControlName="smellDensity">
+              </mat-slider>
+            <button mat-raised-button color="primary" type="submit">Submit</button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
