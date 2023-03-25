@@ -8,7 +8,8 @@ import { UserService } from './user.service'
   templateUrl: './github-login.component.html',
   styleUrls: ['./github-login.component.css'],
   providers : [
-    {provide: 'git_access_token', useValue: localStorage.getItem("github_access_token")},
+    UserService,
+    {provide: 'git_access_token', useValue: localStorage.getItem('github_access_token') },
 
   ]
 })
