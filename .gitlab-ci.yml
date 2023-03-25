@@ -29,7 +29,20 @@ test:
   tags:
     - Group19Runner
 
-build:
+build-frontend:
+  stage: build
+  image: node:latest
+  script:
+    - cd frontend
+    - npm install
+    - ng build --prod
+  artifacts:
+    paths:
+      - ./coder-gate-ui/dist
+  tags:
+    - Group19Runner
+
+build-backend:
   stage: build
   image: maven:latest
   script:
@@ -37,10 +50,12 @@ build:
     - echo "Building the pipeline"
     - mvn clean package
   dependencies:
-    - test
     - code_quality
+    - test
+    - build-frontend
   artifacts:
     paths:
       - coder-gate/target
+      - coder-gate-ui/dist
   tags:
     - Group19Runner
