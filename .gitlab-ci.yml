@@ -38,7 +38,7 @@ build:
     - mvn clean package
   dependencies:
     - test
-    - code-Quality
+    - code_quality
   artifacts:
     paths:
       - coder-gate/target
