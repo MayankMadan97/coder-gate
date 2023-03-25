@@ -35,7 +35,7 @@ build-frontend:
   script:
     - cd coder-gate-ui
     - npm install
-    - ng build --prod
+    - ng build --configuration=production
   artifacts:
     paths:
       - ./coder-gate-ui/dist
