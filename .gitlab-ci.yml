@@ -22,10 +22,10 @@ test:
     - mvn verify
   artifacts: 
       paths:
-        - ./coder-gate/target
+        - ./coder-gate/target/surefire-reports
       reports:
         junit:
-          - ./coder-gate/target/TEST_*.xml
+          - ./coder-gate/target/surefire-reports/TEST-*.xml
   tags:
     - Group19Runner
 
