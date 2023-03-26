@@ -22,10 +22,10 @@ test:
     - mvn verify
   artifacts: 
       paths:
-        - ./coder-gate/target/surefire-reports
+        - coder-gate/target/surefire-reports
       reports:
         junit:
-          - ./coder-gate/target/surefire-reports/TEST-*.xml
+          - coder-gate/target/surefire-reports/TEST-*.xml
   tags:
     - Group19Runner
 
@@ -38,7 +38,7 @@ build-frontend:
     - ng build --configuration=production
   artifacts:
     paths:
-      - /coder-gate-ui/dist
+      - coder-gate-ui/dist
   tags:
     - Group19Runner
 
