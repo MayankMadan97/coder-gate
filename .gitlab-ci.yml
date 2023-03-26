@@ -38,7 +38,7 @@ build-frontend:
     - ng build --configuration=production
   artifacts:
     paths:
-      - coder-gate-ui/
+      - coder-gate-ui
   tags:
     - Group19Runner
 
@@ -56,6 +56,6 @@ build-backend:
   artifacts:
     paths:
       - coder-gate/target
-      - coder-gate-ui/
+      - coder-gate-ui
   tags:
     - Group19Runner
