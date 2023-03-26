@@ -9,12 +9,11 @@ import { UserService } from './user.service'
   styleUrls: ['./github-login.component.css'],
   providers : [
     UserService,
-    {provide: 'git_access_token', useValue: localStorage.getItem('github_access_token') },
+    {provide: 'git_access_token', useValue: localStorage.getItem('github_access_token') }
 
   ]
 })
 export class GithubLoginComponent implements OnInit {
-  users:any;
 
 
   constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router,public userService: UserService) { }
@@ -26,8 +25,9 @@ export class GithubLoginComponent implements OnInit {
         localStorage.setItem("github_access_token",response_["access_token"]);
         this.userService.getUsers().subscribe(response => {
           localStorage.setItem("user",JSON.stringify(response))
+          this.router.navigate(['/dashboard']);
       });
-        this.router.navigate(['/dashboard']);
+       
       });
      
     }

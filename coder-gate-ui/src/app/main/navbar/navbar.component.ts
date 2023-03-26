@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/shared/auth.service';
 })
 export class NavBarComponent {
     public showUserMenu = false;
+    user = JSON.parse(localStorage.getItem('user') || 'null');
 
     constructor(private authService: AuthService) {
 
