@@ -80,7 +80,7 @@ deploy-frontend:
   image: nginx:latest
   script:
     - chmod og-rwx ${DEPLOY_SSH_KEY}
-    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "${CI_PROJECT_DIR}/coder-gate-ui/dist/*" "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR_FRONT_END}"
+    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "coder-gate-ui/dist/*" "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR_FRONT_END}"
   tags:
     - Group19Runner
   only:
