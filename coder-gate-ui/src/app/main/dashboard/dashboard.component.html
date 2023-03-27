@@ -75,13 +75,55 @@
 
           <form *ngIf="myForm" [formGroup]="myForm" (ngSubmit)="onSubmit()">
             <mat-form-field class="col-12">
-              <input matInput placeholder="{{selectedRepo}}" formControlName="repository">
+              <input matInput placeholder="{{selectedRepo}}" disabled>
             </mat-form-field>
-              <mat-slider min="1" max="5" step="0.5" value="1.5" class="col-12">
-                <input matSliderThumb formControlName="smellDensity">
+            <div>
+              <label style="display: inline-block; width: 170px; white-space: nowrap;">Bugs:</label>&nbsp;&nbsp;&nbsp;
+              <mat-slider discrete id="bugSlider" min="1" max="5" step="0.5" value="1.5" class="col-12">
+              <input matSliderThumb formControlName="bugs">
               </mat-slider>
+              <br>
+            </div>
+            <div>
+              <label style="display: inline-block; width: 170px; white-space: nowrap;">Vulnerabilities:</label>&nbsp;&nbsp;&nbsp;           
+              <mat-slider discrete id="vulnerabilitySlider" min="1" max="5" step="0.5" value="1.5" class="col-12">
+              <input matSliderThumb formControlName="vulnerabilities">
+              </mat-slider>
+              </div>
+               <div>
+               <label style="display: inline-block; width: 170px; white-space: nowrap;">Code Smell:</label>&nbsp;&nbsp;&nbsp;
+              <mat-slider discrete id="codeSmellSlider" min="1" max="5" step="0.5" value="1.5" class="col-12">
+               <input matSliderThumb formControlName="codeSmell">
+               </mat-slider>
+              </div>
+               <div>
+              <label id = "iii" style="display: inline-block; width: 170px; white-space: nowrap;">Test Coverage:</label>&nbsp;&nbsp;&nbsp;
+             <mat-slider discrete id="testCoverageSlider" min="1" max="5" step="0.5" value="1.5" class="col-12">
+               <input matSliderThumb formControlName="testCoverage">
+               </mat-slider>
+               </div>
+               <div>
+               <label style="display: inline-block; width: 170px; white-space: nowrap;">Duplicated Lines:</label>&nbsp;&nbsp;&nbsp;
+               <mat-slider discrete id="duplicatedLinesSlider" min="1" max="5" step="0.5" value="1.5" class="col-12">
+               <input matSliderThumb formControlName="duplicatedLines">
+              </mat-slider>
+              </div>
+              <div>
+             <label style="display: inline-block; width: 170px; white-space: nowrap;">Cyclomatic Complexity:</label>&nbsp;&nbsp;&nbsp;
+               <mat-slider discrete id="cyclomaticComplexitySlider" min="1" max="5" step="0.5" value="1.5" class="col-12">
+               <input matSliderThumb formControlName="cyclomaticComplexitySlider">
+              </mat-slider>
+              </div>
+               <div>
+               <label style="display: inline-block; width: 170px; white-space: nowrap;">Documented Lines:</label>&nbsp;&nbsp;&nbsp;
+               <mat-slider discrete id="documentedLinesslider" min="1" max="5" step="0.5" value="1.5" class="col-12">
+               <input matSliderThumb formControlName="documentedLines">
+               </mat-slider>
+               </div>
+               <br>
             <button mat-raised-button color="primary" type="submit">Submit</button>
           </form>
+
 
         </div>
       </div>
