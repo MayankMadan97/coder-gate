@@ -18,41 +18,25 @@ public class TagService {
 
     /***
      * adds tag information to table
-     * @param repository RepositoryDTO object
      * @return RepositoryDTO object
      */
-    public RepositoryDTO addTag(RepositoryDTO repository) {
-        RepositoryDTO repositoryDTO = null;
-        TagEntity tagEntity = convertDTOToEntity(repository);
+    public void addTag(String tagsUrl, Integer repositoryId) {
+        TagEntity tagEntity = convertDTOToEntity(tagsUrl,repositoryId);
         if(tagEntity!=null) {
             TagEntity savedEntity = tagRepository.save(tagEntity);
             LOGGER.info("addTag : The tag information is added {}", savedEntity);
-            repositoryDTO = convertEntityToDTO(savedEntity);
         }
-        return repositoryDTO;
     }
 
     /***
      * converts RepositoryDTO to Tag Entity
-     * @param repositoryDTO RepositoryDTO object
      * @return Tag Entity
      */
-    private TagEntity convertDTOToEntity(RepositoryDTO repositoryDTO) {
-
+    private TagEntity convertDTOToEntity(String tagUrls, Integer id) {
         TagEntity tagEntity = null;
-
-        if(repositoryDTO != null)
-        {
-            tagEntity = new TagEntity();
-            if(repositoryDTO.getTagsUrl() != null && repositoryDTO.getId() != null)
-            {
-                TagId tagId = new TagId(repositoryDTO.getId(), repositoryDTO.getTagsUrl());
-                tagEntity.setTagId(tagId);
-            }
-            LOGGER.info("convertDTOToEntity : Repository DTO has been converted to Tag Entity {}", tagEntity);
-        } else {
-            LOGGER.warn("convertDTOToEntity : Repository dto doesn't have tag");
-        }
+        tagEntity = new TagEntity();
+        TagId tagId = new TagId(id, tagUrls);
+        tagEntity.setTagId(tagId);
         return tagEntity;
     }
 

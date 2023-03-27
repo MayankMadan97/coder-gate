@@ -29,7 +29,4 @@ public class EventEntity {
     @JoinColumn(name = "repositoryId")
     private RepositoryEntity repositoryIdInEvent;
 
-    @OneToOne(mappedBy = "eventIdInAnalysis")
-    private AnalysisEntity analysisEntityAndRepository;
-
 }

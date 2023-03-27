@@ -1,42 +1,52 @@
+
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
-
-  public selectedRepo?: string;
-  public showThresholdView = false;
+export class DashboardComponent implements OnInit {
 
   myForm?: FormGroup;
+  //bugs: AbstractControl | undefined;
 
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
 
   }
 
+
+  public selectedRepo?: string;
+  public showThresholdView = false;
+
   ngOnInit() {
     this.myForm = this.fb.group({
-      repository: ['', Validators.required],
-      smellDensity: ['', [Validators.required]],
-      message: ['', Validators.required]
+      bugs: ['', Validators.required],
+      vulnerabilities: ['', Validators.required],
+      codeSmell: ['', Validators.required],
+      testCoverage: ['', Validators.required],
+      duplicatedLines: ['', Validators.required],
+      cyclomaticComplexitySlider: ['', Validators.required],
+      documentedLines: ['', Validators.required],
     });
   }
 
   onSubmit() {
     if (this.myForm?.valid) {
       // Do something with the form data here
-      console.log(this.myForm.value);
+      //const formValues = this.myForm.value;
+      console.warn(this.myForm.value);
     }
   }
 userList = JSON.parse(localStorage.getItem('userList') || 'null') ; // Use the logical OR operator to assign an empty array if userList is null
 
   public ELEMENT_DATA = [
-    
+
 
     {
       title: "Java language server",

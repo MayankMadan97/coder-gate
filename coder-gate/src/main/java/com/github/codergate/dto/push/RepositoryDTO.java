@@ -109,6 +109,11 @@ public class RepositoryDTO implements Serializable
     private String name;
     @JsonProperty("full_name")
     private String fullName;
+    public RepositoryDTO(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @JsonProperty("private")
     private Boolean _private;
     @JsonProperty("owner")

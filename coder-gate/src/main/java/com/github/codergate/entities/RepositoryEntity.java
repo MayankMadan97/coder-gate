@@ -1,5 +1,6 @@
 package com.github.codergate.entities;
 
+import com.github.codergate.dto.installation.Installation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,6 @@ public class RepositoryEntity {
     @OneToOne(mappedBy = "repositoryIdInThreshold")
     private ThresholdEntity thresholdAndRepository;
 
-    @OneToMany(mappedBy = "repositoryIdInAnalysis", cascade = CascadeType.ALL)
-    private Set<AnalysisEntity> analysisAndRepository;
+    private String installationId;
+
 }

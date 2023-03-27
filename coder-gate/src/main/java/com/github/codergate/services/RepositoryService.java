@@ -1,9 +1,12 @@
 package com.github.codergate.services;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.codergate.dto.controller.RepositoryResponse;
 import com.github.codergate.dto.installation.RepositoriesAddedDTO;
 import com.github.codergate.dto.push.RepositoryDTO;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.repositories.RepositoryRepository;
+import com.github.codergate.services.utility.RepositoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,9 @@ public class RepositoryService {
 
     @Autowired
     RepositoryRepository repositoryRepository;
+
+    @Autowired
+    RepositoryUtil repositoryUtil;
     private static final Logger LOGGER = LoggerFactory.getLogger(RepositoryService.class);
 
     /***
@@ -43,8 +49,8 @@ public class RepositoryService {
      * @param userId user id
      * @return RepositoryDTO
      */
-    public RepositoryEntity addRepository(Integer id,String name,Boolean fork, int userId) {
-        RepositoryEntity repositoryEntity = convertDTOToEntityForPushEvent(id,name,fork, userId);
+    public RepositoryEntity addRepository(Integer id,String name,Boolean fork, int userId,String installationId) {
+        RepositoryEntity repositoryEntity = convertDTOToEntityForPushEvent(id,name,fork, userId,installationId);
         if(repositoryEntity!=null) {
             RepositoryEntity saveRepositoryEntity = repositoryRepository.save(repositoryEntity);
             LOGGER.info("addRepository : The repositoryRepository information for push event is added {}", saveRepositoryEntity);
@@ -150,7 +156,7 @@ public class RepositoryService {
      * @param userID user id
      * @return RepositoryEntity
      */
-    private RepositoryEntity convertDTOToEntityForPushEvent(Integer id,String name,boolean fork, int userID) {
+    private RepositoryEntity convertDTOToEntityForPushEvent(Integer id,String name,boolean fork, int userID,String installationId) {
         RepositoryEntity repositoryEntity = null;
         repositoryEntity = new RepositoryEntity();
         repositoryEntity.setRepositoryId(id);
@@ -159,6 +165,7 @@ public class RepositoryService {
         UserEntity userEntity = new UserEntity();
         userEntity.setUserId(userID);
         repositoryEntity.setUserEntity(userEntity);
+        repositoryEntity.setInstallationId(installationId);
         LOGGER.info("convertDTOToEntityForPushEvent : RepositoryRepository DTO has been converted to Entity {}", repositoryEntity);
         return repositoryEntity;
     }
@@ -201,6 +208,17 @@ public class RepositoryService {
         LOGGER.info("getRepositoryFromUserId : Getting the repositories from user Id {}", repositoriesByUserId);
         repositoriesAddedDto = convertEntityToDTO(repositoriesByUserId);
         return repositoriesAddedDto;
+    }
+
+    public RepositoryResponse getRepositoryResponse(Long userId) throws JsonProcessingException {
+        RepositoryResponse repositoryResponse = new RepositoryResponse();
+        List<RepositoriesAddedDTO> repositoriesAddedDto;
+        List<RepositoryEntity> repositoriesByUserId = repositoryRepository.findByUserId(userId);
+        LOGGER.info("getRepositoryFromUserId : Getting the repositories from user Id {}", repositoriesByUserId);
+        repositoriesAddedDto = convertEntityToDTO(repositoriesByUserId);
+//        repositoryResponse.setRepositoriesAddedDTOList(repositoriesAddedDto);
+        repositoryResponse.setCommitsInformation(repositoryUtil.getCommitsInformation(repositoriesByUserId.get(0).getInstallationId(),repositoriesByUserId.get(0).getRepositoryId()));
+        return repositoryResponse;
     }
 
     /***

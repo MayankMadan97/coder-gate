@@ -1,5 +1,7 @@
 package com.github.codergate.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.codergate.dto.controller.RepositoryResponse;
 import com.github.codergate.dto.controller.UserRequest;
 import com.github.codergate.dto.installation.RepositoriesAddedDTO;
 import com.github.codergate.services.RepositoryService;
@@ -21,13 +23,13 @@ public class RepositoryController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RepositoryController.class);
 
     @GetMapping("/getRepositories")
-    public ResponseEntity<List<RepositoriesAddedDTO>> fetchRepositories(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<RepositoryResponse> fetchRepositories(@RequestBody UserRequest userRequest) throws JsonProcessingException {
         LOGGER.debug("fetchRepositories : Entering the method");
-        List <RepositoriesAddedDTO> repositoriesAddedDto = new ArrayList<>();
+        RepositoryResponse repositoryResponse = new RepositoryResponse();
         if (userRequest.getUserId() != null && !userRequest.getUserId().isEmpty()) {
-            repositoriesAddedDto =repositoryService.getRepositoryFromUserId(Long.parseLong(userRequest.getUserId()));
+            repositoryService.getRepositoryResponse(Long.parseLong(userRequest.getUserId()));
         }
         LOGGER.debug("fetchRepositories : Exiting the method");
-        return ResponseEntity.ok(repositoriesAddedDto);
+        return ResponseEntity.ok(repositoryResponse);
     }
 }

@@ -4,7 +4,7 @@ public class AnalysisDTO {
     private String analysisType;
     private int bugs;
     private int vulnerabilities;
-    private int codeSmell;
+    private double codeSmell;
     private int testCoverage;
     private int duplicatedLines;
     private int cyclomaticComplexity;
@@ -79,11 +79,11 @@ public class AnalysisDTO {
         this.vulnerabilities = vulnerabilities;
     }
 
-    public int getCodeSmell() {
+    public double getCodeSmell() {
         return codeSmell;
     }
 
-    public void setCodeSmell(int codeSmell) {
+    public void setCodeSmell(double codeSmell) {
         this.codeSmell = codeSmell;
     }
 

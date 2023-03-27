@@ -1,13 +1,20 @@
 package com.github.codergate.services;
+import com.github.codergate.dto.controller.UserResponse;
 import com.github.codergate.dto.installation.AccountDTO;
 import com.github.codergate.dto.push.SenderDTO;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.repositories.UserRepository;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+import java.util.Scanner;
 
 @Service
 public class UserService {
@@ -207,6 +214,23 @@ public class UserService {
             LOGGER.warn("convertEntityToSenderDto : User entity value is null");
         }
         return senderDTO;
+    }
+    public UserResponse getUserResponse(String userName){
+        UserEntity userEntity = userRepository.findByUserName(userName);
+        UserResponse userResponse = new UserResponse();
+        String apiUrl = String.format("https://api.github.com/users/%s", userName);
+        String avatarUrl = null;
+        try {
+            URL url = new URL(apiUrl);
+            String response = new Scanner(url.openStream(), StandardCharsets.UTF_8).useDelimiter("\\A").next();
+            avatarUrl = new JSONObject(response).getString("avatar_url");
+            userResponse.setAvatarUrl(avatarUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        userResponse.setUserName(userName);
+        userResponse.setEmail(userEntity.getEmail());
+        return userResponse;
     }
 }
 
