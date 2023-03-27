@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
@@ -15,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.codergate.dto.analysis.AnalysisDTO;
-import com.github.codergate.dto.analysis.ArchSmell;
 import com.github.codergate.dto.analysis.Designate;
 import com.github.codergate.dto.analysis.Project;
 import com.github.codergate.dto.analysis.Solution;
@@ -285,16 +286,46 @@ public class AnalysisService {
             if (jsonifiedAnalysis != null && jsonifiedAnalysis.getAnalysis() != null
                     && jsonifiedAnalysis.getAnalysis().getSolution() != null) {
                 Solution solution = jsonifiedAnalysis.getAnalysis().getSolution();
-                branchService.addBranch(branchName, repoId);
-                double complexityDensity = getCyclomaticComplexity(solution.getProject(), solution.getMethodCount());
-                int cyclicArchDependencies = getArchSmells(solution.getProject(), "Cyclic Dependency").size();
-                int godComponentArchDependencies = getArchSmells(solution.getProject(), "God Component").size();
-                AnalysisEntity analysisEntity = new AnalysisEntity(repoId, branchName, solution.getSmellDensity(),
-                        solution.getCodeDuplication(), System.currentTimeMillis());
-                analysisEntity.setCyclomaticComplexity(complexityDensity);
-                analysisEntity.setCyclicDependency(cyclicArchDependencies);
-                analysisEntity.setGodComponents(godComponentArchDependencies);
-                processedAnalysis = analysisRepository.save(analysisEntity);
+                if (solution.getProject() != null) {
+                    Project project = solution.getProject();
+                    branchService.addBranch(branchName, repoId);
+                    double complexityDensity = getCyclomaticComplexity(solution.getProject(),
+                            solution.getMethodCount());
+                    int cyclicArchDependencies = getSmells(project.getArchSmells().getArchSmell(), "Cyclic Dependency")
+                            .size();
+                    int godComponentArchDependencies = getSmells(project.getArchSmells().getArchSmell(),
+                            "God Component").size();
+                    int complexConditionalImpSmells = getSmells(
+                            project.getImplementationSmells().getImplementationSmell(),
+                            "Complex Conditional").size();
+                    int complexMethodImpSmells = getSmells(project.getImplementationSmells().getImplementationSmell(),
+                            "Complex Method")
+                            .size();
+                    int emptyCatchClauseImpSmells = getSmells(
+                            project.getImplementationSmells().getImplementationSmell(), "Empty Catch Clause")
+                            .size();
+                    int cyclicallyDependentDsSmells = getSmells(
+                            project.getDesignSmells().getDesignSmell(), "Cyclically-dependent Modularization")
+                            .size();
+                    int insufficientModularizationDsSmells = getSmells(
+                            project.getDesignSmells().getDesignSmell(), "Insufficient Modularization")
+                            .size();
+                    int unnecessaryAbstractionDsSmells = getSmells(
+                            project.getDesignSmells().getDesignSmell(), "Unnecessary Abstraction")
+                            .size();
+                    AnalysisEntity analysisEntity = new AnalysisEntity(repoId, branchName, solution.getSmellDensity(),
+                            solution.getCodeDuplication(), System.currentTimeMillis());
+                    analysisEntity.setCyclomaticComplexity(complexityDensity);
+                    analysisEntity.setCyclicDependency(cyclicArchDependencies);
+                    analysisEntity.setGodComponents(godComponentArchDependencies);
+                    analysisEntity.setComplexConditional(complexConditionalImpSmells);
+                    analysisEntity.setComplexMethod(complexMethodImpSmells);
+                    analysisEntity.setEmptyCatchClause(emptyCatchClauseImpSmells);
+                    analysisEntity.setCyclicallyDependentModularization(cyclicallyDependentDsSmells);
+                    analysisEntity.setInsufficientModularization(insufficientModularizationDsSmells);
+                    analysisEntity.setUnnecessaryAbstraction(unnecessaryAbstractionDsSmells);
+                    processedAnalysis = analysisRepository.save(analysisEntity);
+                }
             }
             return processedAnalysis;
         }
@@ -316,12 +347,17 @@ public class AnalysisService {
         return complexity;
     }
 
-    private List<ArchSmell> getArchSmells(Project projectOutput, String smellName) {
+    private <T> List<T> getSmells(List<T> smellList, String smellName) {
         LOGGER.debug("getCyclicDependencies :: Entering the method");
-        if (projectOutput != null && projectOutput.getArchSmells() != null) {
-            return projectOutput.getArchSmells().getArchSmell().stream()
-                    .filter(smell -> smell != null && smell.getName() != null
-                            && smell.getName().equalsIgnoreCase(smellName))
+        if (smellList != null && !smellList.isEmpty()) {
+            return smellList.stream()
+                    .filter(smell -> {
+                        Map<String, Object> map = Mapper.getInstance().convertValue(smell, new TypeReference<Map>() {
+
+                        });
+                        return map != null && map.get("Name") != null
+                                && map.get("Name").toString().equalsIgnoreCase(smellName);
+                    })
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();
