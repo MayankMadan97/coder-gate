@@ -33,9 +33,11 @@ export class DashboardComponent {
       console.log(this.myForm.value);
     }
   }
-
+userList = JSON.parse(localStorage.getItem('userList') || 'null') ; // Use the logical OR operator to assign an empty array if userList is null
 
   public ELEMENT_DATA = [
+    
+
     {
       title: "Java language server",
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam bibendum lacinia ligula. Donec dictum neque tincidunt lacus rhoncus, in elementum nisi pharetra. Suspendisse velit risus, mollis qui",
