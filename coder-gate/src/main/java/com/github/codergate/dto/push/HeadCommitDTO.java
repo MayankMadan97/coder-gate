@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,7 +27,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "removed",
     "modified"
 })
-@Generated("jsonschema2pojo")
 public class HeadCommitDTO implements Serializable
 {
 
@@ -44,9 +43,9 @@ public class HeadCommitDTO implements Serializable
     @JsonProperty("url")
     private String url;
     @JsonProperty("author")
-    private Author__1DTO author;
+    private AuthorDTO author;
     @JsonProperty("committer")
-    private Committer__1DTO committer;
+    private CommitterDTO committer;
     @JsonProperty("added")
     private List<Object> added;
     @JsonProperty("removed")
@@ -78,7 +77,7 @@ public class HeadCommitDTO implements Serializable
      * @param url
      * @param timestamp
      */
-    public HeadCommitDTO(String id, String treeId, Boolean distinct, String message, String timestamp, String url, Author__1DTO author, Committer__1DTO committer, List<Object> added, List<Object> removed, List<String> modified) {
+    public HeadCommitDTO(String id, String treeId, Boolean distinct, String message, String timestamp, String url, AuthorDTO author, CommitterDTO committer, List<Object> added, List<Object> removed, List<String> modified) {
         super();
         this.id = id;
         this.treeId = treeId;
@@ -154,22 +153,22 @@ public class HeadCommitDTO implements Serializable
     }
 
     @JsonProperty("author")
-    public Author__1DTO getAuthor() {
+    public AuthorDTO getAuthor() {
         return author;
     }
 
     @JsonProperty("author")
-    public void setAuthor(Author__1DTO author) {
+    public void setAuthor(AuthorDTO author) {
         this.author = author;
     }
 
     @JsonProperty("committer")
-    public Committer__1DTO getCommitter() {
+    public CommitterDTO getCommitter() {
         return committer;
     }
 
     @JsonProperty("committer")
-    public void setCommitter(Committer__1DTO committer) {
+    public void setCommitter(CommitterDTO committer) {
         this.committer = committer;
     }
 

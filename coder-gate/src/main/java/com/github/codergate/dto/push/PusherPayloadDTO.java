@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,7 +30,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "commits",
     "head_commit"
 })
-@Generated("jsonschema2pojo")
 public class PusherPayloadDTO implements Serializable
 {
 

@@ -4,7 +4,7 @@ package com.github.codergate.dto.pullRequest;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -105,7 +105,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "merge_commit_message",
     "merge_commit_title"
 })
-@Generated("jsonschema2pojo")
 public class Repo {
 
     @JsonProperty("id")

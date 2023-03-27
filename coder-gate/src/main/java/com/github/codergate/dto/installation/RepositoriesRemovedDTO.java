@@ -3,7 +3,7 @@ package com.github.codergate.dto.installation;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -3,7 +3,7 @@ package com.github.codergate.dto.pullRequest;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "user",
     "repo"
 })
-@Generated("jsonschema2pojo")
 public class Head {
 
     @JsonProperty("label")
@@ -29,7 +28,7 @@ public class Head {
     @JsonProperty("sha")
     private String sha;
     @JsonProperty("user")
-    private User__1 user;
+    private User user;
     @JsonProperty("repo")
     private Repo repo;
     @JsonIgnore
@@ -66,12 +65,12 @@ public class Head {
     }
 
     @JsonProperty("user")
-    public User__1 getUser() {
+    public User getUser() {
         return user;
     }
 
     @JsonProperty("user")
-    public void setUser(User__1 user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

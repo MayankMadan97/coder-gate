@@ -4,7 +4,7 @@ package com.github.codergate.dto.pullRequest;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -94,7 +94,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "watchers",
     "default_branch"
 })
-@Generated("jsonschema2pojo")
 public class Repository {
 
     @JsonProperty("id")
@@ -108,7 +107,7 @@ public class Repository {
     @JsonProperty("private")
     private Boolean _private;
     @JsonProperty("owner")
-    private Owner__2 owner;
+    private Owner owner;
     @JsonProperty("html_url")
     private String htmlUrl;
     @JsonProperty("description")
@@ -309,12 +308,12 @@ public class Repository {
     }
 
     @JsonProperty("owner")
-    public Owner__2 getOwner() {
+    public Owner getOwner() {
         return owner;
     }
 
     @JsonProperty("owner")
-    public void setOwner(Owner__2 owner) {
+    public void setOwner(Owner owner) {
         this.owner = owner;
     }
 

@@ -39,7 +39,7 @@ public class AnalysisEntity {
     private double codeSmell;
     private int testCoverage;
     private int duplicatedLines;
-    private int cyclomaticComplexity;
+    private double cyclomaticComplexity;
     private int documentedLines;
 
     // Architecture Smells

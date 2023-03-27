@@ -4,7 +4,7 @@ package com.github.codergate.dto.pullRequest;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "committer",
     "parents"
 })
-@Generated("jsonschema2pojo")
 public class CommitsInformation {
 
     @JsonProperty("url")
@@ -40,9 +39,9 @@ public class CommitsInformation {
     @JsonProperty("commit")
     private Commit commit;
     @JsonProperty("author")
-    private Author__1 author;
+    private Author author;
     @JsonProperty("committer")
-    private Committer__1 committer;
+    private Committer committer;
     @JsonProperty("parents")
     private List<Parent> parents;
     @JsonIgnore
@@ -109,22 +108,22 @@ public class CommitsInformation {
     }
 
     @JsonProperty("author")
-    public Author__1 getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
     @JsonProperty("author")
-    public void setAuthor(Author__1 author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
     @JsonProperty("committer")
-    public Committer__1 getCommitter() {
+    public Committer getCommitter() {
         return committer;
     }
 
     @JsonProperty("committer")
-    public void setCommitter(Committer__1 committer) {
+    public void setCommitter(Committer committer) {
         this.committer = committer;
     }
 

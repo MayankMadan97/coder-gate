@@ -7,34 +7,35 @@ public class AnalysisDTO {
     private double codeSmell;
     private int testCoverage;
     private int duplicatedLines;
-    private int cyclomaticComplexity;
+    private double cyclomaticComplexity;
     private int documentedLines;
 
-    //Architecture Smells
+    // Architecture Smells
     private int cyclicDependency;
     private int godComponents;
 
-    //Design Smells
+    // Design Smells
     private int cyclicallyDependentModularization;
     private int insufficientModularization;
     private int unnecessaryAbstraction;
 
-    //Implementation Smells
+    // Implementation Smells
     private int complexMethod;
     private int complexConditional;
     private int emptyCatchClause;
 
-    //Test Smells
+    // Test Smells
     private int missingAssertion;
     private int emptyTest;
 
     public AnalysisDTO() {
     }
 
-    public AnalysisDTO(String analysisType, int repositoryID, int bugs, int vulnerabilities, int codeSmell, int testCoverage,
-                       int duplicatedLines, int cyclomaticComplexity, int documentedLines, int cyclicDependency, int godComponents,
-                       int cyclicallyDependentModularization, int insufficientModularization, int unnecessaryAbstraction,
-                       int complexMethod, int complexConditional, int emptyCatchClause, int missingAssertion, int emptyTest) {
+    public AnalysisDTO(String analysisType, int repositoryID, int bugs, int vulnerabilities, int codeSmell,
+            int testCoverage,
+            int duplicatedLines, int cyclomaticComplexity, int documentedLines, int cyclicDependency, int godComponents,
+            int cyclicallyDependentModularization, int insufficientModularization, int unnecessaryAbstraction,
+            int complexMethod, int complexConditional, int emptyCatchClause, int missingAssertion, int emptyTest) {
         this.analysisType = analysisType;
         this.bugs = bugs;
         this.vulnerabilities = vulnerabilities;
@@ -103,11 +104,11 @@ public class AnalysisDTO {
         this.duplicatedLines = duplicatedLines;
     }
 
-    public int getCyclomaticComplexity() {
+    public double getCyclomaticComplexity() {
         return cyclomaticComplexity;
     }
 
-    public void setCyclomaticComplexity(int cyclomaticComplexity) {
+    public void setCyclomaticComplexity(double cyclomaticComplexity) {
         this.cyclomaticComplexity = cyclomaticComplexity;
     }
 
@@ -198,6 +199,5 @@ public class AnalysisDTO {
     public void setEmptyTest(int emptyTest) {
         this.emptyTest = emptyTest;
     }
-
 
 }
