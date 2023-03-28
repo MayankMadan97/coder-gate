@@ -74,9 +74,6 @@ deploy-backend:
   only:
   - dev 
 
-    
-
-
 deploy-frontend:
   stage: deploy
   image: nginx:latest
