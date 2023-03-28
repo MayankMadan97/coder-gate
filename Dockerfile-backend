@@ -2,7 +2,7 @@ FROM openjdk:11-jdk-slim
 
 WORKDIR /home/gitlab-runner/builds/ju9h8FbR/0/courses/2023-winter/csci-5308/group19/coder-gate
 
-COPY /home/csci5308vm19/deployment/backend/deployment/backend/coder-gate-0.0.1-SNAPSHOT.jar /home/gitlab-runner/builds/ju9h8FbR/0/courses/2023-winter/csci-5308/group19/coder-gate/coder-gate-0.0.1-SNAPSHOT.jar
+COPY /home/csci5308vm19/deployment/backend/coder-gate-0.0.1-SNAPSHOT.jar /home/gitlab-runner/builds/ju9h8FbR/0/courses/2023-winter/csci-5308/group19/coder-gate/coder-gate-0.0.1-SNAPSHOT.jar
 
 EXPOSE 8080
 
