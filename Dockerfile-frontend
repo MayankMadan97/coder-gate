@@ -1,6 +1,6 @@
 FROM nginx:1.21.3-alpine
 
-COPY /home/csci5308vm19/deployment/frontend/dist/coder-gate-ui /usr/share/nginx/html
+COPY /home/csci5308vm19/deployment/frontend/dist/coder-gate-ui/Dockerfile-frontend /usr/share/nginx/html
 
 COPY /home/csci5308vm19/deployment/nginx.conf /etc/nginx/conf.d/default.conf
 
