@@ -43,4 +43,27 @@ build-frontend:
   tags:
     - Group19Runner
 
+deploy-backend:
+  stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - chmod og-rwx ${DEPLOY_SSH_KEY}
+    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" coder-gate/target/*.jar "${DEPLOY_USER}@${DEPLOY_HOST}:/home/${DEPLOY_USER}${DEPLOY_DIR_BACK_END}/coder-gate-0.0.1-SNAPSHOT.jar"
+  tags:
+    - Group19Runner
+  only:
+  - dev 
+
+deploy-frontend:
+  stage: deploy
+  image: nginx:latest
+  script:
+    - chmod og-rwx ${DEPLOY_SSH_KEY}
+    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "coder-gate-ui/dist" "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR_FRONT_END}"
+  tags:
+    - Group19Runner
+  only:
+  - dev
 
