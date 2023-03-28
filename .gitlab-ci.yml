@@ -1,11 +1,26 @@
 stages:
-  - code-Quality
   - test
+  - code-Quality
   - build
-  - deploy
 
 include:
   - template: Code-Quality.gitlab-ci.yml
+
+test:
+  stage: test
+  image: maven:latest
+  artifacts: 
+    paths:
+      - coder-gate/target
+    reports:
+      junit:
+        - ./coder-gate/target/ProjectReports/TEST_*.xml
+  script:
+    - cd coder-gate
+    - echo "Pipeline test started"
+    - mvn verify
+  tags:
+    - Group19Runner
 
 code_quality:
   stage: code-Quality
@@ -14,56 +29,15 @@ code_quality:
   tags:
     - Group19Runner
 
-test:
-  stage: test
+build:
+  stage: build
   image: maven:latest
   script:
     - cd coder-gate
-    - echo "Pipeline test started"
-    - mvn verify
-  artifacts: 
-      paths:
-        - coder-gate/target/surefire-reports
-      reports:
-        junit:
-          - coder-gate/target/surefire-reports/TEST-*.xml
-  tags:
-    - Group19Runner
-
-build-frontend:
-  stage: build
-  image: node:latest
-  script:
-    - cd coder-gate-ui
-    - npm install
-    - ng build --configuration=production
+    - echo "Building the pipeline"
+    - mvn clean package
   artifacts:
     paths:
-      - coder-gate-ui/dist
+      - coder-gate/target
   tags:
     - Group19Runner
-
-deploy-backend:
-  stage: deploy
-  image: docker:latest
-  services:
-    - docker:dind
-  script:
-    - chmod og-rwx ${DEPLOY_SSH_KEY}
-    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" coder-gate/target/*.jar "${DEPLOY_USER}@${DEPLOY_HOST}:/home/${DEPLOY_USER}${DEPLOY_DIR_BACK_END}/coder-gate-0.0.1-SNAPSHOT.jar"
-  tags:
-    - Group19Runner
-  only:
-  - dev 
-
-deploy-frontend:
-  stage: deploy
-  image: nginx:latest
-  script:
-    - chmod og-rwx ${DEPLOY_SSH_KEY}
-    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "coder-gate-ui/dist" "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR_FRONT_END}"
-  tags:
-    - Group19Runner
-  only:
-  - dev
-
