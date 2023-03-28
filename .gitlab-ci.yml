@@ -69,17 +69,23 @@ deploy-backend:
   script:
     - chmod og-rwx ${DEPLOY_SSH_KEY}
     - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" coder-gate/target/*.jar "${DEPLOY_USER}@${DEPLOY_HOST}:/home/${DEPLOY_USER}${DEPLOY_DIR_BACK_END}/coder-gate-0.0.1-SNAPSHOT.jar"
+    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "cd ${DOCKER_BACK_END_PATH} && docker build -t coder-gate-backend:latest -f Dockerfile-backend ." 
+    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} " docker run -d --name coder-gate-backend -p 8080:8080 coder-gate-backend"
   tags:
     - Group19Runner
   only:
   - dev 
 
+    
 deploy-frontend:
   stage: deploy
   image: nginx:latest
   script:
     - chmod og-rwx ${DEPLOY_SSH_KEY}
+    - scp -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" nginx.conf "${DEPLOY_USER}@${DEPLOY_HOST}:${NGINX_CONFIG}"
     - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "coder-gate-ui/dist" "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR_FRONT_END}"
+    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "cd ${DOCKER_FRONT_END_PATH} &&  docker build -t coder-gate-frontend:latest ."
+    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "${DEPLOY_USER}@${DEPLOY_HOST}" " docker run -d --name coder-gate-ui -p 80:80 -v ${NGINX_CONFIG}:/etc/nginx/nginx.conf -v ${DEPLOY_DIR_FRONT_END}:/usr/share/nginx/html nginx"
   tags:
     - Group19Runner
   only:
