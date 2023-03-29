@@ -2,7 +2,7 @@ FROM openjdk:11-jdk-slim
 
 WORKDIR /app 
 
-COPY coder-gate-0.0.1-SNAPSHOT.jar app/coder-gate-0.0.1-SNAPSHOT.jar
+COPY /home/csci5308vm19/deployment/backend/coder-gate-0.0.1-SNAPSHOT.jar /app/
 
 EXPOSE 8080
 
