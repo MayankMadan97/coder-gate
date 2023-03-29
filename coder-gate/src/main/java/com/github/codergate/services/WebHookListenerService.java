@@ -25,7 +25,6 @@ import com.github.codergate.dto.pullRequest.Payload;
 import com.github.codergate.dto.pullRequest.Repository;
 import com.github.codergate.dto.pullRequest.Sender;
 import com.github.codergate.dto.push.PusherPayloadDTO;
-import com.github.codergate.dto.threshold.ThresholdDTO;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.services.utility.WebHookListenerUtil;
@@ -246,7 +245,6 @@ public class WebHookListenerService {
      */
     private void handlePushEvent(Map<String, Object> webhookPayload) {
         PusherPayloadDTO pushEventPayload = Mapper.getInstance().convertValue(webhookPayload, PusherPayloadDTO.class);
-
         if (pushEventPayload != null && pushEventPayload.getPusher() != null && pushEventPayload.getSender() != null
                 && pushEventPayload.getHeadCommit() != null && pushEventPayload.getRepository() != null) {
 
@@ -265,10 +263,6 @@ public class WebHookListenerService {
             LOGGER.info("removeRepository : user has initialized a push event");
             eventService.addEvent(pushEventPayload.getHeadCommit(), (int) userEntity.getUserId(),
                     repositoryEntity.getRepositoryId());
-            LOGGER.info("handlePushEvent: user has initialized a push event");
-            // I have called Threshold service here because IDK where else to call it
-            ThresholdDTO thresholdDTO = new ThresholdDTO(1, 1, 1, 90, 75, 3, 80, 12, 4, 17, 43, 32, 57, 54, 21, 29, 11);
-            thresholdService.addThreshold(thresholdDTO, repositoryEntity.getRepositoryId());
             LOGGER.info("handlePushEvent : Threshold has been stored in database");
         }
     }

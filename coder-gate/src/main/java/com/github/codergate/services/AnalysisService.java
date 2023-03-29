@@ -107,9 +107,6 @@ public class AnalysisService {
                 if (newInformation.getUnnecessaryAbstraction() != 0) {
                     analysisEntity.setUnnecessaryAbstraction(newInformation.getUnnecessaryAbstraction());
                 }
-                if (newInformation.getComplexMethod() != 0) {
-                    analysisEntity.setComplexMethod(newInformation.getComplexMethod());
-                }
                 if (newInformation.getComplexConditional() != 0) {
                     analysisEntity.setComplexConditional(newInformation.getComplexConditional());
                 }
@@ -188,9 +185,6 @@ public class AnalysisService {
             if (analysisDTO.getUnnecessaryAbstraction() != 0) {
                 analysisEntity.setUnnecessaryAbstraction(analysisDTO.getUnnecessaryAbstraction());
             }
-            if (analysisDTO.getComplexMethod() != 0) {
-                analysisEntity.setComplexMethod(analysisDTO.getComplexMethod());
-            }
             if (analysisDTO.getComplexConditional() != 0) {
                 analysisEntity.setComplexConditional(analysisDTO.getComplexConditional());
             }
@@ -255,13 +249,10 @@ public class AnalysisService {
             if (analysisEntity.getUnnecessaryAbstraction() != 0) {
                 analysisDTO.setUnnecessaryAbstraction(analysisEntity.getUnnecessaryAbstraction());
             }
-            if (analysisEntity.getComplexMethod() != 0) {
-                analysisDTO.setComplexMethod(analysisEntity.getComplexMethod());
-            }
-            if (analysisEntity.getComplexConditional() != 0) {
+            if (analysisEntity.getComplexConditional() != 0D) {
                 analysisDTO.setComplexConditional(analysisEntity.getComplexConditional());
             }
-            if (analysisEntity.getEmptyCatchClause() != 0) {
+            if (analysisEntity.getEmptyCatchClause() != 0D) {
                 analysisDTO.setEmptyCatchClause(analysisEntity.getEmptyCatchClause());
             }
             if (analysisEntity.getMissingAssertion() != 0) {
@@ -298,9 +289,6 @@ public class AnalysisService {
                     int complexConditionalImpSmells = getSmells(
                             project.getImplementationSmells().getImplementationSmell(),
                             "Complex Conditional").size();
-                    int complexMethodImpSmells = getSmells(project.getImplementationSmells().getImplementationSmell(),
-                            "Complex Method")
-                            .size();
                     int emptyCatchClauseImpSmells = getSmells(
                             project.getImplementationSmells().getImplementationSmell(), "Empty Catch Clause")
                             .size();
@@ -313,17 +301,25 @@ public class AnalysisService {
                     int unnecessaryAbstractionDsSmells = getSmells(
                             project.getDesignSmells().getDesignSmell(), "Unnecessary Abstraction")
                             .size();
+                    int archSmells = solution.getTotalArchSmellCount();
+                    int designSmells = solution.getTotalDesignSmellCount();
+                    int impSmells = solution.getTotalImplSmellCount();
                     AnalysisEntity analysisEntity = new AnalysisEntity(repoId, branchName, solution.getSmellDensity(),
                             solution.getCodeDuplication(), System.currentTimeMillis());
                     analysisEntity.setCyclomaticComplexity(complexityDensity);
                     analysisEntity.setCyclicDependency(cyclicArchDependencies);
                     analysisEntity.setGodComponents(godComponentArchDependencies);
                     analysisEntity.setComplexConditional(complexConditionalImpSmells);
-                    analysisEntity.setComplexMethod(complexMethodImpSmells);
                     analysisEntity.setEmptyCatchClause(emptyCatchClauseImpSmells);
                     analysisEntity.setCyclicallyDependentModularization(cyclicallyDependentDsSmells);
                     analysisEntity.setInsufficientModularization(insufficientModularizationDsSmells);
                     analysisEntity.setUnnecessaryAbstraction(unnecessaryAbstractionDsSmells);
+                    analysisEntity.setArchSmellDensity(
+                            archSmells > 0 ? (double) archSmells / solution.getLoc() : archSmells);
+                    analysisEntity.setDesignSmellDensity(
+                            designSmells > 0 ? (double) designSmells / solution.getLoc() : designSmells);
+                    analysisEntity.setImpSmellDensity(
+                            impSmells > 0 ? (double) impSmells / solution.getLoc() : impSmells);
                     processedAnalysis = analysisRepository.save(analysisEntity);
                 }
             }
