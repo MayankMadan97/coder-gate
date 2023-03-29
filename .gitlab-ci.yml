@@ -55,7 +55,7 @@ deploy-backend:
   script:
     - chmod og-rwx ${DEPLOY_SSH_KEY}
     - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'cd ${DOCKER_BACK_END_PATH} && docker build -t coder-gate-backend:latest -f Dockerfile-backend .'" < <(echo ${SUDO_PASSWORD})
-    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "docker run -d --name coder-gate-backend -p 8080:8080 coder-gate-backend"
+    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "docker run -d --name coder-gate-backend -p 8080:3000 coder-gate-backend"
   tags:
     - Group19Runner
   only:
