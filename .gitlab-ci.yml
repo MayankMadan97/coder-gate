@@ -40,7 +40,6 @@ build-backend:
   dependencies:
     - code_quality
     - test
-    - build-frontend
   artifacts:
     paths:
       - coder-gate/target
