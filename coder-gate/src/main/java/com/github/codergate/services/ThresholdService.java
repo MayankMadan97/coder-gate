@@ -75,7 +75,7 @@ public class ThresholdService {
                 }
                 if(newInformation.getCyclicDependency() != 0)
                 {
-                    thresholdEntity.setCyclicDependency(newInformation.getCyclomaticComplexity());
+                    thresholdEntity.setCyclicDependency(newInformation.getCyclicDependency());
                 }
                 if(newInformation.getGodComponents() != 0)
                 {
@@ -186,7 +186,7 @@ public class ThresholdService {
             }
             if(thresholdDTO.getCyclicDependency() != 0)
             {
-                thresholdEntity.setCyclicDependency(thresholdDTO.getCyclomaticComplexity());
+                thresholdEntity.setCyclicDependency(thresholdDTO.getCyclicDependency());
             }
             if(thresholdDTO.getGodComponents() != 0)
             {
@@ -266,7 +266,7 @@ public class ThresholdService {
             }
             if(thresholdEntity.getCyclicDependency() != 0)
             {
-                thresholdDTO.setCyclicDependency(thresholdEntity.getCyclomaticComplexity());
+                thresholdDTO.setCyclicDependency(thresholdEntity.getCyclicDependency());
             }
             if(thresholdEntity.getGodComponents() != 0)
             {
