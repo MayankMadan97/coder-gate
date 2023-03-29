@@ -7,7 +7,7 @@ WORKDIR /app
 COPY coder-gate/target/coder-gate-0.0.1-SNAPSHOT.jar /app/coder-gate-0.0.1-SNAPSHOT.jar
 
 
-EXPOSE 8080
+EXPOSE 80
 
 
 CMD ["java", "-jar", "coder-gate-0.0.1-SNAPSHOT.jar"]
