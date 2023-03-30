@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { MainModule } from './main/main.module';
 import { AuthGuard } from './shared/auth.guard';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
@@ -38,7 +39,9 @@ const routes: Routes = [
         allowedUrls: ['https://api.github.com'],
         sendAccessToken: true
       }
-    })
+    }),
+    ReactiveFormsModule,
+    MatCheckboxModule
   ],
   exports: [
     GithubLoginComponent,

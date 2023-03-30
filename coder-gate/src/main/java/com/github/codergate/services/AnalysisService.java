@@ -76,19 +76,19 @@ public class AnalysisService {
                 if (newInformation.getVulnerabilities() != 0) {
                     analysisEntity.setVulnerabilities(newInformation.getVulnerabilities());
                 }
-                if (newInformation.getCodeSmell() != 0) {
+                if (newInformation.getCodeSmell() != 0D) {
                     analysisEntity.setCodeSmell(newInformation.getCodeSmell());
                 }
-                if (newInformation.getTestCoverage() != 0) {
+                if (newInformation.getTestCoverage() != 0D) {
                     analysisEntity.setTestCoverage(newInformation.getTestCoverage());
                 }
-                if (newInformation.getDuplicatedLines() != 0) {
+                if (newInformation.getDuplicatedLines() != 0D) {
                     analysisEntity.setDuplicatedLines(newInformation.getDuplicatedLines());
                 }
-                if (newInformation.getCyclomaticComplexity() != 0) {
+                if (newInformation.getCyclomaticComplexity() != 0D) {
                     analysisEntity.setCyclomaticComplexity(newInformation.getCyclomaticComplexity());
                 }
-                if (newInformation.getDocumentedLines() != 0) {
+                if (newInformation.getDocumentedLines() != 0D) {
                     analysisEntity.setDocumentedLines(newInformation.getDocumentedLines());
                 }
                 if (newInformation.getCyclicDependency() != 0) {
@@ -119,8 +119,17 @@ public class AnalysisService {
                 if (newInformation.getEmptyTest() != 0) {
                     analysisEntity.setEmptyTest(newInformation.getEmptyTest());
                 }
-                Date date = new Date();
-                analysisEntity.setTimestamp(date.getTime());
+                if (newInformation.getArchSmellDensity() != 0D) {
+                    analysisEntity.setArchSmellDensity(newInformation.getArchSmellDensity());
+                }
+                if (newInformation.getDesignSmellDensity() != 0D) {
+                    analysisEntity.setDesignSmellDensity(newInformation.getDesignSmellDensity());
+                }
+                if (newInformation.getImpSmellDensity() != 0D) {
+                    analysisEntity.setImpSmellDensity(newInformation.getImpSmellDensity());
+                }
+//                Date date = new Date();
+//                analysisEntity.setTimestamp(date.getTime());
             }
             AnalysisEntity savedEntity = analysisRepository.save(analysisEntity);
             LOGGER.info("updateAnalysisByID : Updating the analysis information with repositoryID {}", repositoryID);
@@ -155,19 +164,19 @@ public class AnalysisService {
             if (analysisDTO.getVulnerabilities() != 0) {
                 analysisEntity.setVulnerabilities(analysisDTO.getVulnerabilities());
             }
-            if (analysisDTO.getCodeSmell() != 0) {
+            if (analysisDTO.getCodeSmell() != 0D) {
                 analysisEntity.setCodeSmell(analysisDTO.getCodeSmell());
             }
-            if (analysisDTO.getTestCoverage() != 0) {
+            if (analysisDTO.getTestCoverage() != 0D) {
                 analysisEntity.setTestCoverage(analysisDTO.getTestCoverage());
             }
-            if (analysisDTO.getDuplicatedLines() != 0) {
+            if (analysisDTO.getDuplicatedLines() != 0D) {
                 analysisEntity.setDuplicatedLines(analysisDTO.getDuplicatedLines());
             }
-            if (analysisDTO.getCyclomaticComplexity() != 0) {
+            if (analysisDTO.getCyclomaticComplexity() != 0D) {
                 analysisEntity.setCyclomaticComplexity(analysisDTO.getCyclomaticComplexity());
             }
-            if (analysisDTO.getDocumentedLines() != 0) {
+            if (analysisDTO.getDocumentedLines() != 0D) {
                 analysisEntity.setDocumentedLines(analysisDTO.getDocumentedLines());
             }
             if (analysisDTO.getCyclicDependency() != 0) {
@@ -197,8 +206,17 @@ public class AnalysisService {
             if (analysisDTO.getEmptyTest() != 0) {
                 analysisEntity.setEmptyTest(analysisDTO.getEmptyTest());
             }
-            Date date = new Date();
-            analysisEntity.setTimestamp(date.getTime());
+            if (analysisDTO.getArchSmellDensity() != 0D) {
+                analysisEntity.setArchSmellDensity(analysisDTO.getArchSmellDensity());
+            }
+            if (analysisDTO.getDesignSmellDensity() != 0D) {
+                analysisEntity.setDesignSmellDensity(analysisDTO.getDesignSmellDensity());
+            }
+            if (analysisDTO.getImpSmellDensity() != 0D) {
+                analysisEntity.setImpSmellDensity(analysisDTO.getImpSmellDensity());
+            }
+//            Date date = new Date();
+//            analysisEntity.setTimestamp(date.getTime());
             LOGGER.info("convertAnalysisDtoToEntity : Converted AnalysisDTO to Entity {}", analysisEntity);
         } else {
             LOGGER.warn("convertAnalysisDtoToEntity : AnalysisDTO value is null");
@@ -219,19 +237,19 @@ public class AnalysisService {
             if (analysisEntity.getVulnerabilities() != 0) {
                 analysisDTO.setVulnerabilities(analysisEntity.getVulnerabilities());
             }
-            if (analysisEntity.getCodeSmell() != 0) {
+            if (analysisEntity.getCodeSmell() != 0D) {
                 analysisDTO.setCodeSmell(analysisEntity.getCodeSmell());
             }
-            if (analysisEntity.getTestCoverage() != 0) {
+            if (analysisEntity.getTestCoverage() != 0D) {
                 analysisDTO.setTestCoverage(analysisEntity.getTestCoverage());
             }
-            if (analysisEntity.getDuplicatedLines() != 0) {
+            if (analysisEntity.getDuplicatedLines() != 0D) {
                 analysisDTO.setDuplicatedLines(analysisEntity.getDuplicatedLines());
             }
-            if (analysisEntity.getCyclomaticComplexity() != 0) {
+            if (analysisEntity.getCyclomaticComplexity() != 0D) {
                 analysisDTO.setCyclomaticComplexity(analysisEntity.getCyclomaticComplexity());
             }
-            if (analysisEntity.getDocumentedLines() != 0) {
+            if (analysisEntity.getDocumentedLines() != 0D) {
                 analysisDTO.setDocumentedLines(analysisEntity.getDocumentedLines());
             }
             if (analysisEntity.getCyclicDependency() != 0) {
@@ -260,6 +278,15 @@ public class AnalysisService {
             }
             if (analysisEntity.getEmptyTest() != 0) {
                 analysisDTO.setEmptyTest(analysisEntity.getEmptyTest());
+            }
+            if (analysisEntity.getArchSmellDensity() != 0D) {
+                analysisDTO.setArchSmellDensity(analysisEntity.getArchSmellDensity());
+            }
+            if (analysisEntity.getDesignSmellDensity() != 0D) {
+                analysisDTO.setDesignSmellDensity(analysisEntity.getDesignSmellDensity());
+            }
+            if (analysisEntity.getImpSmellDensity() != 0D) {
+                analysisDTO.setImpSmellDensity(analysisEntity.getImpSmellDensity());
             }
             LOGGER.info("convertAnalysisDtoToEntity : Converted Analysis Entity to DTO {}", analysisDTO);
         } else {

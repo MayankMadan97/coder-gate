@@ -49,19 +49,19 @@ public class ThresholdService {
                 if (newInformation.getVulnerabilities() != 0) {
                     thresholdEntity.setVulnerabilities(newInformation.getVulnerabilities());
                 }
-                if (newInformation.getCodeSmell() != 0) {
+                if (newInformation.getCodeSmell() != 0D) {
                     thresholdEntity.setCodeSmell(newInformation.getCodeSmell());
                 }
-                if (newInformation.getTestCoverage() != 0) {
+                if (newInformation.getTestCoverage() != 0D) {
                     thresholdEntity.setTestCoverage(newInformation.getTestCoverage());
                 }
-                if (newInformation.getDuplicatedLines() != 0) {
+                if (newInformation.getDuplicatedLines() != 0D) {
                     thresholdEntity.setDuplicatedLines(newInformation.getDuplicatedLines());
                 }
-                if (newInformation.getCyclomaticComplexity() != 0) {
+                if (newInformation.getCyclomaticComplexity() != 0D) {
                     thresholdEntity.setCyclomaticComplexity(newInformation.getCyclomaticComplexity());
                 }
-                if (newInformation.getDocumentedLines() != 0) {
+                if (newInformation.getDocumentedLines() != 0D) {
                     thresholdEntity.setDocumentedLines(newInformation.getDocumentedLines());
                 }
                 if(newInformation.getCyclicDependency() != 0)
@@ -93,6 +93,16 @@ public class ThresholdService {
                 if (newInformation.getEmptyTest() != 0) {
                     thresholdEntity.setEmptyTest(newInformation.getEmptyTest());
                 }
+                if(newInformation.getArchSmellDensity() != 0D) {
+                    thresholdEntity.setArchSmellDensity(newInformation.getArchSmellDensity());
+                }
+                if(newInformation.getDesignSmellDensity() != 0D) {
+                    thresholdEntity.setDesignSmellDensity(newInformation.getDesignSmellDensity());
+                }
+                if(newInformation.getImpSmellDensity() != 0D) {
+                    thresholdEntity.setImpSmellDensity(newInformation.getImpSmellDensity());
+                }
+                thresholdEntity.setAllowAction(newInformation.isAllowAction());
             }
             ThresholdEntity savedEntity = thresholdRepository.save(thresholdEntity);
             LOGGER.info("updateThresholdByID : Updating the threshold information with repositoryID {}", repositoryID);
@@ -140,19 +150,19 @@ public class ThresholdService {
             if (thresholdDTO.getVulnerabilities() != 0) {
                 thresholdEntity.setVulnerabilities(thresholdDTO.getVulnerabilities());
             }
-            if (thresholdDTO.getCodeSmell() != 0) {
+            if (thresholdDTO.getCodeSmell() != 0D) {
                 thresholdEntity.setCodeSmell(thresholdDTO.getCodeSmell());
             }
-            if (thresholdDTO.getTestCoverage() != 0) {
+            if (thresholdDTO.getTestCoverage() != 0D) {
                 thresholdEntity.setTestCoverage(thresholdDTO.getTestCoverage());
             }
-            if (thresholdDTO.getDuplicatedLines() != 0) {
+            if (thresholdDTO.getDuplicatedLines() != 0D) {
                 thresholdEntity.setDuplicatedLines(thresholdDTO.getDuplicatedLines());
             }
-            if (thresholdDTO.getCyclomaticComplexity() != 0) {
+            if (thresholdDTO.getCyclomaticComplexity() != 0D) {
                 thresholdEntity.setCyclomaticComplexity(thresholdDTO.getCyclomaticComplexity());
             }
-            if (thresholdDTO.getDocumentedLines() != 0) {
+            if (thresholdDTO.getDocumentedLines() != 0D) {
                 thresholdEntity.setDocumentedLines(thresholdDTO.getDocumentedLines());
             }
             if(thresholdDTO.getCyclicDependency() != 0)
@@ -184,6 +194,16 @@ public class ThresholdService {
             if (thresholdDTO.getEmptyTest() != 0) {
                 thresholdEntity.setEmptyTest(thresholdDTO.getEmptyTest());
             }
+            if(thresholdDTO.getArchSmellDensity() != 0D) {
+                thresholdEntity.setArchSmellDensity(thresholdDTO.getArchSmellDensity());
+            }
+            if(thresholdDTO.getDesignSmellDensity() != 0D) {
+                thresholdEntity.setDesignSmellDensity(thresholdDTO.getDesignSmellDensity());
+            }
+            if(thresholdDTO.getImpSmellDensity() != 0D) {
+                thresholdEntity.setImpSmellDensity(thresholdDTO.getImpSmellDensity());
+            }
+            thresholdEntity.setAllowAction(thresholdDTO.isAllowAction());
             LOGGER.info("convertThresholdDtoToEntity : Converted Threshold DTO to Entity {}", thresholdEntity);
         } else {
             LOGGER.warn("convertThresholdDtoToEntity : ThresholdDTO value is null");
@@ -201,19 +221,19 @@ public class ThresholdService {
             if (thresholdEntity.getVulnerabilities() != 0) {
                 thresholdDTO.setVulnerabilities(thresholdEntity.getVulnerabilities());
             }
-            if (thresholdEntity.getCodeSmell() != 0) {
+            if (thresholdEntity.getCodeSmell() != 0D) {
                 thresholdDTO.setCodeSmell(thresholdEntity.getCodeSmell());
             }
-            if (thresholdEntity.getTestCoverage() != 0) {
+            if (thresholdEntity.getTestCoverage() != 0D) {
                 thresholdDTO.setTestCoverage(thresholdEntity.getTestCoverage());
             }
-            if (thresholdEntity.getDuplicatedLines() != 0) {
+            if (thresholdEntity.getDuplicatedLines() != 0D) {
                 thresholdDTO.setDuplicatedLines(thresholdEntity.getDuplicatedLines());
             }
-            if (thresholdEntity.getCyclomaticComplexity() != 0) {
+            if (thresholdEntity.getCyclomaticComplexity() != 0D) {
                 thresholdDTO.setCyclomaticComplexity(thresholdEntity.getCyclomaticComplexity());
             }
-            if (thresholdEntity.getDocumentedLines() != 0) {
+            if (thresholdEntity.getDocumentedLines() != 0D) {
                 thresholdDTO.setDocumentedLines(thresholdEntity.getDocumentedLines());
             }
             if(thresholdEntity.getCyclicDependency() != 0)
@@ -245,6 +265,16 @@ public class ThresholdService {
             if (thresholdEntity.getEmptyTest() != 0) {
                 thresholdDTO.setEmptyTest(thresholdEntity.getEmptyTest());
             }
+            if(thresholdEntity.getArchSmellDensity() != 0D) {
+                thresholdDTO.setArchSmellDensity(thresholdEntity.getArchSmellDensity());
+            }
+            if(thresholdEntity.getDesignSmellDensity() != 0D) {
+                thresholdDTO.setDesignSmellDensity(thresholdEntity.getDesignSmellDensity());
+            }
+            if(thresholdEntity.getImpSmellDensity() != 0D) {
+                thresholdDTO.setImpSmellDensity(thresholdEntity.getImpSmellDensity());
+            }
+            thresholdDTO.setAllowAction(thresholdEntity.isAllowAction());
             LOGGER.info("convertThresholdDtoToEntity : Converted Threshold Entity to DTO {}", thresholdDTO);
         } else {
             LOGGER.warn("convertThresholdDtoToEntity : Threshold Entity is null");

@@ -10,11 +10,15 @@ import { ThresholdDTO } from "../main/dashboard/dashboard.component";
 export class ThresholdService {
     constructor (private http: HttpClient) { }
 
-    postThresholdValues(values: any): Observable<any> {
-        return this.http.post("http://localhost:3000/threshold/618842221", values);
+    postThresholdValues(values: any, repoID: number): Observable<any> {
+        let thresoldApiEndpoint: string = "http://localhost:3000/threshold/" + repoID;
+        console.log(thresoldApiEndpoint);
+        return this.http.post(thresoldApiEndpoint, values);
     }
 
-    getThresholdValues(): Observable<ThresholdDTO> {
-        return this.http.get<ThresholdDTO>("http://localhost:3000/threshold/618842221");
+    getThresholdValues(repoID: number): Observable<ThresholdDTO> {
+        let thresholdApiEndpoint: string = "http://localhost:3000/threshold/" + repoID;
+        console.log(thresholdApiEndpoint);
+        return this.http.get<ThresholdDTO>(thresholdApiEndpoint);
     }
 }

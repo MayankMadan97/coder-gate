@@ -77,7 +77,7 @@
             <mat-form-field class="col-12">
               <input matInput placeholder="{{selectedRepo}}" disabled>
             </mat-form-field>
-            <table>
+            <!-- <table>
               <tr>
                 <td>
                   <p>Bugs</p>
@@ -200,9 +200,154 @@
                   <button mat-raised-button color="primary" type="submit">Submit</button>
                 </td>
               </tr>
-            </table>
-          </form>
+            </table> -->
+            <h3>Overall Thresholds</h3>
 
+            <div>
+              <p><mat-checkbox color="primary" formControlName="allowAction" labelPosition="before">Block Merge If Threshold Values Not Met</mat-checkbox></p>
+            </div>
+
+            <table width="100%">
+              <tr>
+                <td>
+                  <p>Code Smell</p>
+                  <mat-slider discrete id="codeSmellSlider" min="1" max="20" step="0.1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="codeSmell">
+                  </mat-slider>
+                </td>
+                <td>
+                  <p>Duplicated Lines</p>
+                  <mat-slider discrete id="duplicatedLinesSlider" min="1" max="10" step="0.1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="duplicatedLines">
+                  </mat-slider>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>Cyclomatic Complexity</p>
+                  <mat-slider discrete id="cyclomaticComplexitySlider" min="1" max="15" step="0.1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="cyclomaticComplexity">
+                  </mat-slider>
+                </td>
+                <td>
+                  <p>Architecture Smell Density</p>
+                  <mat-slider discrete id="archSmellDensitySlider" min="1" max="20" step="0.1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="archSmellDensity">
+                  </mat-slider>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>Design Smell Density</p>
+                  <mat-slider discrete id="designSmellDensitySlider" min="1" max="25" step="0.1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="designSmellDensity">
+                  </mat-slider>
+                </td>
+                <td>
+                  <p>Implementation Smell Density</p>
+                  <mat-slider discrete id="impSmellDensitySlider" min="1" max="30" step="0.1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="impSmellDensity">
+                  </mat-slider>
+                </td>
+              </tr>
+            </table>
+
+            <br>
+
+            <h3>Architecture Smells</h3>
+            <table width="85%">
+              <tr>
+                <td>
+                  <p>Cyclic Dependency</p>
+                  <mat-slider discrete id="cyclicDependencySlider" min="1" max="20" step="1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="cyclicDependency">
+                  </mat-slider>
+                </td>
+                <td>
+                  <p>God Components</p>
+                  <mat-slider discrete id="godComponentsSlider" min="1" max="10" step="1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="godComponents">
+                  </mat-slider>
+                </td>
+              </tr>
+            </table>
+            
+            <br>
+
+            <h3>Design Smells</h3>
+            <table width="75%">
+              <tr>
+                <td>
+                  <p>Cyclically Dependent Modularization</p>
+                  <mat-slider discrete id="cyclicallyDependentModularizationSlider" min="1" max="20" step="1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="cyclicallyDependentModularization">
+                  </mat-slider>
+                </td>
+                <td>
+                  <p>Insufficient Modularization</p>
+                  <mat-slider discrete id="insufficientModularizationSlider" min="1" max="30" step="1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="insufficientModularization">
+                  </mat-slider>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>Unnecessary Abstraction</p>
+                  <mat-slider discrete id="unnecessaryAbstractionSlider" min="1" max="25" step="1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="unnecessaryAbstraction">
+                  </mat-slider>
+                </td>
+              </tr>
+            </table>
+            
+            <br>
+            
+            <h3>Implementation Smells</h3>
+            <table width="85%">
+              <tr>
+                <td>
+                  <p>Complex Conditional</p>
+                  <mat-slider discrete id="complexConditionalSlider" min="1" max="20" step="1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="complexConditional">
+                  </mat-slider>
+                </td>
+                <td>
+                  <p>Empty Catch Clause</p>
+                  <mat-slider discrete id="emptyCatchClauseSlider" min="1" max="10" step="1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="emptyCatchClause">
+                  </mat-slider>
+                </td>
+              </tr>
+            </table>
+            
+            <br>
+
+            <h3>Test Smells</h3>
+            <table width="87%">
+              <tr>
+                <td>
+                  <p>Missing Assertion</p>
+                  <mat-slider discrete id="missingAssertionSlider" min="1" max="10" step="1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="missingAssertion">
+                  </mat-slider>
+                </td>
+                <td>
+                  <p>Empty Test</p>
+                  <mat-slider discrete id="emptyTestSlider" min="1" max="10" step="1" value="1" class="col-12">
+                  <input matSliderThumb formControlName="emptyTest">
+                  </mat-slider>
+                </td>
+              </tr>
+            </table>
+            
+            <br>
+
+            <div>
+              <button mat-raised-button color="primary" type="submit">Submit</button>
+            </div>
+
+          </form>
+        
 
         </div>
       </div>
