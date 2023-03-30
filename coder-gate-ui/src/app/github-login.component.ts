@@ -1,36 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './shared/auth.service';
-import { UserService } from './user.service'
+import { UserService } from './user.service';
 
 @Component({
   selector: 'app-github-login',
   templateUrl: './github-login.component.html',
-  styleUrls: ['./github-login.component.css'],
-  providers : [
-    UserService,
-    {provide: 'git_access_token', useValue: localStorage.getItem('github_access_token') }
-
-  ]
+  styleUrls: ['./github-login.component.css']
 })
 export class GithubLoginComponent implements OnInit {
 
+  constructor(
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router,
+    public userService: UserService
+  ) {}
 
-  constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router,public userService: UserService) { }
-  
   ngOnInit(): void {
     const code = this.route.snapshot.queryParamMap.get('code');
     if (code) {
       this.authService.handleCallback().subscribe((response_: any) => {
-        localStorage.setItem("github_access_token",response_["access_token"]);
-        this.userService.getUsers().subscribe(response => {
-          localStorage.setItem("user",JSON.stringify(response))
+        const githubAccessToken = response_["access_token"];
+        localStorage.setItem("github_access_token", githubAccessToken);
+        this.userService.getUsers(githubAccessToken).subscribe(response => {
+          localStorage.setItem("user", JSON.stringify(response));
           this.router.navigate(['/dashboard']);
+        });
       });
-       
-      });
-     
     }
   }
-
 }
