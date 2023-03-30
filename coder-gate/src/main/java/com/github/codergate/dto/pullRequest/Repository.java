@@ -4,7 +4,7 @@ package com.github.codergate.dto.pullRequest;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -94,7 +94,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "watchers",
     "default_branch"
 })
-@Generated("jsonschema2pojo")
 public class Repository {
 
     @JsonProperty("id")
@@ -108,7 +107,7 @@ public class Repository {
     @JsonProperty("private")
     private Boolean _private;
     @JsonProperty("owner")
-    private Owner__2 owner;
+    private Owner owner;
     @JsonProperty("html_url")
     private String htmlUrl;
     @JsonProperty("description")
@@ -309,12 +308,12 @@ public class Repository {
     }
 
     @JsonProperty("owner")
-    public Owner__2 getOwner() {
+    public Owner getOwner() {
         return owner;
     }
 
     @JsonProperty("owner")
-    public void setOwner(Owner__2 owner) {
+    public void setOwner(Owner owner) {
         this.owner = owner;
     }
 
@@ -1056,338 +1055,6 @@ public class Repository {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Repository.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("id");
-        sb.append('=');
-        sb.append(((this.id == null)?"<null>":this.id));
-        sb.append(',');
-        sb.append("nodeId");
-        sb.append('=');
-        sb.append(((this.nodeId == null)?"<null>":this.nodeId));
-        sb.append(',');
-        sb.append("name");
-        sb.append('=');
-        sb.append(((this.name == null)?"<null>":this.name));
-        sb.append(',');
-        sb.append("fullName");
-        sb.append('=');
-        sb.append(((this.fullName == null)?"<null>":this.fullName));
-        sb.append(',');
-        sb.append("_private");
-        sb.append('=');
-        sb.append(((this._private == null)?"<null>":this._private));
-        sb.append(',');
-        sb.append("owner");
-        sb.append('=');
-        sb.append(((this.owner == null)?"<null>":this.owner));
-        sb.append(',');
-        sb.append("htmlUrl");
-        sb.append('=');
-        sb.append(((this.htmlUrl == null)?"<null>":this.htmlUrl));
-        sb.append(',');
-        sb.append("description");
-        sb.append('=');
-        sb.append(((this.description == null)?"<null>":this.description));
-        sb.append(',');
-        sb.append("fork");
-        sb.append('=');
-        sb.append(((this.fork == null)?"<null>":this.fork));
-        sb.append(',');
-        sb.append("url");
-        sb.append('=');
-        sb.append(((this.url == null)?"<null>":this.url));
-        sb.append(',');
-        sb.append("forksUrl");
-        sb.append('=');
-        sb.append(((this.forksUrl == null)?"<null>":this.forksUrl));
-        sb.append(',');
-        sb.append("keysUrl");
-        sb.append('=');
-        sb.append(((this.keysUrl == null)?"<null>":this.keysUrl));
-        sb.append(',');
-        sb.append("collaboratorsUrl");
-        sb.append('=');
-        sb.append(((this.collaboratorsUrl == null)?"<null>":this.collaboratorsUrl));
-        sb.append(',');
-        sb.append("teamsUrl");
-        sb.append('=');
-        sb.append(((this.teamsUrl == null)?"<null>":this.teamsUrl));
-        sb.append(',');
-        sb.append("hooksUrl");
-        sb.append('=');
-        sb.append(((this.hooksUrl == null)?"<null>":this.hooksUrl));
-        sb.append(',');
-        sb.append("issueEventsUrl");
-        sb.append('=');
-        sb.append(((this.issueEventsUrl == null)?"<null>":this.issueEventsUrl));
-        sb.append(',');
-        sb.append("eventsUrl");
-        sb.append('=');
-        sb.append(((this.eventsUrl == null)?"<null>":this.eventsUrl));
-        sb.append(',');
-        sb.append("assigneesUrl");
-        sb.append('=');
-        sb.append(((this.assigneesUrl == null)?"<null>":this.assigneesUrl));
-        sb.append(',');
-        sb.append("branchesUrl");
-        sb.append('=');
-        sb.append(((this.branchesUrl == null)?"<null>":this.branchesUrl));
-        sb.append(',');
-        sb.append("tagsUrl");
-        sb.append('=');
-        sb.append(((this.tagsUrl == null)?"<null>":this.tagsUrl));
-        sb.append(',');
-        sb.append("blobsUrl");
-        sb.append('=');
-        sb.append(((this.blobsUrl == null)?"<null>":this.blobsUrl));
-        sb.append(',');
-        sb.append("gitTagsUrl");
-        sb.append('=');
-        sb.append(((this.gitTagsUrl == null)?"<null>":this.gitTagsUrl));
-        sb.append(',');
-        sb.append("gitRefsUrl");
-        sb.append('=');
-        sb.append(((this.gitRefsUrl == null)?"<null>":this.gitRefsUrl));
-        sb.append(',');
-        sb.append("treesUrl");
-        sb.append('=');
-        sb.append(((this.treesUrl == null)?"<null>":this.treesUrl));
-        sb.append(',');
-        sb.append("statusesUrl");
-        sb.append('=');
-        sb.append(((this.statusesUrl == null)?"<null>":this.statusesUrl));
-        sb.append(',');
-        sb.append("languagesUrl");
-        sb.append('=');
-        sb.append(((this.languagesUrl == null)?"<null>":this.languagesUrl));
-        sb.append(',');
-        sb.append("stargazersUrl");
-        sb.append('=');
-        sb.append(((this.stargazersUrl == null)?"<null>":this.stargazersUrl));
-        sb.append(',');
-        sb.append("contributorsUrl");
-        sb.append('=');
-        sb.append(((this.contributorsUrl == null)?"<null>":this.contributorsUrl));
-        sb.append(',');
-        sb.append("subscribersUrl");
-        sb.append('=');
-        sb.append(((this.subscribersUrl == null)?"<null>":this.subscribersUrl));
-        sb.append(',');
-        sb.append("subscriptionUrl");
-        sb.append('=');
-        sb.append(((this.subscriptionUrl == null)?"<null>":this.subscriptionUrl));
-        sb.append(',');
-        sb.append("commitsUrl");
-        sb.append('=');
-        sb.append(((this.commitsUrl == null)?"<null>":this.commitsUrl));
-        sb.append(',');
-        sb.append("gitCommitsUrl");
-        sb.append('=');
-        sb.append(((this.gitCommitsUrl == null)?"<null>":this.gitCommitsUrl));
-        sb.append(',');
-        sb.append("commentsUrl");
-        sb.append('=');
-        sb.append(((this.commentsUrl == null)?"<null>":this.commentsUrl));
-        sb.append(',');
-        sb.append("issueCommentUrl");
-        sb.append('=');
-        sb.append(((this.issueCommentUrl == null)?"<null>":this.issueCommentUrl));
-        sb.append(',');
-        sb.append("contentsUrl");
-        sb.append('=');
-        sb.append(((this.contentsUrl == null)?"<null>":this.contentsUrl));
-        sb.append(',');
-        sb.append("compareUrl");
-        sb.append('=');
-        sb.append(((this.compareUrl == null)?"<null>":this.compareUrl));
-        sb.append(',');
-        sb.append("mergesUrl");
-        sb.append('=');
-        sb.append(((this.mergesUrl == null)?"<null>":this.mergesUrl));
-        sb.append(',');
-        sb.append("archiveUrl");
-        sb.append('=');
-        sb.append(((this.archiveUrl == null)?"<null>":this.archiveUrl));
-        sb.append(',');
-        sb.append("downloadsUrl");
-        sb.append('=');
-        sb.append(((this.downloadsUrl == null)?"<null>":this.downloadsUrl));
-        sb.append(',');
-        sb.append("issuesUrl");
-        sb.append('=');
-        sb.append(((this.issuesUrl == null)?"<null>":this.issuesUrl));
-        sb.append(',');
-        sb.append("pullsUrl");
-        sb.append('=');
-        sb.append(((this.pullsUrl == null)?"<null>":this.pullsUrl));
-        sb.append(',');
-        sb.append("milestonesUrl");
-        sb.append('=');
-        sb.append(((this.milestonesUrl == null)?"<null>":this.milestonesUrl));
-        sb.append(',');
-        sb.append("notificationsUrl");
-        sb.append('=');
-        sb.append(((this.notificationsUrl == null)?"<null>":this.notificationsUrl));
-        sb.append(',');
-        sb.append("labelsUrl");
-        sb.append('=');
-        sb.append(((this.labelsUrl == null)?"<null>":this.labelsUrl));
-        sb.append(',');
-        sb.append("releasesUrl");
-        sb.append('=');
-        sb.append(((this.releasesUrl == null)?"<null>":this.releasesUrl));
-        sb.append(',');
-        sb.append("deploymentsUrl");
-        sb.append('=');
-        sb.append(((this.deploymentsUrl == null)?"<null>":this.deploymentsUrl));
-        sb.append(',');
-        sb.append("createdAt");
-        sb.append('=');
-        sb.append(((this.createdAt == null)?"<null>":this.createdAt));
-        sb.append(',');
-        sb.append("updatedAt");
-        sb.append('=');
-        sb.append(((this.updatedAt == null)?"<null>":this.updatedAt));
-        sb.append(',');
-        sb.append("pushedAt");
-        sb.append('=');
-        sb.append(((this.pushedAt == null)?"<null>":this.pushedAt));
-        sb.append(',');
-        sb.append("gitUrl");
-        sb.append('=');
-        sb.append(((this.gitUrl == null)?"<null>":this.gitUrl));
-        sb.append(',');
-        sb.append("sshUrl");
-        sb.append('=');
-        sb.append(((this.sshUrl == null)?"<null>":this.sshUrl));
-        sb.append(',');
-        sb.append("cloneUrl");
-        sb.append('=');
-        sb.append(((this.cloneUrl == null)?"<null>":this.cloneUrl));
-        sb.append(',');
-        sb.append("svnUrl");
-        sb.append('=');
-        sb.append(((this.svnUrl == null)?"<null>":this.svnUrl));
-        sb.append(',');
-        sb.append("homepage");
-        sb.append('=');
-        sb.append(((this.homepage == null)?"<null>":this.homepage));
-        sb.append(',');
-        sb.append("size");
-        sb.append('=');
-        sb.append(((this.size == null)?"<null>":this.size));
-        sb.append(',');
-        sb.append("stargazersCount");
-        sb.append('=');
-        sb.append(((this.stargazersCount == null)?"<null>":this.stargazersCount));
-        sb.append(',');
-        sb.append("watchersCount");
-        sb.append('=');
-        sb.append(((this.watchersCount == null)?"<null>":this.watchersCount));
-        sb.append(',');
-        sb.append("language");
-        sb.append('=');
-        sb.append(((this.language == null)?"<null>":this.language));
-        sb.append(',');
-        sb.append("hasIssues");
-        sb.append('=');
-        sb.append(((this.hasIssues == null)?"<null>":this.hasIssues));
-        sb.append(',');
-        sb.append("hasProjects");
-        sb.append('=');
-        sb.append(((this.hasProjects == null)?"<null>":this.hasProjects));
-        sb.append(',');
-        sb.append("hasDownloads");
-        sb.append('=');
-        sb.append(((this.hasDownloads == null)?"<null>":this.hasDownloads));
-        sb.append(',');
-        sb.append("hasWiki");
-        sb.append('=');
-        sb.append(((this.hasWiki == null)?"<null>":this.hasWiki));
-        sb.append(',');
-        sb.append("hasPages");
-        sb.append('=');
-        sb.append(((this.hasPages == null)?"<null>":this.hasPages));
-        sb.append(',');
-        sb.append("hasDiscussions");
-        sb.append('=');
-        sb.append(((this.hasDiscussions == null)?"<null>":this.hasDiscussions));
-        sb.append(',');
-        sb.append("forksCount");
-        sb.append('=');
-        sb.append(((this.forksCount == null)?"<null>":this.forksCount));
-        sb.append(',');
-        sb.append("mirrorUrl");
-        sb.append('=');
-        sb.append(((this.mirrorUrl == null)?"<null>":this.mirrorUrl));
-        sb.append(',');
-        sb.append("archived");
-        sb.append('=');
-        sb.append(((this.archived == null)?"<null>":this.archived));
-        sb.append(',');
-        sb.append("disabled");
-        sb.append('=');
-        sb.append(((this.disabled == null)?"<null>":this.disabled));
-        sb.append(',');
-        sb.append("openIssuesCount");
-        sb.append('=');
-        sb.append(((this.openIssuesCount == null)?"<null>":this.openIssuesCount));
-        sb.append(',');
-        sb.append("license");
-        sb.append('=');
-        sb.append(((this.license == null)?"<null>":this.license));
-        sb.append(',');
-        sb.append("allowForking");
-        sb.append('=');
-        sb.append(((this.allowForking == null)?"<null>":this.allowForking));
-        sb.append(',');
-        sb.append("isTemplate");
-        sb.append('=');
-        sb.append(((this.isTemplate == null)?"<null>":this.isTemplate));
-        sb.append(',');
-        sb.append("webCommitSignoffRequired");
-        sb.append('=');
-        sb.append(((this.webCommitSignoffRequired == null)?"<null>":this.webCommitSignoffRequired));
-        sb.append(',');
-        sb.append("topics");
-        sb.append('=');
-        sb.append(((this.topics == null)?"<null>":this.topics));
-        sb.append(',');
-        sb.append("visibility");
-        sb.append('=');
-        sb.append(((this.visibility == null)?"<null>":this.visibility));
-        sb.append(',');
-        sb.append("forks");
-        sb.append('=');
-        sb.append(((this.forks == null)?"<null>":this.forks));
-        sb.append(',');
-        sb.append("openIssues");
-        sb.append('=');
-        sb.append(((this.openIssues == null)?"<null>":this.openIssues));
-        sb.append(',');
-        sb.append("watchers");
-        sb.append('=');
-        sb.append(((this.watchers == null)?"<null>":this.watchers));
-        sb.append(',');
-        sb.append("defaultBranch");
-        sb.append('=');
-        sb.append(((this.defaultBranch == null)?"<null>":this.defaultBranch));
-        sb.append(',');
-        sb.append("additionalProperties");
-        sb.append('=');
-        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
-        sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
-        }
-        return sb.toString();
     }
 
 }

@@ -24,6 +24,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JwtUtils {
 
+        private static final int TEN_MINUTES_EXPIRATION_BUFFER = 600000;
         private static final Logger LOGGER = LoggerFactory.getLogger(JwtUtils.class);
 
         /**
@@ -35,14 +36,14 @@ public class JwtUtils {
                 LOGGER.debug("generateJwtToken : Entering the method");
                 String token = null;
                 try {
+                        Path privateKeyFilePath = Path.of(
+                                        System.getProperty("user.dir")
+                                                        + "/coder-gate/src/main/resources/private-key.pem");
                         // setting bounty castle provider for private key encryption
                         java.security.Security.addProvider(
                                         new org.bouncycastle.jce.provider.BouncyCastleProvider());
                         // reading private key from resources directory
-                        String rsaPrivateKey = readPrivateKey(Path.of(
-                                        System.getProperty("user.dir")
-                                                        + "/coder-gate/src/main/resources/private-key.pem")
-                                        .toFile());
+                        String rsaPrivateKey = readPrivateKey(privateKeyFilePath.toFile());
                         // base64 decoding and re-encoding private key using RSA
                         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(
                                         Base64.getDecoder().decode(rsaPrivateKey));
@@ -53,7 +54,8 @@ public class JwtUtils {
                                         // issued at current timestamp
                                         .setIssuedAt(new Date())
                                         // expiring in 10 min
-                                        .setExpiration(new Date(System.currentTimeMillis() + 600000))
+                                        .setExpiration(new Date(
+                                                        System.currentTimeMillis() + TEN_MINUTES_EXPIRATION_BUFFER))
                                         // issued b y coder gate app
                                         .setIssuer(appId)
                                         // signed using RS 256 algorithm as required by github
@@ -88,10 +90,12 @@ public class JwtUtils {
          * @throws IOException
          */
         private static String readPrivateKey(File file) throws IOException {
-                return new String(Files.readAllBytes(file.toPath()), Charset.defaultCharset())
-                                .replace("-----BEGIN RSA PRIVATE KEY-----", "")
+                String fileContent = new String(Files.readAllBytes(file.toPath()), Charset.defaultCharset());
+                String privateKeyStart = "-----BEGIN RSA PRIVATE KEY-----";
+                String privateKeyEnd = "-----END RSA PRIVATE KEY-----";
+                return fileContent.replace(privateKeyStart, "")
                                 .replaceAll(System.lineSeparator(), "")
-                                .replace("-----END RSA PRIVATE KEY-----", "");
+                                .replace(privateKeyEnd, "");
         }
 
         private JwtUtils() {

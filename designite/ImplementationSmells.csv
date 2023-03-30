@@ -1,0 +1,94 @@
+Project Name,Package Name,Type Name,Method Name,Implementation Smell,Cause of the Smell,Method start line no
+group19,com.github.codergate.utils,JwtUtils,generateJwtToken,Long Statement,The length of the statement "token=Jwts.builder().setIssuedAt(new Date()).setExpiration(new Date(System.currentTimeMillis() + TEN_MINUTES_EXPIRATION_BUFFER)).setIssuer(appId).signWith(SignatureAlgorithm.RS256`privKey).compact();" is 199.,30
+group19,com.github.codergate.services,UserServiceTest,testConvertAccountDTOToEntityWhenSomeDataIsMissing,Magic Number,The method contains a magic number: 32,61
+group19,com.github.codergate.services,UserServiceTest,testConvertAccountDTOToEntityWhenSomeDataIsMissing,Magic Number,The method contains a magic number: 32,61
+group19,com.github.codergate.services,UserServiceTest,testConvertAccountDTOToEntityWhenDataIsPresent,Magic Number,The method contains a magic number: 32,72
+group19,com.github.codergate.services,UserServiceTest,testConvertAccountDTOToEntityWhenDataIsPresent,Magic Number,The method contains a magic number: 32,72
+group19,com.github.codergate.services,UserServiceTest,testConvertSenderDTOToEntityWhenDataIsPresent,Magic Number,The method contains a magic number: 32,85
+group19,com.github.codergate.services,UserServiceTest,testConvertSenderDTOToEntityWhenSomeDataIsMissing,Magic Number,The method contains a magic number: 32,98
+group19,com.github.codergate.services,UserServiceTest,testConvertEntityToAccountDTOWithNonNullValues,Magic Number,The method contains a magic number: 32L,125
+group19,com.github.codergate.services,UserServiceTest,testDeleteUserByID,Magic Number,The method contains a magic number: 32L,174
+group19,com.github.codergate.services,UserServiceTest,testGetUserByID,Magic Number,The method contains a magic number: 32L,196
+group19,com.github.codergate.services,UserServiceTest,testGetUserByID,Magic Number,The method contains a magic number: 32,196
+group19,com.github.codergate.services,UserServiceTest,testAddUser,Magic Number,The method contains a magic number: 32,223
+group19,com.github.codergate.services,UserServiceTest,testAddUser,Magic Number,The method contains a magic number: 32,223
+group19,com.github.codergate.services,UserServiceTest,testAddUserHandlesException,Magic Number,The method contains a magic number: 32,255
+group19,com.github.codergate.services,WebHookListenerService,listen,Complex Method,Cyclomatic complexity of the method is 8,81
+group19,com.github.codergate.services,WebHookListenerService,removeRepository,Complex Conditional,The conditional expression payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null && payload.getRepositoriesRemoved() != null && payload.getAction() != null is complex.,182
+group19,com.github.codergate.services,WebHookListenerService,removeRepository,Long Statement,The length of the statement "if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null && payload.getRepositoriesRemoved() != null && payload.getAction() != null) {" is 184.,182
+group19,com.github.codergate.services,WebHookListenerService,removeRepository,Long Statement,The length of the statement "List<RepositoriesAddedDTO> removedRepositories=Mapper.getInstance().convertValue(payload.getRepositoriesRemoved()`new TypeReference<>(){" is 136.,182
+group19,com.github.codergate.services,WebHookListenerService,removeRepository,Long Statement,The length of the statement "List<Integer> removedRepositoryIds=removedRepositories.stream().map(RepositoriesAddedDTO::getId).collect(Collectors.toList());" is 126.,182
+group19,com.github.codergate.services,WebHookListenerService,handleInstallationDeletion,Complex Conditional,The conditional expression payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null && payload.getRepositories() != null && payload.getAction() != null is complex.,217
+group19,com.github.codergate.services,WebHookListenerService,handleInstallationDeletion,Long Statement,The length of the statement "if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null && payload.getRepositories() != null && payload.getAction() != null) {" is 177.,217
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Complex Conditional,The conditional expression pushEventPayload != null && pushEventPayload.getPusher() != null && pushEventPayload.getSender() != null && pushEventPayload.getHeadCommit() != null && pushEventPayload.getRepository() != null is complex.,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Long Statement,The length of the statement "if (pushEventPayload != null && pushEventPayload.getPusher() != null && pushEventPayload.getSender() != null && pushEventPayload.getHeadCommit() != null && pushEventPayload.getRepository() != null) {" is 199.,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Long Statement,The length of the statement "UserEntity userEntity=userService.addUser(pushEventPayload.getSender().getId()`pushEventPayload.getSender().getLogin()`pushEventPayload.getPusher().getEmail());" is 160.,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Long Statement,The length of the statement "RepositoryEntity repositoryEntity=repositoryService.addRepository(pushEventPayload.getRepository().getId()`pushEventPayload.getRepository().getName()`pushEventPayload.getRepository().getFork()`pushEventPayload.getRepository().getOwner().getId()`pushEventPayload.getInstallation().getId().toString());" is 300.,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Long Statement,The length of the statement "repositoryBranchService.addBranch(pushEventPayload.getRepository().getBranchesUrl()`pushEventPayload.getRepository().getId());" is 126.,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 90,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 75,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 3,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 80,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 12,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 4,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 17,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 43,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 32,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 57,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 54,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 21,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 29,244
+group19,com.github.codergate.services,WebHookListenerService,handlePushEvent,Magic Number,The method contains a magic number: 11,244
+group19,com.github.codergate.services,WebHookListenerService,handlePullRequestEvent,Long Statement,The length of the statement "RepositoryEntity repositoryEntity=repositoryService.addRepository(repo.getId()`repo.getName()`repo.getFork()`repo.getOwner().getId()`payload.getInstallation().getId().toString());" is 179.,276
+group19,com.github.codergate.services,WebHookListenerService,handlePullRequestEvent,Long Statement,The length of the statement "webHookListenerUtil.rejectPullRequest(repo.getOwner().getLogin()`repo.getName()`payload.getPullRequest().getNumber()`payload.getInstallation().getId().toString());" is 163.,276
+group19,com.github.codergate.services,WebHookListenerService,configureCodeScanning,Long Statement,The length of the statement "Path workflowFilePath=Path.of(System.getProperty(Constants.USER_DIR) + "/coder-gate/src/main/resources/application-designite.yml");" is 131.,305
+group19,com.github.codergate.services,WebHookListenerService,configureCodeScanning,Long Statement,The length of the statement "comitter.put("email"`payload.getInstallation().getAccount().getId() + payload.getInstallation().getAppSlug() + "[bot]@users.noreply.github.com");" is 145.,305
+group19,com.github.codergate.services,WebHookListenerService,configureCodeScanning,Long Statement,The length of the statement "repositoriesToUpdate=Mapper.getInstance().convertValue(payload.getRepositoriesAdded()`new TypeReference<List<RepositoriesDTO>>(){" is 129.,305
+group19,com.github.codergate.services,WebHookListenerService,configureCodeScanning,Long Statement,The length of the statement "String apiURL=Constants.BASE_API + "/repos/" + repo.getFullName()+ "/contents/.github/workflows/application-designite.yml";" is 123.,305
+group19,com.github.codergate.services,WebHookListenerService,configureCodeScanning,Long Statement,The length of the statement "restClient.invokeForPut(apiURL`bodyParamForPost`JwtUtils.getGithubSpecificHeaders()`payload.getInstallation().getId().toString());" is 130.,305
+group19,com.github.codergate.services,RepositoryService,addRepository,Long Statement,The length of the statement "LOGGER.info("addRepository : The repositoryRepository information for installation event is added {}"`saveRepositoryEntity);" is 124.,29
+group19,com.github.codergate.services,RepositoryService,addRepository,Long Parameter List,The method has 5 parameters. ,46
+group19,com.github.codergate.services,RepositoryService,updateRepository,Long Statement,The length of the statement "List<RepositoryEntity> saveEntity=repositoryEntityList.stream().map(items -> repositoryRepository.save(items)).collect(Collectors.toList());" is 140.,84
+group19,com.github.codergate.services,RepositoryService,convertDTOToEntityForPushEvent,Long Parameter List,The method has 5 parameters. ,153
+group19,com.github.codergate.services,RepositoryService,convertDTOToEntityForPushEvent,Long Statement,The length of the statement "LOGGER.info("convertDTOToEntityForPushEvent : RepositoryRepository DTO has been converted to Entity {}"`repositoryEntity);" is 122.,153
+group19,com.github.codergate.services,RepositoryService,convertEntityToDTO,Long Identifier,The length of the identifier listOfRepositoryAddedDTOValues is 30.,173
+group19,com.github.codergate.services,RepositoryService,getRepositoryResponse,Long Statement,The length of the statement "repositoryResponse.setCommitsInformation(repositoryUtil.getCommitsInformation(repositoriesByUserId.get(0).getInstallationId()`repositoriesByUserId.get(0).getRepositoryId()));" is 174.,213
+group19,com.github.codergate.services,ThresholdService,updateThresholdByID,Complex Method,Cyclomatic complexity of the method is 21,35
+group19,com.github.codergate.services,ThresholdService,convertThresholdDtoToEntity,Complex Method,Cyclomatic complexity of the method is 20,148
+group19,com.github.codergate.services,ThresholdService,convertThresholdEntityToDTO,Complex Method,Cyclomatic complexity of the method is 19,234
+group19,com.github.codergate.services,EventService,convertDTOToEntity,Complex Conditional,The conditional expression eventTypeName != null && userId != 0 && repositoryIdList != null is complex.,114
+group19,com.github.codergate.services,EventService,headCommitDtoToEntity,Complex Conditional,The conditional expression headCommitDTO != null && userID != 0 && repositoryID != 0 is complex.,146
+group19,com.github.codergate.services,AnalysisService,updateAnalysisByRepositoryID,Complex Method,Cyclomatic complexity of the method is 21,56
+group19,com.github.codergate.services,AnalysisService,convertAnalysisDtoToEntity,Complex Method,Cyclomatic complexity of the method is 20,138
+group19,com.github.codergate.services,AnalysisService,convertAnalysisEntityToDto,Complex Method,Cyclomatic complexity of the method is 20,206
+group19,com.github.codergate.dto.analysis,AnalysisDTO,AnalysisDTO,Long Identifier,The length of the parameter cyclicallyDependentModularization is 33.,34
+group19,com.github.codergate.dto.analysis,AnalysisDTO,AnalysisDTO,Long Identifier,The length of the field cyclicallyDependentModularization is 33.,34
+group19,com.github.codergate.dto.analysis,AnalysisDTO,AnalysisDTO,Long Parameter List,The method has 19 parameters. ,34
+group19,com.github.codergate.dto.analysis,AnalysisDTO,getCyclicallyDependentModularization,Long Identifier,The length of the field cyclicallyDependentModularization is 33.,138
+group19,com.github.codergate.dto.analysis,AnalysisDTO,setCyclicallyDependentModularization,Long Identifier,The length of the parameter cyclicallyDependentModularization is 33.,142
+group19,com.github.codergate.dto.analysis,AnalysisDTO,setCyclicallyDependentModularization,Long Identifier,The length of the field cyclicallyDependentModularization is 33.,142
+group19,com.github.codergate.dto.installation,InstallationPayloadDTO,InstallationPayloadDTO,Long Parameter List,The method has 7 parameters. ,46
+group19,com.github.codergate.dto.installation,RepositoriesRemovedDTO,RepositoriesRemovedDTO,Long Parameter List,The method has 5 parameters. ,38
+group19,com.github.codergate.dto.installation,RepositoriesAddedDTO,RepositoriesAddedDTO,Long Parameter List,The method has 5 parameters. ,38
+group19,com.github.codergate.dto.installation,Installation,Installation,Long Parameter List,The method has 19 parameters. ,67
+group19,com.github.codergate.dto.installation,RepositoriesDTO,RepositoriesDTO,Long Parameter List,The method has 5 parameters. ,38
+group19,com.github.codergate.dto.installation,Permissions,Permissions,Long Parameter List,The method has 9 parameters. ,46
+group19,com.github.codergate.dto.push,HeadCommitDTO,HeadCommitDTO,Long Parameter List,The method has 11 parameters. ,67
+group19,com.github.codergate.dto.push,PusherPayloadDTO,PusherPayloadDTO,Long Parameter List,The method has 14 parameters. ,76
+group19,com.github.codergate.dto.push,SenderDTO,SenderDTO,Long Parameter List,The method has 18 parameters. ,87
+group19,com.github.codergate.dto.push,CommitDTO,CommitDTO,Long Parameter List,The method has 11 parameters. ,67
+group19,com.github.codergate.dto.push,RepositoryDTO,RepositoryDTO,Long Parameter List,The method has 81 parameters. ,282
+group19,com.github.codergate.dto.push,OwnerDTO,OwnerDTO,Long Parameter List,The method has 20 parameters. ,93
+group19,com.github.codergate.dto.threshold,ThresholdDTO,ThresholdDTO,Long Identifier,The length of the parameter cyclicallyDependentModularization is 33.,58
+group19,com.github.codergate.dto.threshold,ThresholdDTO,ThresholdDTO,Long Identifier,The length of the field cyclicallyDependentModularization is 33.,58
+group19,com.github.codergate.dto.threshold,ThresholdDTO,ThresholdDTO,Long Parameter List,The method has 17 parameters. ,58
+group19,com.github.codergate.dto.threshold,ThresholdDTO,getCyclicallyDependentModularization,Long Identifier,The length of the field cyclicallyDependentModularization is 33.,173
+group19,com.github.codergate.dto.threshold,ThresholdDTO,setCyclicallyDependentModularization,Long Identifier,The length of the parameter cyclicallyDependentModularization is 33.,178
+group19,com.github.codergate.dto.threshold,ThresholdDTO,setCyclicallyDependentModularization,Long Identifier,The length of the field cyclicallyDependentModularization is 33.,178
+group19,com.github.codergate.services.utility,PullRequestUtil,checkThreshold,Complex Conditional,The conditional expression analysisEntity.getBugs() > thresholdEntity.getBugs() || analysisEntity.getCodeSmell() > thresholdEntity.getCodeSmell() || analysisEntity.getCyclomaticComplexity() > thresholdEntity.getCyclomaticComplexity() || analysisEntity.getDocumentedLines() > thresholdEntity.getDocumentedLines() || analysisEntity.getDuplicatedLines() > thresholdEntity.getDuplicatedLines() || analysisEntity.getTestCoverage() > thresholdEntity.getTestCoverage() || analysisEntity.getVulnerabilities() > thresholdEntity.getVulnerabilities() is complex.,9
+group19,com.github.codergate.services.utility,PullRequestUtil,checkThreshold,Long Statement,The length of the statement "if (analysisEntity.getBugs() > thresholdEntity.getBugs() || analysisEntity.getCodeSmell() > thresholdEntity.getCodeSmell() || analysisEntity.getCyclomaticComplexity() > thresholdEntity.getCyclomaticComplexity() || analysisEntity.getDocumentedLines() > thresholdEntity.getDocumentedLines() || analysisEntity.getDuplicatedLines() > thresholdEntity.getDuplicatedLines() || analysisEntity.getTestCoverage() > thresholdEntity.getTestCoverage() || analysisEntity.getVulnerabilities() > thresholdEntity.getVulnerabilities()) {" is 519.,9
+group19,com.github.codergate.services.utility,RepositoryUtil,getCommitsInformation,Long Statement,The length of the statement "String apiUrl=String.format("https://api.github.com/repos/%s/%s/commits"`userEntity.getUserName()`repositoryEntity.getRepositoryName());" is 136.,30
+group19,com.github.codergate.entities,AnalysisEntity,AnalysisEntity,Long Parameter List,The method has 5 parameters. ,66
+group19,com.github.codergate.entities,ThresholdEntity,getCyclicallyDependentModularization,Long Identifier,The length of the field cyclicallyDependentModularization is 33.,136
+group19,com.github.codergate.entities,ThresholdEntity,setCyclicallyDependentModularization,Long Identifier,The length of the parameter cyclicallyDependentModularization is 33.,140
+group19,com.github.codergate.entities,ThresholdEntity,setCyclicallyDependentModularization,Long Identifier,The length of the field cyclicallyDependentModularization is 33.,140

@@ -1,7 +1,12 @@
 package com.github.codergate.services;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 import org.json.XML;
@@ -11,10 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.codergate.dto.analysis.AnalysisDTO;
-import com.github.codergate.dto.push.RepositoryDTO;
+import com.github.codergate.dto.analysis.Designate;
+import com.github.codergate.dto.analysis.Project;
+import com.github.codergate.dto.analysis.Solution;
 import com.github.codergate.entities.AnalysisEntity;
 import com.github.codergate.repositories.AnalysisRepository;
+import com.github.codergate.utils.Mapper;
 
 @Service
 public class AnalysisService {
@@ -83,7 +92,7 @@ public class AnalysisService {
                     analysisEntity.setDocumentedLines(newInformation.getDocumentedLines());
                 }
                 if (newInformation.getCyclicDependency() != 0) {
-                    analysisEntity.setCyclicDependency(newInformation.getCyclomaticComplexity());
+                    analysisEntity.setCyclicDependency(newInformation.getCyclicDependency());
                 }
                 if (newInformation.getGodComponents() != 0) {
                     analysisEntity.setGodComponents(newInformation.getGodComponents());
@@ -97,9 +106,6 @@ public class AnalysisService {
                 }
                 if (newInformation.getUnnecessaryAbstraction() != 0) {
                     analysisEntity.setUnnecessaryAbstraction(newInformation.getUnnecessaryAbstraction());
-                }
-                if (newInformation.getComplexMethod() != 0) {
-                    analysisEntity.setComplexMethod(newInformation.getComplexMethod());
                 }
                 if (newInformation.getComplexConditional() != 0) {
                     analysisEntity.setComplexConditional(newInformation.getComplexConditional());
@@ -165,7 +171,7 @@ public class AnalysisService {
                 analysisEntity.setDocumentedLines(analysisDTO.getDocumentedLines());
             }
             if (analysisDTO.getCyclicDependency() != 0) {
-                analysisEntity.setCyclicDependency(analysisDTO.getCyclomaticComplexity());
+                analysisEntity.setCyclicDependency(analysisDTO.getCyclicDependency());
             }
             if (analysisDTO.getGodComponents() != 0) {
                 analysisEntity.setGodComponents(analysisDTO.getGodComponents());
@@ -178,9 +184,6 @@ public class AnalysisService {
             }
             if (analysisDTO.getUnnecessaryAbstraction() != 0) {
                 analysisEntity.setUnnecessaryAbstraction(analysisDTO.getUnnecessaryAbstraction());
-            }
-            if (analysisDTO.getComplexMethod() != 0) {
-                analysisEntity.setComplexMethod(analysisDTO.getComplexMethod());
             }
             if (analysisDTO.getComplexConditional() != 0) {
                 analysisEntity.setComplexConditional(analysisDTO.getComplexConditional());
@@ -232,7 +235,7 @@ public class AnalysisService {
                 analysisDTO.setDocumentedLines(analysisEntity.getDocumentedLines());
             }
             if (analysisEntity.getCyclicDependency() != 0) {
-                analysisDTO.setCyclicDependency(analysisEntity.getCyclomaticComplexity());
+                analysisDTO.setCyclicDependency(analysisEntity.getCyclicDependency());
             }
             if (analysisEntity.getGodComponents() != 0) {
                 analysisDTO.setGodComponents(analysisEntity.getGodComponents());
@@ -246,13 +249,10 @@ public class AnalysisService {
             if (analysisEntity.getUnnecessaryAbstraction() != 0) {
                 analysisDTO.setUnnecessaryAbstraction(analysisEntity.getUnnecessaryAbstraction());
             }
-            if (analysisEntity.getComplexMethod() != 0) {
-                analysisDTO.setComplexMethod(analysisEntity.getComplexMethod());
-            }
-            if (analysisEntity.getComplexConditional() != 0) {
+            if (analysisEntity.getComplexConditional() != 0D) {
                 analysisDTO.setComplexConditional(analysisEntity.getComplexConditional());
             }
-            if (analysisEntity.getEmptyCatchClause() != 0) {
+            if (analysisEntity.getEmptyCatchClause() != 0D) {
                 analysisDTO.setEmptyCatchClause(analysisEntity.getEmptyCatchClause());
             }
             if (analysisEntity.getMissingAssertion() != 0) {
@@ -268,20 +268,95 @@ public class AnalysisService {
         return analysisDTO;
     }
 
-    public AnalysisEntity processAnalysis(MultipartFile file, int repo, String branch) throws Exception {
+    public AnalysisEntity processAnalysis(MultipartFile file, int repoId, String branchName) throws IOException {
+        AnalysisEntity processedAnalysis = null;
         try (InputStream inputStream = file.getInputStream()) {
-            byte[] bytes = inputStream.readAllBytes();
-            String xml = new String(bytes);
-            JSONObject jsonObject = XML.toJSONObject(xml);
-            JSONObject analysisObject = jsonObject.getJSONObject("Analysis");
-            JSONObject solutionObject = analysisObject.getJSONObject("Solution");
-            double smellDensity = solutionObject.getDouble("SmellDensity");
-            int codeDuplication = solutionObject.getInt("CodeDuplication");
-            branchService.addBranch(branch, repo);
-            AnalysisEntity analysisEntity = new AnalysisEntity(repo, branch, smellDensity, codeDuplication,
-                    System.currentTimeMillis());
-            return analysisRepository.save(analysisEntity);
+            String xml = new String(inputStream.readAllBytes());
+            JSONObject jsonifiedXML = XML.toJSONObject(xml);
+            Designate jsonifiedAnalysis = Mapper.getInstance().readValue(jsonifiedXML.toString(), Designate.class);
+            if (jsonifiedAnalysis != null && jsonifiedAnalysis.getAnalysis() != null
+                    && jsonifiedAnalysis.getAnalysis().getSolution() != null) {
+                Solution solution = jsonifiedAnalysis.getAnalysis().getSolution();
+                if (solution.getProject() != null) {
+                    Project project = solution.getProject();
+                    branchService.addBranch(branchName, repoId);
+                    double complexityDensity = getCyclomaticComplexity(solution.getProject(),
+                            solution.getMethodCount());
+                    int cyclicArchDependencies = getSmells(project.getArchSmells().getArchSmell(), "Cyclic Dependency")
+                            .size();
+                    int godComponentArchDependencies = getSmells(project.getArchSmells().getArchSmell(),
+                            "God Component").size();
+                    int complexConditionalImpSmells = getSmells(
+                            project.getImplementationSmells().getImplementationSmell(),
+                            "Complex Conditional").size();
+                    int emptyCatchClauseImpSmells = getSmells(
+                            project.getImplementationSmells().getImplementationSmell(), "Empty Catch Clause")
+                            .size();
+                    int cyclicallyDependentDsSmells = getSmells(
+                            project.getDesignSmells().getDesignSmell(), "Cyclically-dependent Modularization")
+                            .size();
+                    int insufficientModularizationDsSmells = getSmells(
+                            project.getDesignSmells().getDesignSmell(), "Insufficient Modularization")
+                            .size();
+                    int unnecessaryAbstractionDsSmells = getSmells(
+                            project.getDesignSmells().getDesignSmell(), "Unnecessary Abstraction")
+                            .size();
+                    int archSmells = solution.getTotalArchSmellCount();
+                    int designSmells = solution.getTotalDesignSmellCount();
+                    int impSmells = solution.getTotalImplSmellCount();
+                    AnalysisEntity analysisEntity = new AnalysisEntity(repoId, branchName, solution.getSmellDensity(),
+                            solution.getCodeDuplication(), System.currentTimeMillis());
+                    analysisEntity.setCyclomaticComplexity(complexityDensity);
+                    analysisEntity.setCyclicDependency(cyclicArchDependencies);
+                    analysisEntity.setGodComponents(godComponentArchDependencies);
+                    analysisEntity.setComplexConditional(complexConditionalImpSmells);
+                    analysisEntity.setEmptyCatchClause(emptyCatchClauseImpSmells);
+                    analysisEntity.setCyclicallyDependentModularization(cyclicallyDependentDsSmells);
+                    analysisEntity.setInsufficientModularization(insufficientModularizationDsSmells);
+                    analysisEntity.setUnnecessaryAbstraction(unnecessaryAbstractionDsSmells);
+                    analysisEntity.setArchSmellDensity(
+                            archSmells > 0 ? (double) archSmells / solution.getLoc() : archSmells);
+                    analysisEntity.setDesignSmellDensity(
+                            designSmells > 0 ? (double) designSmells / solution.getLoc() : designSmells);
+                    analysisEntity.setImpSmellDensity(
+                            impSmells > 0 ? (double) impSmells / solution.getLoc() : impSmells);
+                    processedAnalysis = analysisRepository.save(analysisEntity);
+                }
+            }
+            return processedAnalysis;
         }
+    }
+
+    private double getCyclomaticComplexity(Project projectOutput, int methodCount) {
+        LOGGER.debug("getCyclomaticComplexity :: Entering the method");
+        double complexity = 0.0;
+        if (projectOutput != null && projectOutput.getImplementationSmells() != null && methodCount != 0) {
+            int complextMethodSmells = projectOutput.getImplementationSmells().getImplementationSmell().stream()
+                    .filter(smell -> smell != null && smell.getName() != null)
+                    .map(smell -> smell.getName().contains("Complex Method"))
+                    .collect(Collectors.toList()).size();
+            if (complextMethodSmells > 0) {
+                complexity = ((double) complextMethodSmells / methodCount) * 100;
+            }
+        }
+        LOGGER.debug("getCyclomaticComplexity :: Exiting the method with complexity {}", complexity);
+        return complexity;
+    }
+
+    private <T> List<T> getSmells(List<T> smellList, String smellName) {
+        LOGGER.debug("getCyclicDependencies :: Entering the method");
+        if (smellList != null && !smellList.isEmpty()) {
+            return smellList.stream()
+                    .filter(smell -> {
+                        Map<String, Object> map = Mapper.getInstance().convertValue(smell, new TypeReference<Map>() {
+
+                        });
+                        return map != null && map.get("Name") != null
+                                && map.get("Name").toString().equalsIgnoreCase(smellName);
+                    })
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 
 }
