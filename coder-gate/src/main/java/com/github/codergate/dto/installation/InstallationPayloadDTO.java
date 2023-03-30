@@ -2,12 +2,8 @@
 package com.github.codergate.dto.installation;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,38 +29,7 @@ public class InstallationPayloadDTO implements Serializable {
     @JsonProperty("sender")
     private Sender sender;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<>();
     private static final long serialVersionUID = -7622948711784252212L;
-
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    public InstallationPayloadDTO() {
-    }
-
-    /**
-     *
-     * @param requester
-     * @param sender
-     * @param repositorySelection
-     * @param installation
-     * @param action
-     * @param repositoriesAddedDto
-     * @param repositoriesRemoved
-     */
-    public InstallationPayloadDTO(String action, Installation installation, String repositorySelection,
-            List<RepositoriesAddedDTO> repositoriesAddedDto, List<Object> repositoriesRemoved, Object requester,
-            Sender sender) {
-        super();
-        this.action = action;
-        this.installation = installation;
-        this.repositorySelection = repositorySelection;
-        this.repositoriesAddedDto = repositoriesAddedDto;
-        this.repositoriesRemoved = repositoriesRemoved;
-        this.requester = requester;
-        this.sender = sender;
-    }
 
     @JsonProperty("action")
     public String getAction() {
@@ -183,21 +148,6 @@ public class InstallationPayloadDTO implements Serializable {
 
     public InstallationPayloadDTO withSender(Sender sender) {
         this.sender = sender;
-        return this;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public InstallationPayloadDTO withAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
         return this;
     }
 

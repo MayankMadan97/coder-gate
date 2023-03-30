@@ -11,6 +11,15 @@ public class AnalysisDTO {
     private double cyclomaticComplexity;
     private double documentedLines;
 
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    private long timestamp;
     // Architecture Smells
     private int cyclicDependency;
 
@@ -23,7 +32,7 @@ public class AnalysisDTO {
     private int godComponents;
 
     // Design Smells
-    private int cyclicallyDependentModularization;
+    private int cycDependentMod;
     private int insufficientModularization;
     private int unnecessaryAbstraction;
 
@@ -148,12 +157,12 @@ public class AnalysisDTO {
         this.godComponents = godComponents;
     }
 
-    public int getCyclicallyDependentModularization() {
-        return cyclicallyDependentModularization;
+    public int getCycDependentMod() {
+        return cycDependentMod;
     }
 
-    public void setCyclicallyDependentModularization(int cyclicallyDependentModularization) {
-        this.cyclicallyDependentModularization = cyclicallyDependentModularization;
+    public void setCycDependentMod(int cycDependentMod) {
+        this.cycDependentMod = cycDependentMod;
     }
 
     public int getInsufficientModularization() {

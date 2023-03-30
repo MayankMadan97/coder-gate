@@ -68,13 +68,11 @@ public class AnalysisEntity {
     // Timestamp
     private long timestamp;
 
-    public AnalysisEntity(int repoId, String branchName, double codeSmell, int duplicatedLines,
+    public AnalysisEntity(int repoId, String branchName,
             long timestamp) {
         BranchEntity branch = new BranchEntity();
         branch.setBranchId(new BranchId(repoId, branchName));
         this.branchId = branch;
-        this.codeSmell = codeSmell;
-        this.duplicatedLines = duplicatedLines;
         this.timestamp = timestamp;
     }
 

@@ -2,11 +2,7 @@
 package com.github.codergate.dto.installation;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,36 +21,19 @@ public class RepositoriesAddedDTO implements Serializable {
     @JsonProperty("private")
     private Boolean _private;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<>();
     private static final long serialVersionUID = -4726706613928656811L;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public RepositoriesAddedDTO() {
-    }
-
-    /**
-     * 
-     * @param _private
-     * @param name
-     * @param fullName
-     * @param id
-     * @param nodeId
-     */
-    public RepositoriesAddedDTO(Integer id, String nodeId, String name, String fullName, Boolean _private) {
-        super();
-        this.id = id;
-        this.nodeId = nodeId;
-        this.name = name;
-        this.fullName = fullName;
-        this._private = _private;
-    }
 
     @JsonProperty("id")
     public Integer getId() {
         return id;
+    }
+
+    public RepositoriesAddedDTO(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public RepositoriesAddedDTO() {
     }
 
     @JsonProperty("id")
@@ -124,21 +103,6 @@ public class RepositoriesAddedDTO implements Serializable {
 
     public RepositoriesAddedDTO withPrivate(Boolean _private) {
         this._private = _private;
-        return this;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public RepositoriesAddedDTO withAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
         return this;
     }
 

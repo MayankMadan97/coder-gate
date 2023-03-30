@@ -2,12 +2,7 @@
 package com.github.codergate.dto.installation;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -32,42 +27,7 @@ public class Permissions implements Serializable {
     private String securityEvents;
     @JsonProperty("repository_hooks")
     private String repositoryHooks;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<>();
     private static final long serialVersionUID = -9076112883664283050L;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Permissions() {
-    }
-
-    /**
-     * 
-     * @param securityEvents
-     * @param metadata
-     * @param checks
-     * @param contents
-     * @param workflows
-     * @param pullRequests
-     * @param issues
-     * @param actions
-     * @param repositoryHooks
-     */
-    public Permissions(String checks, String issues, String actions, String contents, String metadata, String workflows,
-            String pullRequests, String securityEvents, String repositoryHooks) {
-        super();
-        this.checks = checks;
-        this.issues = issues;
-        this.actions = actions;
-        this.contents = contents;
-        this.metadata = metadata;
-        this.workflows = workflows;
-        this.pullRequests = pullRequests;
-        this.securityEvents = securityEvents;
-        this.repositoryHooks = repositoryHooks;
-    }
 
     @JsonProperty("checks")
     public String getChecks() {
@@ -201,21 +161,6 @@ public class Permissions implements Serializable {
 
     public Permissions withRepositoryHooks(String repositoryHooks) {
         this.repositoryHooks = repositoryHooks;
-        return this;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public Permissions withAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
         return this;
     }
 

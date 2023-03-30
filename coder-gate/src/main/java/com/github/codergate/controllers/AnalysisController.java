@@ -1,5 +1,7 @@
 package com.github.codergate.controllers;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import com.github.codergate.services.AnalysisService;
 
 @RestController
 public class AnalysisController {
+
     @Autowired
     AnalysisService analysisService;
 
@@ -23,7 +26,7 @@ public class AnalysisController {
     @PostMapping(value = "/analysis/{repo}/{branch}")
     public ResponseEntity<AnalysisEntity> convertXmlToJson(@RequestParam("file") MultipartFile file,
             @PathVariable String repo,
-            @PathVariable String branch) throws Exception {
+            @PathVariable String branch) throws NumberFormatException, IOException {
         LOGGER.debug("convertXmlToJson : Entering the method");
         if (file != null && !file.isEmpty()) {
             AnalysisEntity analysisEntity = analysisService.processAnalysis(file, Integer.parseInt(repo), branch);

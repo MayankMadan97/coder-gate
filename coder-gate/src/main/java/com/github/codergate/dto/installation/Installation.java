@@ -2,13 +2,8 @@
 package com.github.codergate.dto.installation;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -53,64 +48,7 @@ public class Installation implements Serializable {
     private Object suspendedBy;
     @JsonProperty("suspended_at")
     private Object suspendedAt;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<>();
     private static final long serialVersionUID = -4502662394749074220L;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Installation() {
-    }
-
-    /**
-     * 
-     * @param repositoriesUrl
-     * @param appSlug
-     * @param accessTokensUrl
-     * @param targetId
-     * @param repositorySelection
-     * @param suspendedAt
-     * @param htmlUrl
-     * @param targetType
-     * @param singleFilePaths
-     * @param createdAt
-     * @param permissions
-     * @param appId
-     * @param id
-     * @param suspendedBy
-     * @param singleFileName
-     * @param accountDto
-     * @param events
-     * @param updatedAt
-     * @param hasMultipleSingleFiles
-     */
-    public Installation(Integer id, AccountDTO accountDto, String repositorySelection, String accessTokensUrl,
-            String repositoriesUrl, String htmlUrl, Integer appId, String appSlug, Integer targetId, String targetType,
-            Permissions permissions, List<String> events, String createdAt, String updatedAt, Object singleFileName,
-            Boolean hasMultipleSingleFiles, List<Object> singleFilePaths, Object suspendedBy, Object suspendedAt) {
-        super();
-        this.id = id;
-        this.accountDto = accountDto;
-        this.repositorySelection = repositorySelection;
-        this.accessTokensUrl = accessTokensUrl;
-        this.repositoriesUrl = repositoriesUrl;
-        this.htmlUrl = htmlUrl;
-        this.appId = appId;
-        this.appSlug = appSlug;
-        this.targetId = targetId;
-        this.targetType = targetType;
-        this.permissions = permissions;
-        this.events = events;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.singleFileName = singleFileName;
-        this.hasMultipleSingleFiles = hasMultipleSingleFiles;
-        this.singleFilePaths = singleFilePaths;
-        this.suspendedBy = suspendedBy;
-        this.suspendedAt = suspendedAt;
-    }
 
     @JsonProperty("id")
     public Integer getId() {
@@ -394,21 +332,6 @@ public class Installation implements Serializable {
 
     public Installation withSuspendedAt(Object suspendedAt) {
         this.suspendedAt = suspendedAt;
-        return this;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public Installation withAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
         return this;
     }
 
