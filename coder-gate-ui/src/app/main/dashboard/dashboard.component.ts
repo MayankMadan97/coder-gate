@@ -2,7 +2,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { ThresholdService } from 'src/app/shared/threshold.service';
 
 export interface ThresholdDTO {

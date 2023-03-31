@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './shared/auth.service';
+import { User } from './user.interface';
 import { UserService } from './user.service';
 
 @Component({
@@ -9,6 +10,8 @@ import { UserService } from './user.service';
   styleUrls: ['./github-login.component.css']
 })
 export class GithubLoginComponent implements OnInit {
+  user!: User;
+
 
   constructor(
     private authService: AuthService,
@@ -23,8 +26,8 @@ export class GithubLoginComponent implements OnInit {
       this.authService.handleCallback().subscribe((response_: any) => {
         const githubAccessToken = response_["access_token"];
         localStorage.setItem("github_access_token", githubAccessToken);
-        this.userService.getUsers(githubAccessToken).subscribe(response => {
-          localStorage.setItem("user", JSON.stringify(response));
+        this.userService.getUsers(githubAccessToken).subscribe(user => {
+          this.user = user;
           this.router.navigate(['/dashboard']);
         });
       });
