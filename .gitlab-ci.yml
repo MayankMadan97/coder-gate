@@ -1,6 +1,20 @@
 stages:
+  - build 
   - deploy
  
+build-frontend:
+  stage: build
+  image: node:latest
+  script:
+    - cd coder-gate-ui
+    - npm install
+    - ng build --configuration=production
+  artifacts:
+    paths:
+      - coder-gate-ui/dist
+  tags:
+    - Group19Runner
+
 deploy-frontend:
   stage: deploy
   image: nginx:latest
