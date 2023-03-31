@@ -1,19 +1,21 @@
 FROM node:latest AS build-stage
 
-WORKDIR /app
+WORKDIR /usr/local/appfrontend
 
-COPY coder-gate-ui/package.json ./
-COPY coder-gate-ui/package-lock.json ./
+COPY coder-gate-ui/package.json /usr/local/appfrontend/
+COPY coder-gate-ui/package-lock.json /usr/local/appfrontend/
 
 RUN npm install
 
-COPY . .
+COPY coder-gate-ui/ /usr/local/appfrontend/
+
+WORKDIR /usr/local/appfrontend
 
 RUN npm run build --prod
 
 FROM nginx:latest
 
-COPY --from=build-stage /app/dist/coder-gate-ui/ /usr/share/nginx/html
+COPY --from=build-stage /usr/local/appfrontend/dist/coder-gate-ui/ /usr/share/nginx/html
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
