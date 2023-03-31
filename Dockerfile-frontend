@@ -6,8 +6,9 @@ COPY coder-gate-ui/dist/coder-gate-ui /usr/share/nginx/html
 
 RUN rm /etc/nginx/conf.d/default.conf
 
+WORKDIR group19/
 
-COPY group19/nginx.conf /etc/nginx/conf.d/
+COPY nginx.conf /etc/nginx/conf.d/
 
 
 EXPOSE 80
