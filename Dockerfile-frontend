@@ -1,7 +1,7 @@
 FROM nginx:stable-alpine
 
 
-COPY coder-gate-ui/dist/coder-gate-ui /usr/share/nginx/html
+COPY /home/gitlab-runner/builds/ju9h8FbR/0/courses/2023-winter/csci-5308/group19/coder-gate-ui/dist/coder-gate-ui /usr/share/nginx/html
 
 
 RUN rm /etc/nginx/conf.d/default.conf
