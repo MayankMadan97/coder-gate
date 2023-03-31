@@ -5,15 +5,14 @@ WORKDIR /usr/local/appfrontend
 
 
 COPY coder-gate-ui/package.json /usr/local/appfrontend/
-COPY coder-gate-ui/package-lock.json /usr/local/appfrontend/
 
+COPY coder-gate-ui/package-lock.json /usr/local/appfrontend/
 
 RUN npm install
 
 COPY . /usr/local/appfrontend/
 
-
-RUN npm run build
+RUN npm run build --prod
 
 FROM nginx:latest
 
