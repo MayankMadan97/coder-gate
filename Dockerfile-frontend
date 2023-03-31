@@ -1,4 +1,4 @@
-FROM node:latest as build
+FROM node:latest AS build-stage
 
 WORKDIR /usr/local/appfrontend
 
@@ -12,9 +12,8 @@ RUN npm run build --prod
 
 FROM nginx:1.15
 
-COPY --from=build-stage /appfrontend/dist/coder-gate-ui/ /usr/share/nginx/html
+COPY --from=build-stage /usr/local/appfrontend/dist/coder-gate-ui/ /usr/share/nginx/html
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
-
