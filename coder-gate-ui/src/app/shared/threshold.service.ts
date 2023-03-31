@@ -8,13 +8,19 @@ import { ThresholdDTO } from "../main/dashboard/dashboard.component";
 })
 
 export class ThresholdService {
+    private baseUrl = 'http://localhost:3000';
+
     constructor (private http: HttpClient) { }
 
-    postThresholdValues(values: any): Observable<any> {
-        return this.http.post("http://localhost:3000/threshold/618842221", values);
+    postThresholdValues(values: any,repositoryId : number): Observable<any> {
+        const url = `${this.baseUrl}/threshold/${repositoryId}`;
+
+        return this.http.post(url, values);
     }
 
-    getThresholdValues(): Observable<ThresholdDTO> {
-        return this.http.get<ThresholdDTO>("http://localhost:3000/threshold/618842221");
+    getThresholdValues(repositoryID : number ): Observable<ThresholdDTO> {
+        const url = `${this.baseUrl}/threshold/${repositoryID}`;
+
+        return this.http.get<ThresholdDTO>(url);
     }
 }

@@ -11,6 +11,7 @@ import { MainModule } from './main/main.module';
 import { AuthGuard } from './shared/auth.guard';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RepositoriesComponent } from './repositories/repositories.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,7 +26,8 @@ const routes: Routes = [
     AppComponent,
     GithubLoginComponent,
     HomeComponent,
-    FeaturesComponent
+    FeaturesComponent,
+    RepositoriesComponent
   ],
   imports: [
     BrowserModule,
