@@ -12,6 +12,7 @@ import { AuthGuard } from './shared/auth.guard';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -41,7 +42,8 @@ const routes: Routes = [
       }
     }),
     ReactiveFormsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule
   ],
   exports: [
     GithubLoginComponent,

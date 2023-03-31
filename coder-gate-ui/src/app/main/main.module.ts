@@ -12,7 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { OnSubmitAlert } from './dashboard/dashboard.component'
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] }
 ];
@@ -20,7 +21,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     DashboardComponent,
-    NavBarComponent
+    NavBarComponent,
+    OnSubmitAlert
     ],
   imports: [
     CommonModule,
@@ -33,7 +35,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     MatInputModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule
   ]
 })
 export class MainModule { }

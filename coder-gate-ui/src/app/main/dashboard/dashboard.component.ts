@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ThresholdService } from 'src/app/shared/threshold.service';
+import {MatDialog} from "@angular/material/dialog";
 
 
 
@@ -37,7 +38,7 @@ export class DashboardComponent implements OnInit {
   myForm?: FormGroup;
   //bugs: AbstractControl | undefined;
 
-  constructor(private fb: FormBuilder, private thresholdService: ThresholdService) {}
+  constructor(private fb: FormBuilder, private thresholdService: ThresholdService, public alert: MatDialog) {}
   
   public selectedRepo?: string;
   public showThresholdView = false;
@@ -52,9 +53,14 @@ export class DashboardComponent implements OnInit {
       this.thresholdService.postThresholdValues(this.myForm.value, 618842221).subscribe(
         response => {
           console.log(response);
-          alert("Submitted!")
+          // alert("Submitted!")
+          this.openDialog();
         });
     }
+  }
+
+  openDialog() {
+    this.alert.open(OnSubmitAlert);
   }
 
   public ELEMENT_DATA = [
@@ -198,3 +204,10 @@ export class DashboardComponent implements OnInit {
     
   }
 }
+
+@Component({
+  selector: 'alert-content',
+  templateUrl: './alert-content.html'
+})
+
+export class OnSubmitAlert {}
