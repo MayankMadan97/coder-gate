@@ -2,7 +2,7 @@ FROM node:latest AS build-stage
 
 WORKDIR /usr/local/appfrontend
 
-COPY package.json /appfrontend/
+COPY coder-gate-ui/package.json /appfrontend/
 
 RUN npm install
 
