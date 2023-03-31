@@ -20,8 +20,9 @@ deploy-frontend:
   image: nginx:latest
   script:
     - chmod og-rwx ${DEPLOY_SSH_KEY}
-    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'cd ${DOCKER_FRONT_END} && docker build --no-cache -t coder-gate-frontend:latest -f Dockerfile-frontend .'" < <(echo ${SUDO_PASSWORD})
-    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "${DEPLOY_USER}@${DEPLOY_HOST}" " docker run -d --name coder-gate-ui -p 80:80 coder-gate-frontend:latest"
+    - zip -r codergate-frontend.zip coder-gate-ui/dist
+    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "codergate-frontend.zip" "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR_FRONT_END}/codergate-frontend.zip"
+    - ssh -i "${DEPLOY_SSH_KEY}" "${DEPLOY_USER}@${DEPLOY_HOST} cd ${DEPLOY_DIR_FRONT_END}; ./start_silent.sh"
   tags:
     - Group19Runner
   only:
