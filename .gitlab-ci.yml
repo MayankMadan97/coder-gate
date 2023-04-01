@@ -1,16 +1,31 @@
+
 stages:
+  - build 
   - deploy
  
+build-frontend:
+  stage: build
+  image: node:latest
+  script:
+    - cd coder-gate-ui
+    - npm install
+    - ng build --configuration=production
+  artifacts:
+    paths:
+      - coder-gate-ui/dist
+  tags:
+    - Group19Runner
+
 deploy-frontend:
   stage: deploy
+  image: nginx:latest
   script:
     - chmod og-rwx ${DEPLOY_SSH_KEY}
-    - zip -r codergate-frontend.zip coder-gate-ui
+    - zip -r codergate-frontend.zip coder-gate-ui/dist
     - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "codergate-frontend.zip" "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR_FRONT_END}/codergate-frontend.zip"
     - ssh -i "${DEPLOY_SSH_KEY}" "${DEPLOY_USER}@${DEPLOY_HOST}" "cd ${DEPLOY_DIR_FRONT_END}; ./start_silent.sh"
   tags:
     - Group19Runner
   only:
     - dev
-
     
