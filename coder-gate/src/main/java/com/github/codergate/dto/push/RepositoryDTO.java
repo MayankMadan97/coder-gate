@@ -2,103 +2,97 @@
 package com.github.codergate.dto.push;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "node_id",
-    "name",
-    "full_name",
-    "private",
-    "owner",
-    "html_url",
-    "description",
-    "fork",
-    "url",
-    "forks_url",
-    "keys_url",
-    "collaborators_url",
-    "teams_url",
-    "hooks_url",
-    "issue_events_url",
-    "events_url",
-    "assignees_url",
-    "branches_url",
-    "tags_url",
-    "blobs_url",
-    "git_tags_url",
-    "git_refs_url",
-    "trees_url",
-    "statuses_url",
-    "languages_url",
-    "stargazers_url",
-    "contributors_url",
-    "subscribers_url",
-    "subscription_url",
-    "commits_url",
-    "git_commits_url",
-    "comments_url",
-    "issue_comment_url",
-    "contents_url",
-    "compare_url",
-    "merges_url",
-    "archive_url",
-    "downloads_url",
-    "issues_url",
-    "pulls_url",
-    "milestones_url",
-    "notifications_url",
-    "labels_url",
-    "releases_url",
-    "deployments_url",
-    "created_at",
-    "updated_at",
-    "pushed_at",
-    "git_url",
-    "ssh_url",
-    "clone_url",
-    "svn_url",
-    "homepage",
-    "size",
-    "stargazers_count",
-    "watchers_count",
-    "language",
-    "has_issues",
-    "has_projects",
-    "has_downloads",
-    "has_wiki",
-    "has_pages",
-    "has_discussions",
-    "forks_count",
-    "mirror_url",
-    "archived",
-    "disabled",
-    "open_issues_count",
-    "license",
-    "allow_forking",
-    "is_template",
-    "web_commit_signoff_required",
-    "topics",
-    "visibility",
-    "forks",
-    "open_issues",
-    "watchers",
-    "default_branch",
-    "stargazers",
-    "master_branch"
+        "id",
+        "node_id",
+        "name",
+        "full_name",
+        "private",
+        "owner",
+        "html_url",
+        "description",
+        "fork",
+        "url",
+        "forks_url",
+        "keys_url",
+        "collaborators_url",
+        "teams_url",
+        "hooks_url",
+        "issue_events_url",
+        "events_url",
+        "assignees_url",
+        "branches_url",
+        "tags_url",
+        "blobs_url",
+        "git_tags_url",
+        "git_refs_url",
+        "trees_url",
+        "statuses_url",
+        "languages_url",
+        "stargazers_url",
+        "contributors_url",
+        "subscribers_url",
+        "subscription_url",
+        "commits_url",
+        "git_commits_url",
+        "comments_url",
+        "issue_comment_url",
+        "contents_url",
+        "compare_url",
+        "merges_url",
+        "archive_url",
+        "downloads_url",
+        "issues_url",
+        "pulls_url",
+        "milestones_url",
+        "notifications_url",
+        "labels_url",
+        "releases_url",
+        "deployments_url",
+        "created_at",
+        "updated_at",
+        "pushed_at",
+        "git_url",
+        "ssh_url",
+        "clone_url",
+        "svn_url",
+        "homepage",
+        "size",
+        "stargazers_count",
+        "watchers_count",
+        "language",
+        "has_issues",
+        "has_projects",
+        "has_downloads",
+        "has_wiki",
+        "has_pages",
+        "has_discussions",
+        "forks_count",
+        "mirror_url",
+        "archived",
+        "disabled",
+        "open_issues_count",
+        "license",
+        "allow_forking",
+        "is_template",
+        "web_commit_signoff_required",
+        "topics",
+        "visibility",
+        "forks",
+        "open_issues",
+        "watchers",
+        "default_branch",
+        "stargazers",
+        "master_branch"
 })
-public class RepositoryDTO implements Serializable
-{
+public class RepositoryDTO implements Serializable {
 
     @JsonProperty("id")
     private Integer id;
@@ -108,11 +102,6 @@ public class RepositoryDTO implements Serializable
     private String name;
     @JsonProperty("full_name")
     private String fullName;
-    public RepositoryDTO(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     @JsonProperty("private")
     private Boolean _private;
     @JsonProperty("owner")
@@ -267,185 +256,7 @@ public class RepositoryDTO implements Serializable
     private Integer stargazers;
     @JsonProperty("master_branch")
     private String masterBranch;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
-    private final static long serialVersionUID = -5066551299210491337L;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public RepositoryDTO() {
-    }
-
-    /**
-     * 
-     * @param sshUrl
-     * @param archiveUrl
-     * @param languagesUrl
-     * @param language
-     * @param assigneesUrl
-     * @param commitsUrl
-     * @param openIssues
-     * @param cloneUrl
-     * @param forksCount
-     * @param subscribersUrl
-     * @param createdAt
-     * @param forksUrl
-     * @param watchersCount
-     * @param _private
-     * @param masterBranch
-     * @param issueCommentUrl
-     * @param statusesUrl
-     * @param id
-     * @param collaboratorsUrl
-     * @param updatedAt
-     * @param forks
-     * @param allowForking
-     * @param labelsUrl
-     * @param visibility
-     * @param defaultBranch
-     * @param keysUrl
-     * @param downloadsUrl
-     * @param contentsUrl
-     * @param pushedAt
-     * @param tagsUrl
-     * @param license
-     * @param commentsUrl
-     * @param size
-     * @param isTemplate
-     * @param treesUrl
-     * @param name
-     * @param mergesUrl
-     * @param nodeId
-     * @param teamsUrl
-     * @param blobsUrl
-     * @param issueEventsUrl
-     * @param hasPages
-     * @param milestonesUrl
-     * @param issuesUrl
-     * @param webCommitSignoffRequired
-     * @param releasesUrl
-     * @param description
-     * @param watchers
-     * @param branchesUrl
-     * @param contributorsUrl
-     * @param gitRefsUrl
-     * @param hooksUrl
-     * @param openIssuesCount
-     * @param archived
-     * @param stargazersCount
-     * @param disabled
-     * @param hasIssues
-     * @param ownerDTO
-     * @param hasWiki
-     * @param compareUrl
-     * @param gitCommitsUrl
-     * @param topics
-     * @param htmlUrl
-     * @param stargazersUrl
-     * @param fullName
-     * @param svnUrl
-     * @param hasDiscussions
-     * @param url
-     * @param pullsUrl
-     * @param mirrorUrl
-     * @param hasDownloads
-     * @param fork
-     * @param stargazers
-     * @param hasProjects
-     * @param deploymentsUrl
-     * @param eventsUrl
-     * @param gitTagsUrl
-     * @param notificationsUrl
-     * @param gitUrl
-     * @param subscriptionUrl
-     * @param homepage
-     */
-    public RepositoryDTO(Integer id, String nodeId, String name, String fullName, Boolean _private, OwnerDTO ownerDTO, String htmlUrl, Object description, Boolean fork, String url, String forksUrl, String keysUrl, String collaboratorsUrl, String teamsUrl, String hooksUrl, String issueEventsUrl, String eventsUrl, String assigneesUrl, String branchesUrl, String tagsUrl, String blobsUrl, String gitTagsUrl, String gitRefsUrl, String treesUrl, String statusesUrl, String languagesUrl, String stargazersUrl, String contributorsUrl, String subscribersUrl, String subscriptionUrl, String commitsUrl, String gitCommitsUrl, String commentsUrl, String issueCommentUrl, String contentsUrl, String compareUrl, String mergesUrl, String archiveUrl, String downloadsUrl, String issuesUrl, String pullsUrl, String milestonesUrl, String notificationsUrl, String labelsUrl, String releasesUrl, String deploymentsUrl, Integer createdAt, String updatedAt, Integer pushedAt, String gitUrl, String sshUrl, String cloneUrl, String svnUrl, Object homepage, Integer size, Integer stargazersCount, Integer watchersCount, Object language, Boolean hasIssues, Boolean hasProjects, Boolean hasDownloads, Boolean hasWiki, Boolean hasPages, Boolean hasDiscussions, Integer forksCount, Object mirrorUrl, Boolean archived, Boolean disabled, Integer openIssuesCount, Object license, Boolean allowForking, Boolean isTemplate, Boolean webCommitSignoffRequired, List<Object> topics, String visibility, Integer forks, Integer openIssues, Integer watchers, String defaultBranch, Integer stargazers, String masterBranch) {
-        super();
-        this.id = id;
-        this.nodeId = nodeId;
-        this.name = name;
-        this.fullName = fullName;
-        this._private = _private;
-        this.ownerDTO = ownerDTO;
-        this.htmlUrl = htmlUrl;
-        this.description = description;
-        this.fork = fork;
-        this.url = url;
-        this.forksUrl = forksUrl;
-        this.keysUrl = keysUrl;
-        this.collaboratorsUrl = collaboratorsUrl;
-        this.teamsUrl = teamsUrl;
-        this.hooksUrl = hooksUrl;
-        this.issueEventsUrl = issueEventsUrl;
-        this.eventsUrl = eventsUrl;
-        this.assigneesUrl = assigneesUrl;
-        this.branchesUrl = branchesUrl;
-        this.tagsUrl = tagsUrl;
-        this.blobsUrl = blobsUrl;
-        this.gitTagsUrl = gitTagsUrl;
-        this.gitRefsUrl = gitRefsUrl;
-        this.treesUrl = treesUrl;
-        this.statusesUrl = statusesUrl;
-        this.languagesUrl = languagesUrl;
-        this.stargazersUrl = stargazersUrl;
-        this.contributorsUrl = contributorsUrl;
-        this.subscribersUrl = subscribersUrl;
-        this.subscriptionUrl = subscriptionUrl;
-        this.commitsUrl = commitsUrl;
-        this.gitCommitsUrl = gitCommitsUrl;
-        this.commentsUrl = commentsUrl;
-        this.issueCommentUrl = issueCommentUrl;
-        this.contentsUrl = contentsUrl;
-        this.compareUrl = compareUrl;
-        this.mergesUrl = mergesUrl;
-        this.archiveUrl = archiveUrl;
-        this.downloadsUrl = downloadsUrl;
-        this.issuesUrl = issuesUrl;
-        this.pullsUrl = pullsUrl;
-        this.milestonesUrl = milestonesUrl;
-        this.notificationsUrl = notificationsUrl;
-        this.labelsUrl = labelsUrl;
-        this.releasesUrl = releasesUrl;
-        this.deploymentsUrl = deploymentsUrl;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.pushedAt = pushedAt;
-        this.gitUrl = gitUrl;
-        this.sshUrl = sshUrl;
-        this.cloneUrl = cloneUrl;
-        this.svnUrl = svnUrl;
-        this.homepage = homepage;
-        this.size = size;
-        this.stargazersCount = stargazersCount;
-        this.watchersCount = watchersCount;
-        this.language = language;
-        this.hasIssues = hasIssues;
-        this.hasProjects = hasProjects;
-        this.hasDownloads = hasDownloads;
-        this.hasWiki = hasWiki;
-        this.hasPages = hasPages;
-        this.hasDiscussions = hasDiscussions;
-        this.forksCount = forksCount;
-        this.mirrorUrl = mirrorUrl;
-        this.archived = archived;
-        this.disabled = disabled;
-        this.openIssuesCount = openIssuesCount;
-        this.license = license;
-        this.allowForking = allowForking;
-        this.isTemplate = isTemplate;
-        this.webCommitSignoffRequired = webCommitSignoffRequired;
-        this.topics = topics;
-        this.visibility = visibility;
-        this.forks = forks;
-        this.openIssues = openIssues;
-        this.watchers = watchers;
-        this.defaultBranch = defaultBranch;
-        this.stargazers = stargazers;
-        this.masterBranch = masterBranch;
-    }
+    private static final long serialVersionUID = -5066551299210491337L;
 
     @JsonProperty("id")
     public Integer getId() {
@@ -1255,16 +1066,6 @@ public class RepositoryDTO implements Serializable
     @JsonProperty("master_branch")
     public void setMasterBranch(String masterBranch) {
         this.masterBranch = masterBranch;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 }

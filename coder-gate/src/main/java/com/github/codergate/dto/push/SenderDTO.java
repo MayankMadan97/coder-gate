@@ -2,39 +2,33 @@
 package com.github.codergate.dto.push;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "login",
-    "id",
-    "node_id",
-    "avatar_url",
-    "gravatar_id",
-    "url",
-    "html_url",
-    "followers_url",
-    "following_url",
-    "gists_url",
-    "starred_url",
-    "subscriptions_url",
-    "organizations_url",
-    "repos_url",
-    "events_url",
-    "received_events_url",
-    "type",
-    "site_admin"
+        "login",
+        "id",
+        "node_id",
+        "avatar_url",
+        "gravatar_id",
+        "url",
+        "html_url",
+        "followers_url",
+        "following_url",
+        "gists_url",
+        "starred_url",
+        "subscriptions_url",
+        "organizations_url",
+        "repos_url",
+        "events_url",
+        "received_events_url",
+        "type",
+        "site_admin"
 })
-public class SenderDTO implements Serializable
-{
+public class SenderDTO implements Serializable {
 
     @JsonProperty("login")
     private String login;
@@ -72,59 +66,7 @@ public class SenderDTO implements Serializable
     private String type;
     @JsonProperty("site_admin")
     private Boolean siteAdmin;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
-    private final static long serialVersionUID = -8222297925959511107L;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public SenderDTO() {
-    }
-
-    /**
-     * 
-     * @param receivedEventsUrl
-     * @param siteAdmin
-     * @param followingUrl
-     * @param gistsUrl
-     * @param avatarUrl
-     * @param organizationsUrl
-     * @param reposUrl
-     * @param htmlUrl
-     * @param subscriptionsUrl
-     * @param login
-     * @param type
-     * @param url
-     * @param starredUrl
-     * @param gravatarId
-     * @param followersUrl
-     * @param id
-     * @param eventsUrl
-     * @param nodeId
-     */
-    public SenderDTO(String login, Integer id, String nodeId, String avatarUrl, String gravatarId, String url, String htmlUrl, String followersUrl, String followingUrl, String gistsUrl, String starredUrl, String subscriptionsUrl, String organizationsUrl, String reposUrl, String eventsUrl, String receivedEventsUrl, String type, Boolean siteAdmin) {
-        super();
-        this.login = login;
-        this.id = id;
-        this.nodeId = nodeId;
-        this.avatarUrl = avatarUrl;
-        this.gravatarId = gravatarId;
-        this.url = url;
-        this.htmlUrl = htmlUrl;
-        this.followersUrl = followersUrl;
-        this.followingUrl = followingUrl;
-        this.gistsUrl = gistsUrl;
-        this.starredUrl = starredUrl;
-        this.subscriptionsUrl = subscriptionsUrl;
-        this.organizationsUrl = organizationsUrl;
-        this.reposUrl = reposUrl;
-        this.eventsUrl = eventsUrl;
-        this.receivedEventsUrl = receivedEventsUrl;
-        this.type = type;
-        this.siteAdmin = siteAdmin;
-    }
+    private static final long serialVersionUID = -8222297925959511107L;
 
     @JsonProperty("login")
     public String getLogin() {
@@ -304,16 +246,6 @@ public class SenderDTO implements Serializable
     @JsonProperty("site_admin")
     public void setSiteAdmin(Boolean siteAdmin) {
         this.siteAdmin = siteAdmin;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 }

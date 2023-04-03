@@ -2,36 +2,30 @@
 package com.github.codergate.dto.push;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "ref",
-    "before",
-    "after",
-    "repository",
-    "pusher",
-    "sender",
-    "installation",
-    "created",
-    "deleted",
-    "forced",
-    "base_ref",
-    "compare",
-    "commits",
-    "head_commit"
+        "ref",
+        "before",
+        "after",
+        "repository",
+        "pusher",
+        "sender",
+        "installation",
+        "created",
+        "deleted",
+        "forced",
+        "base_ref",
+        "compare",
+        "commits",
+        "head_commit"
 })
-public class PusherPayloadDTO implements Serializable
-{
+public class PusherPayloadDTO implements Serializable {
 
     @JsonProperty("ref")
     private String ref;
@@ -61,51 +55,7 @@ public class PusherPayloadDTO implements Serializable
     private List<CommitDTO> commitDTOS;
     @JsonProperty("head_commit")
     private HeadCommitDTO headCommitDTO;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
-    private final static long serialVersionUID = -6003484145973053497L;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public PusherPayloadDTO() {
-    }
-
-    /**
-     * 
-     * @param pusherDTO
-     * @param compare
-     * @param before
-     * @param created
-     * @param forced
-     * @param repositoryDTO
-     * @param headCommitDTO
-     * @param baseRef
-     * @param ref
-     * @param deleted
-     * @param senderDTO
-     * @param installationDTO
-     * @param commitDTOS
-     * @param after
-     */
-    public PusherPayloadDTO(String ref, String before, String after, RepositoryDTO repositoryDTO, PusherDTO pusherDTO, SenderDTO senderDTO, InstallationDTO installationDTO, Boolean created, Boolean deleted, Boolean forced, Object baseRef, String compare, List<CommitDTO> commitDTOS, HeadCommitDTO headCommitDTO) {
-        super();
-        this.ref = ref;
-        this.before = before;
-        this.after = after;
-        this.repositoryDTO = repositoryDTO;
-        this.pusherDTO = pusherDTO;
-        this.senderDTO = senderDTO;
-        this.installationDTO = installationDTO;
-        this.created = created;
-        this.deleted = deleted;
-        this.forced = forced;
-        this.baseRef = baseRef;
-        this.compare = compare;
-        this.commitDTOS = commitDTOS;
-        this.headCommitDTO = headCommitDTO;
-    }
+    private static final long serialVersionUID = -6003484145973053497L;
 
     @JsonProperty("ref")
     public String getRef() {
@@ -245,16 +195,6 @@ public class PusherPayloadDTO implements Serializable
     @JsonProperty("head_commit")
     public void setHeadCommit(HeadCommitDTO headCommitDTO) {
         this.headCommitDTO = headCommitDTO;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 }

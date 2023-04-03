@@ -1,15 +1,9 @@
 package com.github.codergate.dto.installation;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RepositoriesRemovedDTO implements Serializable {
@@ -24,33 +18,7 @@ public class RepositoriesRemovedDTO implements Serializable {
     private String fullName;
     @JsonProperty("private")
     private Boolean _private;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
-    private final static long serialVersionUID = -2899608895598598365L;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public RepositoriesRemovedDTO() {
-    }
-
-    /**
-     * 
-     * @param _private
-     * @param name
-     * @param fullName
-     * @param id
-     * @param nodeId
-     */
-    public RepositoriesRemovedDTO(Integer id, String nodeId, String name, String fullName, Boolean _private) {
-        super();
-        this.id = id;
-        this.nodeId = nodeId;
-        this.name = name;
-        this.fullName = fullName;
-        this._private = _private;
-    }
+    private static final long serialVersionUID = -2899608895598598365L;
 
     @JsonProperty("id")
     public Integer getId() {
@@ -124,21 +92,6 @@ public class RepositoriesRemovedDTO implements Serializable {
 
     public RepositoriesRemovedDTO withPrivate(Boolean _private) {
         this._private = _private;
-        return this;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public RepositoriesRemovedDTO withAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
         return this;
     }
 

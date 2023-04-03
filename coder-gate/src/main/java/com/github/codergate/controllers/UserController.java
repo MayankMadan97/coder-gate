@@ -7,9 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @RestController
 public class UserController {
@@ -18,10 +22,26 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("/getUserDetails")
-    public ResponseEntity<UserResponse> getUser(@RequestBody UserRequest userRequest) {
-        LOGGER.debug("getUserImage : Entering the method");
-        UserResponse userResponse = userService.getUserResponse(userRequest.getUserName());
-        LOGGER.debug("getUserImage : Exiting the method");
-        return ResponseEntity.ok(userResponse);
+    public String getUser(@RequestParam("githubAccessToken") String githubAccessToken) throws IOException {
+        String accessToken = githubAccessToken;
+        String urlString = "https://api.github.com/user";
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Authorization", "Bearer " + accessToken);
+        connection.connect();
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            return response.toString();
+        }
+        return "";
     }
 }

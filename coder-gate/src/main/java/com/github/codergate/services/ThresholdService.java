@@ -71,10 +71,7 @@ public class ThresholdService {
                 if (newInformation.getGodComponents() != 0) {
                     thresholdEntity.setGodComponents(newInformation.getGodComponents());
                 }
-                if (newInformation.getCyclicallyDependentModularization() != 0) {
-                    thresholdEntity.setCyclicallyDependentModularization(
-                            newInformation.getCyclicallyDependentModularization());
-                }
+
                 if (newInformation.getInsufficientModularization() != 0) {
                     thresholdEntity.setInsufficientModularization(newInformation.getInsufficientModularization());
                 }
@@ -103,12 +100,29 @@ public class ThresholdService {
                     thresholdEntity.setImpSmellDensity(newInformation.getImpSmellDensity());
                 }
                 thresholdEntity.setAllowAction(newInformation.isAllowAction());
+                thresholdEntity.setBugs(newInformation.getBugs());
+                thresholdEntity.setVulnerabilities(newInformation.getVulnerabilities());
+                thresholdEntity.setCodeSmell(newInformation.getCodeSmell());
+                thresholdEntity.setTestCoverage(newInformation.getTestCoverage());
+                thresholdEntity.setDuplicatedLines(newInformation.getDuplicatedLines());
+                thresholdEntity.setCyclomaticComplexity(newInformation.getCyclomaticComplexity());
+                thresholdEntity.setDocumentedLines(newInformation.getDocumentedLines());
+                thresholdEntity.setCyclicDependency(newInformation.getCyclicDependency());
+                thresholdEntity.setGodComponents(newInformation.getGodComponents());
+                thresholdEntity.setCycDependentMod(newInformation.getCycDependentMod());
+                thresholdEntity.setInsufficientModularization(newInformation.getInsufficientModularization());
+                thresholdEntity.setUnnecessaryAbstraction(newInformation.getUnnecessaryAbstraction());
+                thresholdEntity.setComplexConditional(newInformation.getComplexConditional());
+                thresholdEntity.setEmptyCatchClause(newInformation.getEmptyCatchClause());
+                thresholdEntity.setMissingAssertion(newInformation.getMissingAssertion());
+                thresholdEntity.setEmptyTest(newInformation.getEmptyTest());
             }
             ThresholdEntity savedEntity = thresholdRepository.save(thresholdEntity);
             LOGGER.info("updateThresholdByID : Updating the threshold information with repositoryID {}", repositoryID);
             thresholdDTO = convertThresholdEntityToDTO(savedEntity);
         }
         return thresholdDTO;
+
     }
 
     public ThresholdDTO getThresholdByID(int repositoryID) {
@@ -122,18 +136,6 @@ public class ThresholdService {
         }
         return thresholdDTO;
     }
-
-    // public boolean deleteThresholdByID(int repositoryID) {
-    // boolean isDeleted = false;
-    // if(repositoryID != 0)
-    // {
-    // thresholdRepository.deleteByRepositoryId(repositoryID);
-    // isDeleted = true;
-    // LOGGER.info("deleteThresholdByID : Deleting threshold with repositoryID {}",
-    // repositoryID);
-    // }
-    // return isDeleted;
-    // }
 
     public ThresholdEntity convertThresholdDtoToEntity(ThresholdDTO thresholdDTO, int repositoryID) {
         ThresholdEntity thresholdEntity = new ThresholdEntity();
@@ -172,10 +174,7 @@ public class ThresholdService {
             if (thresholdDTO.getGodComponents() != 0) {
                 thresholdEntity.setGodComponents(thresholdDTO.getGodComponents());
             }
-            if (thresholdDTO.getCyclicallyDependentModularization() != 0) {
-                thresholdEntity
-                        .setCyclicallyDependentModularization(thresholdDTO.getCyclicallyDependentModularization());
-            }
+
             if (thresholdDTO.getInsufficientModularization() != 0) {
                 thresholdEntity.setInsufficientModularization(thresholdDTO.getInsufficientModularization());
             }
@@ -204,6 +203,22 @@ public class ThresholdService {
                 thresholdEntity.setImpSmellDensity(thresholdDTO.getImpSmellDensity());
             }
             thresholdEntity.setAllowAction(thresholdDTO.isAllowAction());
+            thresholdEntity.setBugs(thresholdDTO.getBugs());
+            thresholdEntity.setVulnerabilities(thresholdDTO.getVulnerabilities());
+            thresholdEntity.setCodeSmell(thresholdDTO.getCodeSmell());
+            thresholdEntity.setTestCoverage(thresholdDTO.getTestCoverage());
+            thresholdEntity.setDuplicatedLines(thresholdDTO.getDuplicatedLines());
+            thresholdEntity.setCyclomaticComplexity(thresholdDTO.getCyclomaticComplexity());
+            thresholdEntity.setDocumentedLines(thresholdDTO.getDocumentedLines());
+            thresholdEntity.setCyclicDependency(thresholdDTO.getCyclicDependency());
+            thresholdEntity.setGodComponents(thresholdDTO.getGodComponents());
+            thresholdEntity.setCycDependentMod(thresholdDTO.getCycDependentMod());
+            thresholdEntity.setInsufficientModularization(thresholdDTO.getInsufficientModularization());
+            thresholdEntity.setUnnecessaryAbstraction(thresholdDTO.getUnnecessaryAbstraction());
+            thresholdEntity.setComplexConditional(thresholdDTO.getComplexConditional());
+            thresholdEntity.setEmptyCatchClause(thresholdDTO.getEmptyCatchClause());
+            thresholdEntity.setMissingAssertion(thresholdDTO.getMissingAssertion());
+            thresholdEntity.setEmptyTest(thresholdDTO.getEmptyTest());
             LOGGER.info("convertThresholdDtoToEntity : Converted Threshold DTO to Entity {}", thresholdEntity);
         } else {
             LOGGER.warn("convertThresholdDtoToEntity : ThresholdDTO value is null");
@@ -243,10 +258,7 @@ public class ThresholdService {
             if (thresholdEntity.getGodComponents() != 0) {
                 thresholdDTO.setGodComponents(thresholdEntity.getGodComponents());
             }
-            if (thresholdEntity.getCyclicallyDependentModularization() != 0) {
-                thresholdDTO
-                        .setCyclicallyDependentModularization(thresholdEntity.getCyclicallyDependentModularization());
-            }
+
             if (thresholdEntity.getInsufficientModularization() != 0) {
                 thresholdDTO.setInsufficientModularization(thresholdEntity.getInsufficientModularization());
             }
@@ -275,6 +287,22 @@ public class ThresholdService {
                 thresholdDTO.setImpSmellDensity(thresholdEntity.getImpSmellDensity());
             }
             thresholdDTO.setAllowAction(thresholdEntity.isAllowAction());
+            thresholdDTO.setBugs(thresholdEntity.getBugs());
+            thresholdDTO.setVulnerabilities(thresholdEntity.getVulnerabilities());
+            thresholdDTO.setCodeSmell(thresholdEntity.getCodeSmell());
+            thresholdDTO.setTestCoverage(thresholdEntity.getTestCoverage());
+            thresholdDTO.setDuplicatedLines(thresholdEntity.getDuplicatedLines());
+            thresholdDTO.setCyclomaticComplexity(thresholdEntity.getCyclomaticComplexity());
+            thresholdDTO.setDocumentedLines(thresholdEntity.getDocumentedLines());
+            thresholdDTO.setCyclicDependency(thresholdEntity.getCyclicDependency());
+            thresholdDTO.setGodComponents(thresholdEntity.getGodComponents());
+            thresholdDTO.setCycDependentMod(thresholdEntity.getCycDependentMod());
+            thresholdDTO.setInsufficientModularization(thresholdEntity.getInsufficientModularization());
+            thresholdDTO.setUnnecessaryAbstraction(thresholdEntity.getUnnecessaryAbstraction());
+            thresholdDTO.setComplexConditional(thresholdEntity.getComplexConditional());
+            thresholdDTO.setEmptyCatchClause(thresholdEntity.getEmptyCatchClause());
+            thresholdDTO.setMissingAssertion(thresholdEntity.getMissingAssertion());
+            thresholdDTO.setEmptyTest(thresholdEntity.getEmptyTest());
             LOGGER.info("convertThresholdDtoToEntity : Converted Threshold Entity to DTO {}", thresholdDTO);
         } else {
             LOGGER.warn("convertThresholdDtoToEntity : Threshold Entity is null");

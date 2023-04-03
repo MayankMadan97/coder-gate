@@ -42,7 +42,7 @@ public class ThresholdEntity {
     private int godComponents;
 
     // Design Smells
-    private int cyclicallyDependentModularization;
+    private int cycDependentMod;
     private int insufficientModularization;
     private int unnecessaryAbstraction;
 
@@ -148,12 +148,12 @@ public class ThresholdEntity {
         this.godComponents = godComponents;
     }
 
-    public int getCyclicallyDependentModularization() {
-        return cyclicallyDependentModularization;
+    public int getCycDependentMod() {
+        return cycDependentMod;
     }
 
-    public void setCyclicallyDependentModularization(int cyclicallyDependentModularization) {
-        this.cyclicallyDependentModularization = cyclicallyDependentModularization;
+    public void setCycDependentMod(int cycDependentMod) {
+        this.cycDependentMod = cycDependentMod;
     }
 
     public int getInsufficientModularization() {

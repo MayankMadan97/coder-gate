@@ -18,17 +18,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.codergate.dto.analysis.AnalysisDTO;
+import com.github.codergate.dto.analysis.ArchSmell;
+import com.github.codergate.dto.analysis.DesignSmell;
 import com.github.codergate.dto.analysis.Designate;
+import com.github.codergate.dto.analysis.ImplementationSmell;
 import com.github.codergate.dto.analysis.Project;
 import com.github.codergate.dto.analysis.Solution;
 import com.github.codergate.entities.AnalysisEntity;
+import com.github.codergate.entities.BranchEntity;
 import com.github.codergate.repositories.AnalysisRepository;
 import com.github.codergate.utils.Mapper;
 
 @Service
 public class AnalysisService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AnalysisService.class);
 
     @Autowired
     AnalysisRepository analysisRepository;
@@ -36,20 +38,23 @@ public class AnalysisService {
     @Autowired
     BranchService branchService;
 
-    @Autowired
-    RepositoryService repoService;
+    private static final int HUNDRED = 100;
+    private static final String NAME = "Name";
+    private static final String GOD_COMPONENT = "God Component";
+    private static final String COMPLEX_METHOD = "Complex Method";
+    private static final String CYC_DEPENDENCY = "Cyclic Dependency";
+    private static final String EMPTY_CATCH_CLAUSE = "Empty Catch Clause";
+    private static final String COMPLEX_CONDITIONAL = "Complex Conditional";
+    private static final String UNNECESSARY_ABST = "Unnecessary Abstraction";
+    private static final String INSUFFICIENT_MOD = "Insufficient Modularization";
+    private static final String CYC_DEPENDENT_MOD = "Cyclically-dependent Modularization";
 
-    public AnalysisDTO addAnalysis(AnalysisDTO analysisToAdd, long eventID, int repositoryID) {
-        AnalysisDTO analysisDTO = null;
-        AnalysisEntity analysisEntity = convertAnalysisDtoToEntity(analysisToAdd, eventID, repositoryID);
-        if (analysisEntity != null) {
-            AnalysisEntity savedEntity = analysisRepository.save(analysisEntity);
-            LOGGER.info("addAnalysis : The analysis information has been added {}", analysisEntity);
-            analysisDTO = convertAnalysisEntityToDto(savedEntity);
-        }
-        return analysisDTO;
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(AnalysisService.class);
 
+    /**
+     * @param repositoryID
+     * @return AnalysisDTO
+     */
     public AnalysisDTO getAnalysisByID(int repositoryID) {
         AnalysisDTO analysisDTO = null;
         AnalysisEntity analysisEntity = analysisRepository.findAnalysisByRepositoryId(repositoryID);
@@ -62,6 +67,15 @@ public class AnalysisService {
         return analysisDTO;
     }
 
+    public AnalysisDTO getLatestAnalysis(int repoId) {
+        return convertAnalysisEntityToDto(analysisRepository.findLatestAnalysisByRepositoryId(repoId));
+    }
+
+    /**
+     * @param repositoryID
+     * @param newInformation
+     * @return AnalysisDTO
+     */
     public AnalysisDTO updateAnalysisByRepositoryID(int repositoryID, AnalysisDTO newInformation) {
         AnalysisDTO analysisDTO = null;
         AnalysisEntity analysisEntity = analysisRepository.findLatestAnalysisByRepositoryId(repositoryID);
@@ -97,10 +111,7 @@ public class AnalysisService {
                 if (newInformation.getGodComponents() != 0) {
                     analysisEntity.setGodComponents(newInformation.getGodComponents());
                 }
-                if (newInformation.getCyclicallyDependentModularization() != 0) {
-                    analysisEntity.setCyclicallyDependentModularization(
-                            newInformation.getCyclicallyDependentModularization());
-                }
+
                 if (newInformation.getInsufficientModularization() != 0) {
                     analysisEntity.setInsufficientModularization(newInformation.getInsufficientModularization());
                 }
@@ -130,6 +141,24 @@ public class AnalysisService {
                 }
 //                Date date = new Date();
 //                analysisEntity.setTimestamp(date.getTime());
+                analysisEntity.setType(newInformation.getAnalysisType());
+                analysisEntity.setBugs(newInformation.getBugs());
+                analysisEntity.setVulnerabilities(newInformation.getVulnerabilities());
+                analysisEntity.setCodeSmell(newInformation.getCodeSmell());
+                analysisEntity.setTestCoverage(newInformation.getTestCoverage());
+                analysisEntity.setDuplicatedLines(newInformation.getDuplicatedLines());
+                analysisEntity.setCyclomaticComplexity(newInformation.getCyclomaticComplexity());
+                analysisEntity.setDocumentedLines(newInformation.getDocumentedLines());
+                analysisEntity.setCyclicDependency(newInformation.getCyclicDependency());
+                analysisEntity.setGodComponents(newInformation.getGodComponents());
+                analysisEntity.setCyclicallyDependentModularization(newInformation.getCycDependentMod());
+                analysisEntity.setInsufficientModularization(newInformation.getInsufficientModularization());
+                analysisEntity.setUnnecessaryAbstraction(newInformation.getUnnecessaryAbstraction());
+                analysisEntity.setComplexConditional(newInformation.getComplexConditional());
+                analysisEntity.setEmptyCatchClause(newInformation.getEmptyCatchClause());
+                analysisEntity.setMissingAssertion(newInformation.getMissingAssertion());
+                analysisEntity.setEmptyTest(newInformation.getEmptyTest());
+                analysisEntity.setTimestamp(new Date().getTime());
             }
             AnalysisEntity savedEntity = analysisRepository.save(analysisEntity);
             LOGGER.info("updateAnalysisByID : Updating the analysis information with repositoryID {}", repositoryID);
@@ -138,21 +167,8 @@ public class AnalysisService {
         return analysisDTO;
     }
 
-    // public boolean deleteAnalysisByID(int repositoryID) {
-    // boolean isDeleted = false;
-    // if(repositoryID != 0)
-    // {
-    // analysisRepository.deleteByRepositoryId(repositoryID);
-    // isDeleted = true;
-    // LOGGER.info("deleteAnalysisByID : Deleting analysis information with
-    // repositoryID {}", repositoryID);
-    // }
-    // return isDeleted;
-    // }
-
-    public AnalysisEntity convertAnalysisDtoToEntity(AnalysisDTO analysisDTO, long eventID, int repositoryID) {
+    public AnalysisEntity convertAnalysisDtoToEntity(AnalysisDTO analysisDTO) {
         AnalysisEntity analysisEntity = null;
-
         if (analysisDTO != null) {
             analysisEntity = new AnalysisEntity();
             if (analysisDTO.getAnalysisType() != null) {
@@ -185,9 +201,7 @@ public class AnalysisService {
             if (analysisDTO.getGodComponents() != 0) {
                 analysisEntity.setGodComponents(analysisDTO.getGodComponents());
             }
-            if (analysisDTO.getCyclicallyDependentModularization() != 0) {
-                analysisEntity.setCyclicallyDependentModularization(analysisDTO.getCyclicallyDependentModularization());
-            }
+
             if (analysisDTO.getInsufficientModularization() != 0) {
                 analysisEntity.setInsufficientModularization(analysisDTO.getInsufficientModularization());
             }
@@ -217,6 +231,25 @@ public class AnalysisService {
             }
 //            Date date = new Date();
 //            analysisEntity.setTimestamp(date.getTime());
+            analysisEntity.setType(analysisDTO.getAnalysisType());
+            analysisEntity.setBugs(analysisDTO.getBugs());
+            analysisEntity.setVulnerabilities(analysisDTO.getVulnerabilities());
+            analysisEntity.setCodeSmell(analysisDTO.getCodeSmell());
+            analysisEntity.setTestCoverage(analysisDTO.getTestCoverage());
+            analysisEntity.setDuplicatedLines(analysisDTO.getDuplicatedLines());
+            analysisEntity.setCyclomaticComplexity(analysisDTO.getCyclomaticComplexity());
+            analysisEntity.setDocumentedLines(analysisDTO.getDocumentedLines());
+            analysisEntity.setCyclicDependency(analysisDTO.getCyclicDependency());
+            analysisEntity.setGodComponents(analysisDTO.getGodComponents());
+            analysisEntity.setCyclicallyDependentModularization(analysisDTO.getCycDependentMod());
+            analysisEntity.setInsufficientModularization(analysisDTO.getInsufficientModularization());
+            analysisEntity.setUnnecessaryAbstraction(analysisDTO.getUnnecessaryAbstraction());
+            analysisEntity.setComplexConditional(analysisDTO.getComplexConditional());
+            analysisEntity.setEmptyCatchClause(analysisDTO.getEmptyCatchClause());
+            analysisEntity.setMissingAssertion(analysisDTO.getMissingAssertion());
+            analysisEntity.setEmptyTest(analysisDTO.getEmptyTest());
+            analysisEntity.setTimestamp(new Date().getTime());
+            analysisEntity.setBranchId(new BranchEntity(null, null));
             LOGGER.info("convertAnalysisDtoToEntity : Converted AnalysisDTO to Entity {}", analysisEntity);
         } else {
             LOGGER.warn("convertAnalysisDtoToEntity : AnalysisDTO value is null");
@@ -224,6 +257,10 @@ public class AnalysisService {
         return analysisEntity;
     }
 
+    /**
+     * @param analysisEntity
+     * @return AnalysisDTO
+     */
     public AnalysisDTO convertAnalysisEntityToDto(AnalysisEntity analysisEntity) {
         AnalysisDTO analysisDTO = null;
         if (analysisEntity != null) {
@@ -258,9 +295,7 @@ public class AnalysisService {
             if (analysisEntity.getGodComponents() != 0) {
                 analysisDTO.setGodComponents(analysisEntity.getGodComponents());
             }
-            if (analysisEntity.getCyclicallyDependentModularization() != 0) {
-                analysisDTO.setCyclicallyDependentModularization(analysisEntity.getCyclicallyDependentModularization());
-            }
+
             if (analysisEntity.getInsufficientModularization() != 0) {
                 analysisDTO.setInsufficientModularization(analysisEntity.getInsufficientModularization());
             }
@@ -291,56 +326,74 @@ public class AnalysisService {
             LOGGER.info("convertAnalysisDtoToEntity : Converted Analysis Entity to DTO {}", analysisDTO);
         } else {
             LOGGER.warn("convertAnalysisEntityToDto : Analysis Entity is null");
+            analysisDTO.setAnalysisType(analysisEntity.getType());
+            analysisDTO.setBugs(analysisEntity.getBugs());
+            analysisDTO.setVulnerabilities(analysisEntity.getVulnerabilities());
+            analysisDTO.setCodeSmell(analysisEntity.getCodeSmell());
+            analysisDTO.setTestCoverage(analysisEntity.getTestCoverage());
+            analysisDTO.setDuplicatedLines(analysisEntity.getDuplicatedLines());
+            analysisDTO.setCyclomaticComplexity(analysisEntity.getCyclomaticComplexity());
+            analysisDTO.setDocumentedLines(analysisEntity.getDocumentedLines());
+            analysisDTO.setCyclicDependency(analysisEntity.getCyclicDependency());
+            analysisDTO.setGodComponents(analysisEntity.getGodComponents());
+            analysisDTO.setCycDependentMod(analysisEntity.getCyclicallyDependentModularization());
+            analysisDTO.setInsufficientModularization(analysisEntity.getInsufficientModularization());
+            analysisDTO.setUnnecessaryAbstraction(analysisEntity.getUnnecessaryAbstraction());
+            analysisDTO.setComplexConditional(analysisEntity.getComplexConditional());
+            analysisDTO.setEmptyCatchClause(analysisEntity.getEmptyCatchClause());
+            analysisDTO.setMissingAssertion(analysisEntity.getMissingAssertion());
+            analysisDTO.setEmptyTest(analysisEntity.getEmptyTest());
+            analysisDTO.setTimestamp(analysisEntity.getTimestamp());
         }
+        LOGGER.info("convertAnalysisDtoToEntity :: Exiting the method with {}", analysisDTO);
         return analysisDTO;
     }
 
+    /**
+     * @param file
+     * @param repoId
+     * @param branchName
+     * @return AnalysisEntity
+     * @throws IOException
+     */
     public AnalysisEntity processAnalysis(MultipartFile file, int repoId, String branchName) throws IOException {
         AnalysisEntity processedAnalysis = null;
         try (InputStream inputStream = file.getInputStream()) {
             String xml = new String(inputStream.readAllBytes());
             JSONObject jsonifiedXML = XML.toJSONObject(xml);
             Designate jsonifiedAnalysis = Mapper.getInstance().readValue(jsonifiedXML.toString(), Designate.class);
-            if (jsonifiedAnalysis != null && jsonifiedAnalysis.getAnalysis() != null
-                    && jsonifiedAnalysis.getAnalysis().getSolution() != null) {
+            if (jsonifiedAnalysis.getAnalysis() != null && jsonifiedAnalysis.getAnalysis().getSolution() != null) {
                 Solution solution = jsonifiedAnalysis.getAnalysis().getSolution();
                 if (solution.getProject() != null) {
                     Project project = solution.getProject();
                     branchService.addBranch(branchName, repoId);
                     double complexityDensity = getCyclomaticComplexity(solution.getProject(),
                             solution.getMethodCount());
-                    int cyclicArchDependencies = getSmells(project.getArchSmells().getArchSmell(), "Cyclic Dependency")
-                            .size();
-                    int godComponentArchDependencies = getSmells(project.getArchSmells().getArchSmell(),
-                            "God Component").size();
-                    int complexConditionalImpSmells = getSmells(
-                            project.getImplementationSmells().getImplementationSmell(),
-                            "Complex Conditional").size();
-                    int emptyCatchClauseImpSmells = getSmells(
-                            project.getImplementationSmells().getImplementationSmell(), "Empty Catch Clause")
-                            .size();
-                    int cyclicallyDependentDsSmells = getSmells(
-                            project.getDesignSmells().getDesignSmell(), "Cyclically-dependent Modularization")
-                            .size();
-                    int insufficientModularizationDsSmells = getSmells(
-                            project.getDesignSmells().getDesignSmell(), "Insufficient Modularization")
-                            .size();
-                    int unnecessaryAbstractionDsSmells = getSmells(
-                            project.getDesignSmells().getDesignSmell(), "Unnecessary Abstraction")
-                            .size();
+                    List<ArchSmell> archSmell = project.getArchSmells().getArchSmell();
+                    int cycArchDependencies = getSmells(archSmell, CYC_DEPENDENCY).size();
+                    int godCompArchDependencies = getSmells(archSmell, GOD_COMPONENT).size();
+                    List<ImplementationSmell> implementationSmell = project.getImplementationSmells()
+                            .getImplementationSmell();
+                    int complexCondImpSmells = getSmells(implementationSmell, COMPLEX_CONDITIONAL).size();
+                    int emptyCatchClauseImpSmells = getSmells(implementationSmell, EMPTY_CATCH_CLAUSE).size();
+                    List<DesignSmell> designSmell = project.getDesignSmells().getDesignSmell();
+                    int cycDependentDsSmells = getSmells(designSmell, CYC_DEPENDENT_MOD).size();
+                    int insufficientModDsSmells = getSmells(designSmell, INSUFFICIENT_MOD).size();
+                    int unnecessaryAbsDsSmells = getSmells(designSmell, UNNECESSARY_ABST).size();
                     int archSmells = solution.getTotalArchSmellCount();
                     int designSmells = solution.getTotalDesignSmellCount();
                     int impSmells = solution.getTotalImplSmellCount();
-                    AnalysisEntity analysisEntity = new AnalysisEntity(repoId, branchName, solution.getSmellDensity(),
-                            solution.getCodeDuplication(), System.currentTimeMillis());
+                    AnalysisEntity analysisEntity = new AnalysisEntity(repoId, branchName, System.currentTimeMillis());
+                    analysisEntity.setCodeSmell(solution.getSmellDensity());
+                    analysisEntity.setDuplicatedLines(solution.getCodeDuplication());
                     analysisEntity.setCyclomaticComplexity(complexityDensity);
-                    analysisEntity.setCyclicDependency(cyclicArchDependencies);
-                    analysisEntity.setGodComponents(godComponentArchDependencies);
-                    analysisEntity.setComplexConditional(complexConditionalImpSmells);
+                    analysisEntity.setCyclicDependency(cycArchDependencies);
+                    analysisEntity.setGodComponents(godCompArchDependencies);
+                    analysisEntity.setComplexConditional(complexCondImpSmells);
                     analysisEntity.setEmptyCatchClause(emptyCatchClauseImpSmells);
-                    analysisEntity.setCyclicallyDependentModularization(cyclicallyDependentDsSmells);
-                    analysisEntity.setInsufficientModularization(insufficientModularizationDsSmells);
-                    analysisEntity.setUnnecessaryAbstraction(unnecessaryAbstractionDsSmells);
+                    analysisEntity.setCyclicallyDependentModularization(cycDependentDsSmells);
+                    analysisEntity.setInsufficientModularization(insufficientModDsSmells);
+                    analysisEntity.setUnnecessaryAbstraction(unnecessaryAbsDsSmells);
                     analysisEntity.setArchSmellDensity(
                             archSmells > 0 ? (double) archSmells / solution.getLoc() : archSmells);
                     analysisEntity.setDesignSmellDensity(
@@ -354,32 +407,46 @@ public class AnalysisService {
         }
     }
 
+    /**
+     * method calculates project wide cyclomatic complexity
+     * 
+     * @param projectOutput
+     * @param methodCount
+     * @return double
+     */
     private double getCyclomaticComplexity(Project projectOutput, int methodCount) {
         LOGGER.debug("getCyclomaticComplexity :: Entering the method");
         double complexity = 0.0;
-        if (projectOutput != null && projectOutput.getImplementationSmells() != null && methodCount != 0) {
+        if (projectOutput.getImplementationSmells() != null && methodCount != 0) {
             int complextMethodSmells = projectOutput.getImplementationSmells().getImplementationSmell().stream()
                     .filter(smell -> smell != null && smell.getName() != null)
-                    .map(smell -> smell.getName().contains("Complex Method"))
+                    .map(smell -> smell.getName().contains(COMPLEX_METHOD))
                     .collect(Collectors.toList()).size();
             if (complextMethodSmells > 0) {
-                complexity = ((double) complextMethodSmells / methodCount) * 100;
+                complexity = ((double) complextMethodSmells / methodCount) * HUNDRED;
             }
         }
         LOGGER.debug("getCyclomaticComplexity :: Exiting the method with complexity {}", complexity);
         return complexity;
     }
 
+    /**
+     * get smells of type T from analysis
+     * 
+     * @param smellList
+     * @param smellName
+     * @return List<T>
+     */
     private <T> List<T> getSmells(List<T> smellList, String smellName) {
         LOGGER.debug("getCyclicDependencies :: Entering the method");
         if (smellList != null && !smellList.isEmpty()) {
             return smellList.stream()
                     .filter(smell -> {
-                        Map<String, Object> map = Mapper.getInstance().convertValue(smell, new TypeReference<Map>() {
-
-                        });
-                        return map != null && map.get("Name") != null
-                                && map.get("Name").toString().equalsIgnoreCase(smellName);
+                        Map<String, Object> map = Mapper.getInstance().convertValue(smell,
+                                new TypeReference<Map<String, Object>>() {
+                                });
+                        return map != null && map.get(NAME) != null
+                                && map.get(NAME).toString().equalsIgnoreCase(smellName);
                     })
                     .collect(Collectors.toList());
         }

@@ -2,12 +2,8 @@
 package com.github.codergate.dto.push;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,20 +11,19 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "id",
-    "tree_id",
-    "distinct",
-    "message",
-    "timestamp",
-    "url",
-    "author",
-    "committer",
-    "added",
-    "removed",
-    "modified"
+        "id",
+        "tree_id",
+        "distinct",
+        "message",
+        "timestamp",
+        "url",
+        "author",
+        "committer",
+        "added",
+        "removed",
+        "modified"
 })
-public class HeadCommitDTO implements Serializable
-{
+public class HeadCommitDTO implements Serializable {
 
     @JsonProperty("id")
     private String id;
@@ -53,44 +48,7 @@ public class HeadCommitDTO implements Serializable
     @JsonProperty("modified")
     private List<String> modified;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
-    private final static long serialVersionUID = 5013414262968641529L;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public HeadCommitDTO() {
-    }
-
-    /**
-     * 
-     * @param treeId
-     * @param committer
-     * @param removed
-     * @param added
-     * @param author
-     * @param distinct
-     * @param modified
-     * @param id
-     * @param message
-     * @param url
-     * @param timestamp
-     */
-    public HeadCommitDTO(String id, String treeId, Boolean distinct, String message, String timestamp, String url, AuthorDTO author, CommitterDTO committer, List<Object> added, List<Object> removed, List<String> modified) {
-        super();
-        this.id = id;
-        this.treeId = treeId;
-        this.distinct = distinct;
-        this.message = message;
-        this.timestamp = timestamp;
-        this.url = url;
-        this.author = author;
-        this.committer = committer;
-        this.added = added;
-        this.removed = removed;
-        this.modified = modified;
-    }
+    private static final long serialVersionUID = 5013414262968641529L;
 
     @JsonProperty("id")
     public String getId() {
@@ -200,16 +158,6 @@ public class HeadCommitDTO implements Serializable
     @JsonProperty("modified")
     public void setModified(List<String> modified) {
         this.modified = modified;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
     }
 
 }
