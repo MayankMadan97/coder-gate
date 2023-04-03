@@ -32,6 +32,7 @@ export interface ThresholdDTO {
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
   
 
   public ELEMENT_DATA = [{}]
@@ -40,6 +41,7 @@ export class DashboardComponent implements OnInit {
   thresholdDTO!: ThresholdDTO;
   myForm?: FormGroup;
   repositories: Repository[] = [];
+  repoId: number = 0;
   //bugs: AbstractControl | undefined;
 
 
@@ -47,6 +49,12 @@ export class DashboardComponent implements OnInit {
   public selectedRepo?: string;
   repositoryResponse!: RepositoryResponse;
   public showThresholdView = false;
+  
+  resetRepoId() {
+
+    this.repoId = 0;
+    this.showThresholdView = false;
+    }
 
   ngOnInit() {
     this.repositoryService.getRepositories().subscribe((response: RepositoryResponse) => {
@@ -75,9 +83,11 @@ export class DashboardComponent implements OnInit {
     if (this.myForm?.valid) {
       // Do something with the form data here
       //const formValues = this.myForm.value;
-      this.thresholdService.postThresholdValues(594890775,this.myForm.value).subscribe(
+      
+      this.thresholdService.postThresholdValues(this.myForm.value,this.repoId).subscribe(
         response => {
           console.log(response);
+          console.log("repoId in threshold,POST",this.repoId);
         });
     }
   }
@@ -86,7 +96,15 @@ export class DashboardComponent implements OnInit {
 
   public onRepoClick(repo: string) {
     this.selectedRepo = repo;
-    this.thresholdService.getThresholdValues(594890775).subscribe(
+    
+    for(const repository of this.repositories){
+        if(repository.name == repo){
+          this.repoId = repository.id;
+          break;
+        }
+    }
+    console.log("repoId in threshold,GET",this.repoId);
+    this.thresholdService.getThresholdValues(this.repoId).subscribe(
       response => {
         this.thresholdDTO = response;
         console.log(this.thresholdDTO);

@@ -14,7 +14,7 @@ export class ThresholdService {
 
     postThresholdValues(values: any,repositoryId : number): Observable<any> {
         const url = `${this.baseUrl}/threshold/${repositoryId}`;
-
+        console.log("Url for post threshold",url);
         return this.http.post(url, values);
     }
 
