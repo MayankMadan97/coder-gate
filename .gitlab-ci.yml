@@ -24,8 +24,11 @@ deploy-frontend:
   image: nginx:latest
   script:
     - chmod og-rwx ${SSH_ROOT}
-    - scp -r -o StrictHostKeyChecking=no -i "${SSH_ROOT}" "coder-gate-ui/dist" "${ROOT_USER}@${DEPLOY_HOST}:/var/www/frontend"
-    - ssh -t -o StrictHostKeyChecking=no -i "${SSH_ROOT}" "${ROOT_USER}@${DEPLOY_HOST} "systemctl restart nginx && systemctl status nginx"
+    # - scp -r -o StrictHostKeyChecking=no -i "${SSH_ROOT}" "coder-gate-ui/dist" "${ROOT_USER}@${DEPLOY_HOST}:/var/www/frontend"
+    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "coder-gate-ui/dist" "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/frontend"
+    # - ssh -t -o StrictHostKeyChecking=no -i "${SSH_ROOT}" "${ROOT_USER}@${DEPLOY_HOST} "systemctl restart nginx && systemctl status nginx"
+    - ssh -t -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "${DEPLOY_USER}@${DEPLOY_HOST} "systemctl restart nginx && systemctl status nginx"
+
   tags:
     - Group19Runner
   only:
