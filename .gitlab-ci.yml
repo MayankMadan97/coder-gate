@@ -23,7 +23,7 @@ deploy-frontend:
   stage: deploy
   image: nginx:latest
   script:
-    - chmod og-rwx ${SSH_ROOT}
+    - chmod og-rwx ${DEPLOY_SSH_KEY}
     # - scp -r -o StrictHostKeyChecking=no -i "${SSH_ROOT}" "coder-gate-ui/dist" "${ROOT_USER}@${DEPLOY_HOST}:/var/www/frontend"
     - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "coder-gate-ui/dist" "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/frontend"
     # - ssh -t -o StrictHostKeyChecking=no -i "${SSH_ROOT}" "${ROOT_USER}@${DEPLOY_HOST} "systemctl restart nginx && systemctl status nginx"
