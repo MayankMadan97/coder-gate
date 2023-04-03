@@ -22,5 +22,6 @@ export class ThresholdService {
         const url = `${this.baseUrl}/threshold/${repositoryID}`;
 
         return this.http.get<ThresholdDTO>(url);
+
     }
 }
