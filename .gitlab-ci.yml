@@ -26,7 +26,7 @@ deploy-frontend:
     - chmod og-rwx ${root_ssh}
     - scp -r -o StrictHostKeyChecking=no -i "${root_ssh}" "coder-gate-ui/dist" "${ROOT_USER}@${DEPLOY_HOST}:/var/www/frontend"
     # - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "coder-gate-ui/dist" "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/frontend"
-    - ssh -t -o StrictHostKeyChecking=no -i "${root_ssh}" "${root_ssh}@${DEPLOY_HOST} "systemctl restart nginx && systemctl status nginx"
+    - ssh -t -o StrictHostKeyChecking=no -i "${root_ssh}" "${ROOT_USER}@${DEPLOY_HOST} "systemctl restart nginx && systemctl status nginx"
     # - ssh -t -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "${DEPLOY_USER}@${DEPLOY_HOST} "systemctl restart nginx && systemctl status nginx"
 
   tags:
