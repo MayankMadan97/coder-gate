@@ -33,34 +33,20 @@ build-backend:
   tags:
     - Group19Runner
 
+
 deploy-backend:
   stage: deploy
   image: docker:latest
   services:
     - docker:dind
   script:
- 
-    - scp -r coder-gate/target/*.jar ${DEPLOY_USER}@${DEPLOY_HOST}:/home/${DEPLOY_USER}${DEPLOY_DIR_BACK_END}/coder-gate-0.0.1-SNAPSHOT.jar
-    # - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "cd ${DOCKER_BACK_END_PATH} && docker build -t coder-gate-backend:latest -f Dockerfile-backend ."
-    # - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "docker run -d --name coder-gate-backend -p 8080:8080 coder-gate-backend"
+    - chmod og-rwx ${DEPLOY_SSH_KEY}
+    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" coder-gate/target/*.jar "${DEPLOY_USER}@${DEPLOY_HOST}:/home/${DEPLOY_USER}${DEPLOY_DIR_BACK_END}/coder-gate-0.0.1-SNAPSHOT.jar"
+    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "cd ${DOCKER_BACK_END_PATH} && docker build -t coder-gate-backend:latest -f Dockerfile-backend ."
+    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "docker run -d --name coder-gate-backend -p 8080:8080 coder-gate-backend"
   tags:
     - Group19Runner
   only:
-  - dev 
-
-# deploy-backend:
-#   stage: deploy
-#   image: docker:latest
-#   services:
-#     - docker:dind
-#   script:
-#     - chmod og-rwx ${DEPLOY_SSH_KEY}
-#     - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" coder-gate/target/*.jar "${DEPLOY_USER}@${DEPLOY_HOST}:/home/${DEPLOY_USER}${DEPLOY_DIR_BACK_END}/coder-gate-0.0.1-SNAPSHOT.jar"
-#     - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "cd ${DOCKER_BACK_END_PATH} && docker build -t coder-gate-backend:latest -f Dockerfile-backend ."
-#     - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "docker run -d --name coder-gate-backend -p 8080:8080 coder-gate-backend"
-#   tags:
-#     - Group19Runner
-#   only:
 #   - dev 
 
 # deploy-frontend:
