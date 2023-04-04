@@ -22,8 +22,6 @@ build-frontend:
 deploy-frontend:
   stage: deploy
   image: alpine
-  before_script:
-    - apk add --no-cache openssh-client
   script:
     - chmod og-rwx ${DEPLOY_SSH_KEY}
     - ssh ${DEPLOY_USER}@${DEPLOY_HOST} "mkdir -p /var/www/html/my-angular-app"
