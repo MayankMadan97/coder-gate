@@ -2,18 +2,18 @@ stages:
   - build 
   - deploy
 
-# build-frontend:
-#   stage: build
-#   image: node:latest
-#   script:
-#     - cd coder-gate-ui
-#     - npm install
-#     - ng build --configuration=production
-#   artifacts:
-#     paths:
-#       - coder-gate-ui/dist
-#   tags:
-#     - Group19Runner
+build-frontend:
+  stage: build
+  image: node:latest
+  script:
+    - cd coder-gate-ui
+    - npm install
+    - ng build --configuration=production
+  artifacts:
+    paths:
+      - coder-gate-ui/dist
+  tags:
+    - Group19Runner
 
 build-backend:
   stage: build
@@ -25,7 +25,7 @@ build-backend:
   dependencies:
     # - code_quality
     # - test
-    # - build-frontend
+    - build-frontend
   artifacts:
     paths:
       - coder-gate/target
@@ -51,18 +51,18 @@ deploy-backend:
 
  
 
-# deploy-frontend:
-#   stage: deploy
-#   image: alpine
-#   script:
-#     - chmod og-rwx ${DEPLOY_SSH_KEY}
-#     - ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'mkdir -p /var/www/html/my-angular-app'" < <(echo ${SUDO_PASSWORD})
-#     - ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'rm -f /var/www/html/index.html'" < <(echo ${SUDO_PASSWORD})
-#     - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${Distribution} "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/html/my-angular-app/" < <(echo ${SUDO_PASSWORD})
-#     - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'sudo service apache2 restart'" < <(echo ${SUDO_PASSWORD})
-#   tags:
-#     - Group19Runner
-#   only:
-#     - dev
+deploy-frontend:
+  stage: deploy
+  image: alpine
+  script:
+    - chmod og-rwx ${DEPLOY_SSH_KEY}
+    - ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'mkdir -p /var/www/html/my-angular-app'" < <(echo ${SUDO_PASSWORD})
+    - ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'rm -f /var/www/html/index.html'" < <(echo ${SUDO_PASSWORD})
+    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${Distribution} "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/html/my-angular-app/" < <(echo ${SUDO_PASSWORD})
+    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'sudo service apache2 restart'" < <(echo ${SUDO_PASSWORD})
+  tags:
+    - Group19Runner
+  only:
+    - dev
 
     
