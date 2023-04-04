@@ -1,251 +1,198 @@
 package com.github.codergate.dto.threshold;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 import java.io.Serializable;
-
 
 public class ThresholdDTO implements Serializable {
 
     private int bugs;
-
     private int vulnerabilities;
+    private double codeSmell;
+    private double testCoverage;
+    private double duplicatedLines;
+    private double cyclomaticComplexity;
+    private double documentedLines;
 
-    private int codeSmell;
-
-    private int testCoverage;
-
-    private int duplicatedLines;
-
-    private int cyclomaticComplexity;
-
-    private int documentedLines;
-
-
-    //Architecture Smells
-
+    // Architecture Smells
     private int cyclicDependency;
-
     private int godComponents;
 
-    //Design Smells
-
-    private int cyclicallyDependentModularization;
-
+    // Design Smells
+    private int cycDependentMod;
     private int insufficientModularization;
-
     private int unnecessaryAbstraction;
 
-    //Implementation Smells
-
-    private int complexMethod;
-
+    // Implementation Smells
     private int complexConditional;
-
     private int emptyCatchClause;
 
-    //Test Smells
-
+    // Test Smells
     private int missingAssertion;
-
     private int emptyTest;
 
-    public ThresholdDTO() {
-    }
-
-    public ThresholdDTO(int bugs, int vulnerabilities, int codeSmell, int testCoverage, int duplicatedLines,
-                        int cyclomaticComplexity, int documentedLines, int cyclicDependency, int godComponents,
-                        int cyclicallyDependentModularization, int insufficientModularization, int unnecessaryAbstraction,
-                        int complexMethod, int complexConditional, int emptyCatchClause, int missingAssertion, int emptyTest) {
-        this.bugs = bugs;
-        this.vulnerabilities = vulnerabilities;
-        this.codeSmell = codeSmell;
-        this.testCoverage = testCoverage;
-        this.duplicatedLines = duplicatedLines;
-        this.cyclomaticComplexity = cyclomaticComplexity;
-        this.documentedLines = documentedLines;
-        this.cyclicDependency = cyclicDependency;
-        this.godComponents = godComponents;
-        this.cyclicallyDependentModularization = cyclicallyDependentModularization;
-        this.insufficientModularization = insufficientModularization;
-        this.unnecessaryAbstraction = unnecessaryAbstraction;
-        this.complexMethod = complexMethod;
-        this.complexConditional = complexConditional;
-        this.emptyCatchClause = emptyCatchClause;
-        this.missingAssertion = missingAssertion;
-        this.emptyTest = emptyTest;
-    }
-
-
+    // Desnsities
+    private double archSmellDensity;
+    private double designSmellDensity;
+    private double impSmellDensity;
+    private boolean allowAction;
+    
 
     public int getBugs() {
         return bugs;
     }
 
-
     public void setBugs(int bugs) {
         this.bugs = bugs;
     }
-
 
     public int getVulnerabilities() {
         return vulnerabilities;
     }
 
-
     public void setVulnerabilities(int vulnerabilities) {
         this.vulnerabilities = vulnerabilities;
     }
 
-
-    public int getCodeSmell() {
+    public double getCodeSmell() {
         return codeSmell;
     }
 
-
-    public void setCodeSmell(int codeSmell) {
+    public void setCodeSmell(double codeSmell) {
         this.codeSmell = codeSmell;
     }
 
-
-    public int getTestCoverage() {
+    public double getTestCoverage() {
         return testCoverage;
     }
 
-
-    public void setTestCoverage(int testCoverage) {
+    public void setTestCoverage(double testCoverage) {
         this.testCoverage = testCoverage;
     }
 
-
-    public int getDuplicatedLines() {
+    public double getDuplicatedLines() {
         return duplicatedLines;
     }
 
-
-    public void setDuplicatedLines(int duplicatedLines) {
+    public void setDuplicatedLines(double duplicatedLines) {
         this.duplicatedLines = duplicatedLines;
     }
 
-
-    public int getCyclomaticComplexity() {
+    public double getCyclomaticComplexity() {
         return cyclomaticComplexity;
     }
 
-
-    public void setCyclomaticComplexity(int cyclomaticComplexity) {
+    public void setCyclomaticComplexity(double cyclomaticComplexity) {
         this.cyclomaticComplexity = cyclomaticComplexity;
     }
 
-
-    public int getDocumentedLines() {
+    public double getDocumentedLines() {
         return documentedLines;
     }
 
-
-    public void setDocumentedLines(int documentedLines) {
+    public void setDocumentedLines(double documentedLines) {
         this.documentedLines = documentedLines;
     }
-
 
     public int getCyclicDependency() {
         return cyclicDependency;
     }
 
-
     public void setCyclicDependency(int cyclicDependency) {
         this.cyclicDependency = cyclicDependency;
     }
-
 
     public int getGodComponents() {
         return godComponents;
     }
 
-
     public void setGodComponents(int godComponents) {
         this.godComponents = godComponents;
     }
 
-
-    public int getCyclicallyDependentModularization() {
-        return cyclicallyDependentModularization;
+    public int getCycDependentMod() {
+        return cycDependentMod;
     }
 
-
-    public void setCyclicallyDependentModularization(int cyclicallyDependentModularization) {
-        this.cyclicallyDependentModularization = cyclicallyDependentModularization;
+    public void setCycDependentMod(int cycDependentMod) {
+        this.cycDependentMod = cycDependentMod;
     }
-
 
     public int getInsufficientModularization() {
         return insufficientModularization;
     }
 
-
     public void setInsufficientModularization(int insufficientModularization) {
         this.insufficientModularization = insufficientModularization;
     }
-
 
     public int getUnnecessaryAbstraction() {
         return unnecessaryAbstraction;
     }
 
-
     public void setUnnecessaryAbstraction(int unnecessaryAbstraction) {
         this.unnecessaryAbstraction = unnecessaryAbstraction;
     }
-
-
-    public int getComplexMethod() {
-        return complexMethod;
-    }
-
-
-    public void setComplexMethod(int complexMethod) {
-        this.complexMethod = complexMethod;
-    }
-
 
     public int getComplexConditional() {
         return complexConditional;
     }
 
-
     public void setComplexConditional(int complexConditional) {
         this.complexConditional = complexConditional;
     }
-
 
     public int getEmptyCatchClause() {
         return emptyCatchClause;
     }
 
-
     public void setEmptyCatchClause(int emptyCatchClause) {
         this.emptyCatchClause = emptyCatchClause;
     }
-
 
     public int getMissingAssertion() {
         return missingAssertion;
     }
 
-
     public void setMissingAssertion(int missingAssertion) {
         this.missingAssertion = missingAssertion;
     }
-
 
     public int getEmptyTest() {
         return emptyTest;
     }
 
-
     public void setEmptyTest(int emptyTest) {
         this.emptyTest = emptyTest;
+    }
+
+    public double getArchSmellDensity() {
+        return archSmellDensity;
+    }
+
+    public void setArchSmellDensity(double archSmellDensity) {
+        this.archSmellDensity = archSmellDensity;
+    }
+
+    public double getDesignSmellDensity() {
+        return designSmellDensity;
+    }
+
+    public void setDesignSmellDensity(double designSmellDensity) {
+        this.designSmellDensity = designSmellDensity;
+    }
+
+    public double getImpSmellDensity() {
+        return impSmellDensity;
+    }
+
+    public void setImpSmellDensity(double impSmellDensity) {
+        this.impSmellDensity = impSmellDensity;
+    }
+
+    public boolean isAllowAction() {
+        return allowAction;
+    }
+
+    public void setAllowAction(boolean allowAction) {
+        this.allowAction = allowAction;
     }
 }

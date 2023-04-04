@@ -21,6 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AnalysisEntity {
+
     @Id
     @Column(name = "analysisid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,10 +38,10 @@ public class AnalysisEntity {
     private int bugs;
     private int vulnerabilities;
     private double codeSmell;
-    private int testCoverage;
-    private int duplicatedLines;
-    private int cyclomaticComplexity;
-    private int documentedLines;
+    private double testCoverage;
+    private double duplicatedLines;
+    private double cyclomaticComplexity;
+    private double documentedLines;
 
     // Architecture Smells
     private int cyclicDependency;
@@ -52,7 +53,6 @@ public class AnalysisEntity {
     private int unnecessaryAbstraction;
 
     // Implementation Smells
-    private int complexMethod;
     private int complexConditional;
     private int emptyCatchClause;
 
@@ -60,16 +60,19 @@ public class AnalysisEntity {
     private int missingAssertion;
     private int emptyTest;
 
+    // Densities
+    private double archSmellDensity;
+    private double designSmellDensity;
+    private double impSmellDensity;
+
     // Timestamp
     private long timestamp;
 
-    public AnalysisEntity(int repoId, String branchName, double codeSmell, int duplicatedLines,
+    public AnalysisEntity(int repoId, String branchName,
             long timestamp) {
         BranchEntity branch = new BranchEntity();
         branch.setBranchId(new BranchId(repoId, branchName));
         this.branchId = branch;
-        this.codeSmell = codeSmell;
-        this.duplicatedLines = duplicatedLines;
         this.timestamp = timestamp;
     }
 
