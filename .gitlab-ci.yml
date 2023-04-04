@@ -56,9 +56,9 @@ deploy-frontend:
   image: alpine
   script:
     - chmod og-rwx ${DEPLOY_SSH_KEY}
-    - ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'mkdir -p /var/www/html/my-angular-app'" < <(echo ${SUDO_PASSWORD})
-    - ssh ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'rm -f /var/www/html/index.html'" < <(echo ${SUDO_PASSWORD})
-    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${Distribution} "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/html/my-angular-app/" < <(echo ${SUDO_PASSWORD})
+    - ssh ${DEPLOY_USER}@${DEPLOY_HOST} "mkdir -p /var/www/html/my-angular-app"
+    - ssh ${DEPLOY_USER}@${DEPLOY_HOST} "rm -f /var/www/html/index.html"
+    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${Distribution} "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/html/my-angular-app/"
     - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'sudo service apache2 restart'" < <(echo ${SUDO_PASSWORD})
   tags:
     - Group19Runner
