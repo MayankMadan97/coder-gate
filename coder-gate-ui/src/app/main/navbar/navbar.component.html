@@ -11,14 +11,14 @@
             <span class="dashboard-title">Dashboard</span>
         </div>
         <div class="col-7 d-flex justify-content-end align-self-center">
-            <img src="{{ user.avatar_url }}" alt="User profile picture" role='button' height="40"
+            <img src="{{ this.user.avatar_url }}" alt="User profile picture" role='button' height="40"
                 (click)="showUserMenu=!showUserMenu">
         </div>
     </div>
     <div *ngIf="showUserMenu" class="position-absolute px-4 py-2 user-menu">
         <div class="row border-bottom">
             <div class="col-12 p-2">
-                <span role="button" class="user-menu-item">{{ user.login }}</span>
+                <span role="button" class="user-menu-item">{{ this.user.login }}</span>
             </div>
         </div>
         <div class="row  border-bottom">
