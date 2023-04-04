@@ -61,7 +61,7 @@ deploy-frontend:
     # - ssh ${DEPLOY_USER}@${DEPLOY_HOST} "mkdir -p /var/www/html/my-angular-app"
     - ssh -o StrictHostKeyChecking=no -i ${DEPLOY_SSH_KEY} ${DEPLOY_USER}@${DEPLOY_HOST} "rm -f /var/www/html/index.html"
     - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${Distribution} "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/html/my-angular-app/"
-    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} " sudo service apache2 restart"
+    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'sudo service apache2 restart'" < <(echo ${SUDO_PASSWORD})
   tags:
     - Group19Runner
   only:
