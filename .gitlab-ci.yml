@@ -21,17 +21,17 @@ build-frontend:
 
 deploy-frontend:
   stage: deploy
-  image: nginx:latest
+  image: alpine
+  before_script:
+    - apk add --no-cache openssh-client
   script:
-    - chmod og-rwx ${root_ssh}
-    - scp -r -o StrictHostKeyChecking=no -i "${root_ssh}" "coder-gate-ui/dist" "${ROOT_USER}@${DEPLOY_HOST}:/var/www/frontend"
-    # - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "coder-gate-ui/dist" "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/frontend"
-    - ssh -t -o StrictHostKeyChecking=no -i "${root_ssh}" "${ROOT_USER}@${DEPLOY_HOST} "systemctl restart nginx && systemctl status nginx"
-    # - ssh -t -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" "${DEPLOY_USER}@${DEPLOY_HOST} "systemctl restart nginx && systemctl status nginx"
-
+    - chmod og-rwx ${DEPLOY_SSH_KEY}
+    - ssh ${DEPLOY_USER}@${DEPLOY_HOST} "mkdir -p /var/www/html/my-angular-app"
+    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" $Distribution "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/html/my-angular-app/"
+    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "sudo service apache2 restart"
   tags:
     - Group19Runner
   only:
-  - dev
+    - dev
 
     
