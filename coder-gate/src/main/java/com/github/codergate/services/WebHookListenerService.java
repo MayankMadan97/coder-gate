@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import com.github.codergate.dto.pullRequest.Payload;
 import com.github.codergate.dto.pullRequest.Repository;
 import com.github.codergate.dto.pullRequest.Sender;
 import com.github.codergate.dto.push.PusherPayloadDTO;
+import com.github.codergate.dto.threshold.ThresholdDTO;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.services.utility.WebHookListenerUtil;
@@ -285,13 +287,28 @@ public class WebHookListenerService {
                 repositoryBranchService.addBranch(repo.getBranchesUrl(), repo.getId());
                 repositoryEntitiesIds.add(repositoryEntity.getRepositoryId());
                 eventService.addEvent("Pull Request", (int) userEntity.getUserId(), repositoryEntitiesIds);
-                boolean pullRequestCheck = pullRequestService.pullRequestCheck(repo.getId());
-                if (!pullRequestCheck) {
-                    webHookListenerUtil.rejectPullRequest(
-                            repo.getOwner().getLogin(), repo.getName(),
-                            payload.getPullRequest().getNumber(),
-                            payload.getInstallation().getId().toString());
-                }
+                List<String> pullRequestCheck = pullRequestService.pullRequestCheck(repo.getId());
+                actOnPullRequest(payload, repo, pullRequestCheck);
+            }
+        }
+    }
+
+    private void actOnPullRequest(Payload payload, Repository repo, List<String> pullRequestCheck) {
+        ThresholdDTO threshold = thresholdService.getThresholdByID(repo.getId());
+        if (pullRequestCheck != null && !pullRequestCheck.isEmpty() && threshold != null) {
+            if (threshold.isAllowAction()) {
+                webHookListenerUtil.rejectPullRequest(
+                        repo.getOwner().getLogin(), repo.getName(),
+                        payload.getPullRequest().getNumber(),
+                        payload.getInstallation().getId().toString());
+            } else {
+                webHookListenerUtil.commentOnPullRequest(repo.getOwner().getLogin(), repo.getName(),
+                        "Pull Request failed - Code Quality Falls Short of Benchmark Standards - " +
+                                payload.getPullRequest().getId(),
+                        "Defecting parameters - \n"
+                                + pullRequestCheck.stream().collect(Collectors.joining(System.lineSeparator())),
+                        payload.getSender().getLogin(),
+                        new String[] { "Code quality" }, payload.getInstallation().getId().toString());
             }
         }
     }
