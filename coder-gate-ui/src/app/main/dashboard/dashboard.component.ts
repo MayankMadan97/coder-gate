@@ -19,7 +19,7 @@ export interface ThresholdDTO {
   documentedLines: number;
   cyclicDependency: number;
   godComponents: number;
-  cyclicallyDependentModularization: number;
+  cycDependentMod: number;
   insufficientModularization: number;
   unnecessaryAbstraction: number;
   complexConditional: number;
@@ -130,7 +130,7 @@ export class DashboardComponent implements OnInit {
           // documentedLines: [1, Validators.required],
           cyclicDependency: [1, Validators.required],
           godComponents: [1, Validators.required],
-          cyclicallyDependentModularization: [1, Validators.required],
+          cycDependentMod: [1, Validators.required],
           insufficientModularization: [1, Validators.required],
           unnecessaryAbstraction: [1, Validators.required],
           complexConditional: [1, Validators.required],
@@ -155,7 +155,7 @@ export class DashboardComponent implements OnInit {
           documentedLines: [this.thresholdDTO.documentedLines, Validators.required],
           cyclicDependency: [this.thresholdDTO.cyclicDependency, Validators.required],
           godComponents: [this.thresholdDTO.godComponents, Validators.required],
-          cyclicallyDependentModularization: [this.thresholdDTO.cyclicallyDependentModularization, Validators.required],
+          cycDependentMod: [this.thresholdDTO.cycDependentMod, Validators.required],
           insufficientModularization: [this.thresholdDTO.insufficientModularization, Validators.required],
           unnecessaryAbstraction: [this.thresholdDTO.unnecessaryAbstraction, Validators.required],
           complexConditional: [this.thresholdDTO.complexConditional, Validators.required],
