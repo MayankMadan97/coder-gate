@@ -2,13 +2,14 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { ThresholdDTO } from "../main/dashboard/dashboard.component";
+import { BACKEND_URL } from '../app.constants';
 
 @Injectable({
     providedIn: "root"
 })
 
 export class ThresholdService {
-    private baseUrl = 'http://localhost:3000';
+    private baseUrl = BACKEND_URL;
 
     constructor (private http: HttpClient) { }
 
