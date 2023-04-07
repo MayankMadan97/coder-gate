@@ -27,6 +27,8 @@ export class MetricsComponent implements OnInit {
   constructor(private fb: FormBuilder, private http: HttpClient, private repositoryService: RepositoryService, public alert: MatDialog) { }
 
   public selectedRepo?: string;
+  public collaborators?: Number;
+  public scans?: Number;
   repositoryResponse!: RepositoryResponse;
   public showThresholdView = false;
 
@@ -39,10 +41,8 @@ export class MetricsComponent implements OnInit {
   ngOnInit() {
     this.repositoryService.getRepositories().subscribe((response: RepositoryResponse) => {
       this.repositories = response.repositories;
-
       // Do something with the repositories here
       console.log('Repositories:', this.repositories);
-
       for (let i = 0; i < this.repositories.length; i++) {
         this.ELEMENT_DATA.push({
           id: this.repositories[i].id,
@@ -57,6 +57,18 @@ export class MetricsComponent implements OnInit {
       console.log("element_data", this.ELEMENT_DATA);
       this.dataSource = this.ELEMENT_DATA;
     });
+
+    this.repositoryService.
+      getCodeScans()
+      .subscribe((response: Number) => {
+        this.scans = response;
+      });
+
+    this.repositoryService.
+      getCollaborators()
+      .subscribe((response: Number) => {
+        this.collaborators = response;
+      });
 
   }
 }

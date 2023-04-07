@@ -22,9 +22,7 @@ export class RepositoryService implements OnInit {
 
   getRepositories(): Observable<RepositoryResponse> {
     const userString = localStorage.getItem("user");
-    if (userString) {
-      this.user = JSON.parse(userString);
-    }
+    this.getUser(userString);
     const url = `${this.baseUrl}/getRepositories/${this.user.id}`;
     return this.http.get<RepositoryResponse>(url)
       .pipe(
@@ -32,4 +30,24 @@ export class RepositoryService implements OnInit {
       );
   }
 
+  getCodeScans(): Observable<Number> {
+    const userString = localStorage.getItem("user");
+    this.getUser(userString);
+    const url = `${this.baseUrl}/getCodeScans/${this.user.id}`;
+    return this.http.get<Number>(url);
+  }
+
+  getCollaborators(): Observable<Number> {
+    const userString = localStorage.getItem("user");
+    this.getUser(userString);
+    const url = `${this.baseUrl}/getCollaborators/${this.user.id}`;
+    return this.http.get<Number>(url);
+  }
+
+
+  private getUser(userString: string | null) {
+    if (userString) {
+      this.user = JSON.parse(userString);
+    }
+  }
 }
