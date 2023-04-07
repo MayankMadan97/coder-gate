@@ -15,5 +15,7 @@ public class Constants {
     public static final String PULL_REQUEST = "pullRequest";
     public static final String BASE_API = "https://api.github.com";
     public static final String USER_DIR = "user.dir";
+    public static final String FRONT_END_URL = "http://csci5308vm19.research.cs.dal.ca";
+
 
 }

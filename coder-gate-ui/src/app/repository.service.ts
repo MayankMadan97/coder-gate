@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable, tap } from 'rxjs';
 import { RepositoryResponse, Repository } from './repository.interface';
 import { UserService } from './user.service';
+import { BACKEND_URL } from './app.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,9 @@ import { UserService } from './user.service';
 export class RepositoryService implements OnInit {
   repositoryResponse!: RepositoryResponse;
   repositories!: Repository[];
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = BACKEND_URL;
   user: any;
-  
+
 
   constructor(private http: HttpClient,
     public userService: UserService) { }
@@ -30,5 +31,5 @@ export class RepositoryService implements OnInit {
         tap((response: RepositoryResponse) => this.repositoryResponse = response),
       );
   }
-  
+
 }
