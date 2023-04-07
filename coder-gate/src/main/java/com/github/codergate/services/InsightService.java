@@ -1,6 +1,7 @@
 package com.github.codergate.services;
 
 import com.github.codergate.dto.insight.DataDTO;
+import com.github.codergate.dto.insight.OccurrencesDTO;
 import com.github.codergate.dto.insight.SeriesDTO;
 import com.github.codergate.dto.insight.TimeStampDTO;
 import com.github.codergate.entities.AnalysisEntity;
@@ -12,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class InsightService {
@@ -22,6 +25,8 @@ public class InsightService {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InsightService.class);
+    @Autowired
+    private AnalysisRepository analysisRepository;
 
     public TimeStampDTO getTimeStampInsightSeries(String repoId, String branchId){
         TimeStampDTO timeStampDTO = new TimeStampDTO();
@@ -72,5 +77,28 @@ public class InsightService {
 
         timeStampDTO.setSeriesList(seriesDTOList);
           return timeStampDTO;
+        }
+        public OccurrencesDTO getOccurrencesInsight(String repoId, String branchId){
+        OccurrencesDTO occurrencesDTO = new OccurrencesDTO();
+        Map<String,Integer> occurrencesMap = new HashMap<>();
+        AnalysisEntity latestAnalysisByRepositoryIdAndBranchId = analysisRepository.findLatestAnalysisByRepositoryIdAndBranchId(Integer.parseInt(repoId), branchId);
+        occurrencesMap.put("Complex Conditional",latestAnalysisByRepositoryIdAndBranchId.getComplexConditional());
+        occurrencesMap.put("Cyclic Dependencies",latestAnalysisByRepositoryIdAndBranchId.getCyclicDependency());
+        occurrencesMap.put("Empty Catch Clause",latestAnalysisByRepositoryIdAndBranchId.getEmptyCatchClause());
+        occurrencesMap.put("Empty Test",latestAnalysisByRepositoryIdAndBranchId.getEmptyTest());
+        occurrencesMap.put("God Components",latestAnalysisByRepositoryIdAndBranchId.getGodComponents());
+        occurrencesMap.put("Insufficient Modularization",latestAnalysisByRepositoryIdAndBranchId.getInsufficientModularization());
+        occurrencesMap.put("Missing Assertion",latestAnalysisByRepositoryIdAndBranchId.getMissingAssertion());
+        occurrencesMap.put("CyclomaticComplexity",(int)latestAnalysisByRepositoryIdAndBranchId.getCyclomaticComplexity());
+        occurrencesMap.put("Duplicated Lines",(int)latestAnalysisByRepositoryIdAndBranchId.getDuplicatedLines());
+        occurrencesMap.put("Documented Lines",(int)latestAnalysisByRepositoryIdAndBranchId.getDocumentedLines());
+        occurrencesMap.put("Test Coverage",(int)latestAnalysisByRepositoryIdAndBranchId.getTestCoverage());
+        occurrencesMap.put("Cyclic Dependent Modularization",latestAnalysisByRepositoryIdAndBranchId.getCyclicallyDependentModularization());
+        occurrencesMap.put("Architecture Smell Density",(int)latestAnalysisByRepositoryIdAndBranchId.getArchSmellDensity());
+        occurrencesMap.put("Implementation Smell Density",(int)latestAnalysisByRepositoryIdAndBranchId.getImpSmellDensity());
+        occurrencesMap.put("Design Smell Density",(int)latestAnalysisByRepositoryIdAndBranchId.getDesignSmellDensity());
+        occurrencesDTO.setOccurrencesSeries(occurrencesMap);
+
+            return occurrencesDTO;
         }
 }

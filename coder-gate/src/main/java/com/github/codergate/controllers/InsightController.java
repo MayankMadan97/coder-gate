@@ -3,7 +3,7 @@ package com.github.codergate.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.github.codergate.dto.controller.RepositoryResponse;
+import com.github.codergate.dto.insight.OccurrencesDTO;
 import com.github.codergate.dto.insight.TimeStampDTO;
 import com.github.codergate.services.InsightService;
 import org.slf4j.Logger;
@@ -30,6 +30,16 @@ public class InsightController {
         String output = ow.writeValueAsString(timeStampInsightSeries);
         return ResponseEntity.ok(output);
     }
+
+    @GetMapping("/getOccurrencesInsight/{repoId}/{branchId}")
+    public ResponseEntity<String> fetchOccurrencesInsights(@PathVariable("repoId") String repoId, @PathVariable("branchId") String branchId) throws JsonProcessingException {
+        LOGGER.debug("fetchOccurrencesInsights : Entering the method");
+        OccurrencesDTO occurrencesInsight = insightService.getOccurrencesInsight(repoId, branchId);
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String output = ow.writeValueAsString(occurrencesInsight);
+        return ResponseEntity.ok(output);
+    }
+
 
 
 }
