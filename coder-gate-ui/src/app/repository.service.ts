@@ -22,7 +22,7 @@ export class RepositoryService implements OnInit {
 
   getRepositories(): Observable<RepositoryResponse> {
     const userString = localStorage.getItem("user");
-    if(userString){
+    if (userString) {
       this.user = JSON.parse(userString);
     }
     const url = `${this.baseUrl}/getRepositories/${this.user.id}`;
