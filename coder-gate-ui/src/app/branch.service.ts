@@ -13,8 +13,7 @@ export class BranchService {
 
   constructor(private http: HttpClient) { }
 
-  getBranches(repoId:number): Observable<any> {
-    
+  getBranches(repoId: number): Observable<string[]> {
     const url = `${this.baseUrl}/getBranches/${repoId}`;
     return this.http.get<any>(url)
       .pipe(
@@ -22,5 +21,5 @@ export class BranchService {
       );
   }
 
-  
+
 }

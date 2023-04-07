@@ -1,20 +1,21 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as Highcharts from 'highcharts';
-import { HttpClient } from '@angular/common/http';
-import { RepositoryService } from '../repository.service';
-import { Repository, RepositoryResponse } from '../repository.interface';
-import { BACKEND_URL, FRONTEND_URL } from '../app.constants';
+import { BACKEND_URL } from '../app.constants';
 import { BranchService } from '../branch.service';
+import { Repository, RepositoryResponse } from '../repository.interface';
+import { RepositoryService } from '../repository.service';
 
 @Component({
   selector: 'app-insights',
-  templateUrl: './insights.component.html',
-  styleUrls: ['./insights.component.css']
+  templateUrl: './insight.component.html',
+  styleUrls: ['./insight.component.css']
 })
 export class InsightsComponent implements OnInit {
 
   public selectedRepo?: string;
+  public selectedRepoId?: number;
   public showDropdown = false;
   Highcharts: typeof Highcharts = Highcharts;
 
@@ -28,7 +29,7 @@ export class InsightsComponent implements OnInit {
       text: "",
       align: "left"
     },
-  
+
     yAxis: {
       title: {
         text: "Number of Bugs, Vulnerabilities & Code Smells"
@@ -37,11 +38,11 @@ export class InsightsComponent implements OnInit {
       max: 100,
       tickInterval: 10
     },
-  
+
     xAxis: {
       type: 'datetime',
       dateTimeLabelFormats: {
-        hour: '%H:%M', 
+        hour: '%H:%M',
       },
       min: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
       max: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59),
@@ -50,12 +51,12 @@ export class InsightsComponent implements OnInit {
         text: "Time"
       },
     },
-  
+
     legend: {
       align: "right",
       verticalAlign: "top",
       layout: "vertical",
-      
+
       floating: true,
       borderWidth: 1,
       shadow: true
@@ -79,113 +80,101 @@ export class InsightsComponent implements OnInit {
   };
 
 
-
-  
-  
-
-  constructor(private route: ActivatedRoute, private http: HttpClient,private repositoryService: RepositoryService,
-    private branchService : BranchService) { }
+  constructor(private route: ActivatedRoute, private http: HttpClient, private repositoryService: RepositoryService,
+    private branchService: BranchService) { }
 
   repositoryRepsonse!: RepositoryResponse;
-  repositories! : Repository[];
+  repositories!: Repository[];
   repositoryId!: number;
   branches!: string[];
-  userSelectedBranch! : string 
+  userSelectedBranch!: string
 
   ngOnInit() {
 
-    
-    
-    
     this.route.params.subscribe(params => {
       this.selectedRepo = params['selectedRepo'];
-    });
-    
-    this.repositoryRepsonse=this.repositoryService.repositoryResponse
-    this.repositories = this.repositoryRepsonse.repositories;
-    for(let i = 0; i < this.repositories.length; i++) {
-        if(this.repositories.at(i)?.name == this.selectedRepo){
-          this.repositoryId = this.repositories.at(i)!.id;
-          break;
-        }
-      
-    }
-    this.branchService.getBranches(this.repositoryId).subscribe(branches =>{
-      this.branches = branches;
+      this.selectedRepoId = params['repoId'];
+
     });
 
-    const url = `${BACKEND_URL}/getTimeStampInsight/${this.repositoryId}/${this.userSelectedBranch}`;
-    this.http.get<any>(url).subscribe(data => {
+    this.branchService.getBranches(this.selectedRepoId || 0).subscribe(branches => {
+      this.branches = branches.filter(branch => !branch.includes("http"));
+
+      this.userSelectedBranch = this.branches[0];
+
+      const url = `${BACKEND_URL}/getTimeStampInsight/${this.selectedRepoId}/${this.userSelectedBranch}`;
+      this.http.get<any>(url).subscribe(data => {
         this.time_bugs_vuln_code_chartOptions.series[0].name = data.seriesList[0].get("name");
         this.time_bugs_vuln_code_chartOptions.series[0].data[0][0] = data.seriesList[0].get("data").get("dataValuesMap");
         Highcharts.chart('type_number_chart', this.time_bugs_vuln_code_chartOptions);
+      });
     });
-}
+  }
 
-  
-  
-type_number_chartOptions: Highcharts.Options = {
 
-  title: {
-    text: "Type of Code Smell vs No of Occurrences",
-    align: "left"
-  },
-  subtitle: {
-    text: "",
-    align: "left"
-  },
 
-  tooltip: {
-    valueSuffix: ""
-  },
+  type_number_chartOptions: Highcharts.Options = {
 
-  plotOptions: {
-    column: {
-      pointWidth: 70,
-      dataLabels: {
-        enabled: true
+    title: {
+      text: "Type of Code Smell vs No of Occurrences",
+      align: "left"
+    },
+    subtitle: {
+      text: "",
+      align: "left"
+    },
+
+    tooltip: {
+      valueSuffix: ""
+    },
+
+    plotOptions: {
+      column: {
+        pointWidth: 70,
+        dataLabels: {
+          enabled: true
+        }
       }
-    }
-  },
-
-  xAxis: {
-    categories: ["Implementation", "Design", "Architecture"],
-    title: {
-      text: "Type of Code Smells"
     },
-  },
 
-  yAxis: {
-    title: {
-      text: "No of Occurrences",
+    xAxis: {
+      categories: ["Implementation", "Design", "Architecture"],
+      title: {
+        text: "Type of Code Smells"
+      },
     },
-    min: 0,
-    max: 100,
-    labels: {
-      overflow: "justify"
-    }
-  },
+
+    yAxis: {
+      title: {
+        text: "No of Occurrences",
+      },
+      min: 0,
+      max: 100,
+      labels: {
+        overflow: "justify"
+      }
+    },
 
 
-  legend: {
-    layout: "vertical",
-    align: "right",
-    verticalAlign: "top",
-    floating: true,
-    borderWidth: 1,
-    shadow: true
-  },
+    legend: {
+      layout: "vertical",
+      align: "right",
+      verticalAlign: "top",
+      floating: true,
+      borderWidth: 1,
+      shadow: true
+    },
 
-  credits: {
-    enabled: false
-  },
+    credits: {
+      enabled: false
+    },
 
-  series: [{
-    name: 'No of Occurences',
-    data: [40, 75, 39],
-    type: 'column'
-  }]
-};
+    series: [{
+      name: 'No of Occurences',
+      data: [40, 75, 39],
+      type: 'column'
+    }]
+  };
 
   time_loc_duplines_chartOptions: Highcharts.Options = {
 
@@ -198,7 +187,7 @@ type_number_chartOptions: Highcharts.Options = {
       text: "",
       align: "left"
     },
-  
+
     yAxis: {
       title: {
         text: "Lines of Code & Duplicated Lines"
@@ -207,11 +196,11 @@ type_number_chartOptions: Highcharts.Options = {
       max: 100,
       tickInterval: 10
     },
-  
+
     xAxis: {
       type: 'datetime',
       dateTimeLabelFormats: {
-        hour: '%H:%M', 
+        hour: '%H:%M',
       },
       min: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
       max: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59),
@@ -220,7 +209,7 @@ type_number_chartOptions: Highcharts.Options = {
         text: "Time"
       },
     },
-  
+
     legend: {
       align: "right",
       verticalAlign: "top",
@@ -264,5 +253,5 @@ type_number_chartOptions: Highcharts.Options = {
     },
     ]
   };
-  
+
 }

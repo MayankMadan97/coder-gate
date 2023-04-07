@@ -103,9 +103,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
-
-
   public onRepoClick(repo: string) {
     this.selectedRepo = repo;
 

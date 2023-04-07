@@ -262,9 +262,8 @@ public class AnalysisService {
      * @return AnalysisDTO
      */
     public AnalysisDTO convertAnalysisEntityToDto(AnalysisEntity analysisEntity) {
-        AnalysisDTO analysisDTO = null;
+        AnalysisDTO analysisDTO = new AnalysisDTO();
         if (analysisEntity != null) {
-            analysisDTO = new AnalysisDTO();
             if (analysisEntity.getType() != null) {
                 analysisDTO.setAnalysisType(analysisEntity.getType());
             }
@@ -324,26 +323,6 @@ public class AnalysisService {
                 analysisDTO.setImpSmellDensity(analysisEntity.getImpSmellDensity());
             }
             LOGGER.info("convertAnalysisDtoToEntity : Converted Analysis Entity to DTO {}", analysisDTO);
-        } else {
-            LOGGER.warn("convertAnalysisEntityToDto : Analysis Entity is null");
-            analysisDTO.setAnalysisType(analysisEntity.getType());
-            analysisDTO.setBugs(analysisEntity.getBugs());
-            analysisDTO.setVulnerabilities(analysisEntity.getVulnerabilities());
-            analysisDTO.setCodeSmell(analysisEntity.getCodeSmell());
-            analysisDTO.setTestCoverage(analysisEntity.getTestCoverage());
-            analysisDTO.setDuplicatedLines(analysisEntity.getDuplicatedLines());
-            analysisDTO.setCyclomaticComplexity(analysisEntity.getCyclomaticComplexity());
-            analysisDTO.setDocumentedLines(analysisEntity.getDocumentedLines());
-            analysisDTO.setCyclicDependency(analysisEntity.getCyclicDependency());
-            analysisDTO.setGodComponents(analysisEntity.getGodComponents());
-            analysisDTO.setCycDependentMod(analysisEntity.getCyclicallyDependentModularization());
-            analysisDTO.setInsufficientModularization(analysisEntity.getInsufficientModularization());
-            analysisDTO.setUnnecessaryAbstraction(analysisEntity.getUnnecessaryAbstraction());
-            analysisDTO.setComplexConditional(analysisEntity.getComplexConditional());
-            analysisDTO.setEmptyCatchClause(analysisEntity.getEmptyCatchClause());
-            analysisDTO.setMissingAssertion(analysisEntity.getMissingAssertion());
-            analysisDTO.setEmptyTest(analysisEntity.getEmptyTest());
-            analysisDTO.setTimestamp(analysisEntity.getTimestamp());
         }
         LOGGER.info("convertAnalysisDtoToEntity :: Exiting the method with {}", analysisDTO);
         return analysisDTO;

@@ -13,7 +13,7 @@ import { FRONTEND_URL } from '../app.constants';
 
 export class AuthService {
 
-  private readonly clientId = 'b4623432c49d30f9dd5e';
+  private readonly clientId = '86c61a5d24378f5a9ea0';
   private readonly redirectUri = FRONTEND_URL+"/github-callback";
   private readonly scope = 'user';
 
