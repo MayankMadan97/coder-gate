@@ -2,6 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { BACKEND_URL } from '../app.constants';
+
+import { FRONTEND_URL } from '../app.constants';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +14,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
 
   private readonly clientId = 'b4623432c49d30f9dd5e';
-  private readonly redirectUri = 'http://localhost:4200/github-callback';
+  private readonly redirectUri = FRONTEND_URL+"/github-callback";
   private readonly scope = 'user';
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -31,7 +35,7 @@ export class AuthService {
 
   handleCallback(): any {
     const code = this.getParameterByName('code');
-    return this.http.get<string>(`http://localhost:3000/github/access-token?code=${code}`);
+    return this.http.get<string>(`${BACKEND_URL}/github/access-token?code=${code}`);
   }
 
   private getParameterByName(name: string): string | undefined {

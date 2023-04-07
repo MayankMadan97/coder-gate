@@ -1,5 +1,6 @@
 package com.github.codergate.controllers;
 
+import com.github.codergate.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +20,7 @@ public class GithubOAuthController {
     public Mono<String> getAccessToken(@RequestParam("code") String code) {
         String clientId = "b4623432c49d30f9dd5e";
         String clientSecret = "d28502316241ccb882ab04879d8e9114cea04b8a";
-        String redirectUri = "http://localhost:4200/github-callback";
+        String redirectUri = "http://csci5308vm19.research.cs.dal.ca/github-callback";
         String accessTokenUrl = "https://github.com/login/oauth/access_token";
 
         return webClient.post()
