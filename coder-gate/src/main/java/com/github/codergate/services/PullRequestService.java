@@ -1,12 +1,15 @@
 package com.github.codergate.services;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.github.codergate.entities.AnalysisEntity;
 import com.github.codergate.entities.ThresholdEntity;
 import com.github.codergate.repositories.AnalysisRepository;
 import com.github.codergate.repositories.ThresholdRepository;
 import com.github.codergate.services.utility.PullRequestUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 @Service
 public class PullRequestService {
 
@@ -19,9 +22,9 @@ public class PullRequestService {
     @Autowired
     PullRequestUtil pullRequestUtil;
 
-    Boolean pullRequestCheck(Integer repositoryId){
+    public List<String> pullRequestCheck(Integer repositoryId){
         ThresholdEntity thresholdEntity = thresholdRepository.findByRepositoryId(repositoryId);
         AnalysisEntity analysisEntity = analysisRepository.findLatestAnalysisByRepositoryId(repositoryId);
-        return pullRequestUtil.checkThreshold(analysisEntity,thresholdEntity);
+        return pullRequestUtil.getFalseThresholdKeys(analysisEntity,thresholdEntity);
     }
 }
