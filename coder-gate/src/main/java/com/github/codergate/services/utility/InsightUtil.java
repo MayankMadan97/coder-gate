@@ -69,4 +69,26 @@ public class InsightUtil {
         implementationSmellDensityData.setDataValuesMap(timeStampMap);
         return implementationSmellDensityData;
     }
+
+    public DataDTO getLocData(String repoId, String branchId){
+        DataDTO locData = new DataDTO();
+        List<AnalysisEntity> analysisList = analysisRepository.findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
+        Map<Long, Integer> timeStampMap = new LinkedHashMap<>();
+        for(AnalysisEntity analysis : analysisList){
+            timeStampMap.put(analysis.getTimestamp(), (int)analysis.getDocumentedLines());
+        }
+        locData.setDataValuesMap(timeStampMap);
+        return locData;
+    }
+
+    public DataDTO getDuplicatedLinesData(String repoId, String branchId){
+        DataDTO duplicatedLinesData = new DataDTO();
+        List<AnalysisEntity> analysisList = analysisRepository.findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
+        Map<Long, Integer> timeStampMap = new LinkedHashMap<>();
+        for(AnalysisEntity analysis : analysisList){
+            timeStampMap.put(analysis.getTimestamp(), (int)analysis.getDuplicatedLines());
+        }
+        duplicatedLinesData.setDataValuesMap(timeStampMap);
+        return duplicatedLinesData;
+    }
 }

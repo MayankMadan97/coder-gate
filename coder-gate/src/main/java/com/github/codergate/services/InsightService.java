@@ -51,11 +51,23 @@ public class InsightService {
         designSmellDensitySeries.setData(designSmellDensityData);
         seriesDTOList.add(designSmellDensitySeries);
 
-        DataDTO implementationSmellDensityData = insightUtil.getDesignSmellDensityData(repoId, branchId);
+        DataDTO implementationSmellDensityData = insightUtil.getImplementationSmellDensityData(repoId, branchId);
         SeriesDTO implementationSmellDensitySeries = new SeriesDTO();
         implementationSmellDensitySeries.setName("Implementation Smell Density");
         implementationSmellDensitySeries.setData(implementationSmellDensityData);
         seriesDTOList.add(implementationSmellDensitySeries);
+
+        DataDTO locData = insightUtil.getLocData(repoId, branchId);
+        SeriesDTO locSeries = new SeriesDTO();
+        locSeries.setName("LOC");
+        locSeries.setData(locData);
+        seriesDTOList.add(locSeries);
+
+        DataDTO duplicatedLinesData = insightUtil.getDuplicatedLinesData(repoId, branchId);
+        SeriesDTO duplicatedLinesSeries = new SeriesDTO();
+        duplicatedLinesSeries.setName("Duplicated Lines");
+        duplicatedLinesSeries.setData(duplicatedLinesData);
+        seriesDTOList.add(duplicatedLinesSeries);
 
 
         timeStampDTO.setSeriesList(seriesDTOList);
