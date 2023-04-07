@@ -14,7 +14,7 @@ import { FRONTEND_URL } from '../app.constants';
 export class AuthService {
 
   private readonly clientId = 'b4623432c49d30f9dd5e';
-  private readonly redirectUri = FRONTEND_URL;
+  private readonly redirectUri = FRONTEND_URL+"/github-callback";
   private readonly scope = 'user';
 
   constructor(private http: HttpClient, private router: Router) { }
