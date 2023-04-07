@@ -1,9 +1,11 @@
 package com.github.codergate.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import com.github.codergate.entities.AnalysisEntity;
+import com.github.codergate.repositories.AnalysisRepository;
+import com.github.codergate.repositories.RepositoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,10 @@ public class EventService {
     EventRepository eventRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
+    @Autowired
+    private RepositoryRepository repositoryRepository;
+    @Autowired
+    private AnalysisRepository analysisRepository;
 
     /***
      * adds the required event done by user into the database
@@ -213,6 +219,33 @@ public class EventService {
             LOGGER.warn("entityToHeadCommitDto : converting entity to headCommitDTO is null");
         }
         return headCommitDTO;
+    }
+
+    public Integer getCollaborators(String userId){
+        List<RepositoryEntity> repositories = repositoryRepository.findByUserId(Long.parseLong(userId));
+        List<Integer> repositoryIds = repositories.stream()
+                .map(RepositoryEntity::getRepositoryId)
+                .collect(Collectors.toList());
+        Set<Long> userIdSet = new HashSet<>();
+        for(Integer id : repositoryIds){
+            List<Long> usersByRepoId = eventRepository.findUsersByRepoId(id);
+            userIdSet.addAll(usersByRepoId);
+        }
+        return userIdSet.size();
+    }
+
+    public Integer getCodeScans(String userId){
+        List<RepositoryEntity> repositories = repositoryRepository.findByUserId(Long.parseLong(userId));
+        List<Integer> repositoryIds = repositories.stream()
+                .map(RepositoryEntity::getRepositoryId)
+                .collect(Collectors.toList());
+        int totalCodeScans = 0;
+        for(Integer id : repositoryIds){
+            Integer codeScansOfRepository = analysisRepository.findCodeScansOfRepository(id);
+            totalCodeScans+=codeScansOfRepository;
+        }
+
+        return totalCodeScans;
     }
 
 }
