@@ -18,5 +18,7 @@ public interface AnalysisRepository extends JpaRepository<AnalysisEntity, Intege
 
     @Query(value = "SELECT * FROM analysis a WHERE a.repository_id = :repositoryID and a.branch_Id = :branchId ", nativeQuery = true)
     List<AnalysisEntity> findAnalysisByRepositoryAndBranchId(@Param("repositoryID") int repositoryId, @Param("branchId") String branchId);
+    @Query(value = "SELECT count(*) FROM analysis a WHERE a.repository_id = :repositoryID ", nativeQuery = true)
+    Integer findCodeScansOfRepository(@Param("repositoryID") int repositoryId);
 
 }
