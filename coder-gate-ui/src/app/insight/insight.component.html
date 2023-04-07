@@ -1,0 +1,54 @@
+<app-navigator></app-navigator>
+<div class="dashboard-container">
+<div class="row py-4">
+<div class="col-2 border-end sidebar">
+    <div class="row insights-sidebar-item sidebar-item p-3 active" role="button">
+      <i class="col-2 fa fa-code align-self-center" aria-hidden="true"></i>
+      <div class="col-10">Repositories</div>
+    </div>
+    <div class="row insights-sidebar-item sidebar-item p-3" role="button">
+      <i class="col-2 fa fa-lightbulb-o align-self-center" aria-hidden="true"></i>
+      <div class="col-10">Insights</div>
+    </div>
+    <div class="row insights-sidebar-item sidebar-item p-3" role="button">
+      <i class="col-2 fa fa-comments-o align-self-center" aria-hidden="true"></i>
+      <div class="col-10">Feedback</div>
+    </div>
+</div>
+<div class="col-7">
+    <h1 style="text-align: center">{{selectedRepo}}</h1>
+    <div class="col-3 d-flex align-self-center">
+        <div class="dropdown" role="button" (click)="showDropdown = !showDropdown">  
+        <br>
+        <button type="button" class="btn btn-primary">main</button>
+        <div class="dropdown-menu" aria-labelledby="insightsDropdown" [ngClass]="{'show': showDropdown}">
+        <a class="dropdown-item" href="#">Branch1</a>
+        <a class="dropdown-item" href="#">Branch2</a>
+        <a class="dropdown-item" href="#">Branch3</a>
+        </div>
+        </div>
+        </div>
+        <br>
+        <highcharts-chart 
+          [Highcharts]="Highcharts"
+          [options]="time_bugs_vuln_code_chartOptions"
+          style="width: 100%; height: 400px; display: block;"
+        ></highcharts-chart>
+        <br><br>
+        <highcharts-chart 
+          [Highcharts]="Highcharts"
+          [options]="time_loc_duplines_chartOptions"
+          style="width: 100%; height: 400px; display: block;"
+        ></highcharts-chart>
+        <br><br>
+        <highcharts-chart 
+          [Highcharts]="Highcharts"
+          [options]="type_number_chartOptions"
+          style="width: 50%; height: 400px; display: block;"
+        ></highcharts-chart>
+        <div id="type_number_chart"></div>
+</div>
+</div>
+</div>
+<br><br>
+
