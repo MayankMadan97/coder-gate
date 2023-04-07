@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from "@angular/material/dialog";
+import * as moment from 'moment';
 import { Repository, RepositoryResponse } from 'src/app/repository.interface';
 import { RepositoryService } from 'src/app/repository.service';
-import { ThresholdService } from 'src/app/shared/threshold.service';
 
 @Component({
   selector: 'app-metrics',
@@ -48,7 +48,7 @@ export class MetricsComponent implements OnInit {
           id: this.repositories[i].id,
           title: this.repositories[i].name,
           description: this.repositories[i].name,
-          lastUpdatedOn: "1st April 2023",
+          lastUpdatedOn: this.repositories[i].timestamp ? moment(this.repositories[i].timestamp).format('LLLL') : "Yet to update",
           health: 100,
           tag: "New"
         });

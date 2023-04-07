@@ -139,8 +139,8 @@ public class AnalysisService {
                 if (newInformation.getImpSmellDensity() != 0D) {
                     analysisEntity.setImpSmellDensity(newInformation.getImpSmellDensity());
                 }
-//                Date date = new Date();
-//                analysisEntity.setTimestamp(date.getTime());
+                // Date date = new Date();
+                // analysisEntity.setTimestamp(date.getTime());
                 analysisEntity.setType(newInformation.getAnalysisType());
                 analysisEntity.setBugs(newInformation.getBugs());
                 analysisEntity.setVulnerabilities(newInformation.getVulnerabilities());
@@ -229,8 +229,8 @@ public class AnalysisService {
             if (analysisDTO.getImpSmellDensity() != 0D) {
                 analysisEntity.setImpSmellDensity(analysisDTO.getImpSmellDensity());
             }
-//            Date date = new Date();
-//            analysisEntity.setTimestamp(date.getTime());
+            // Date date = new Date();
+            // analysisEntity.setTimestamp(date.getTime());
             analysisEntity.setType(analysisDTO.getAnalysisType());
             analysisEntity.setBugs(analysisDTO.getBugs());
             analysisEntity.setVulnerabilities(analysisDTO.getVulnerabilities());
@@ -321,6 +321,9 @@ public class AnalysisService {
             }
             if (analysisEntity.getImpSmellDensity() != 0D) {
                 analysisDTO.setImpSmellDensity(analysisEntity.getImpSmellDensity());
+            }
+            if (analysisEntity.getTimestamp() != 0L) {
+                analysisDTO.setTimestamp(analysisEntity.getTimestamp());
             }
             LOGGER.info("convertAnalysisDtoToEntity : Converted Analysis Entity to DTO {}", analysisDTO);
         }
