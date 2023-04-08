@@ -230,8 +230,28 @@ public class RepositoryService {
                     .filter(Objects::nonNull)
                     .map(repo -> {
                         AnalysisDTO analysis = analysisService.getLatestAnalysis(repo.getRepositoryId());
+                        String health;
+                        switch((int)(analysis.getCodeSmell()*10)){
+                            case 10:
+                            case 9 :
+                                health = "A+";
+                                break;
+                            case 8 :
+                                health = "A";
+                                break;
+                            case 7:
+                                health = "B+";
+                                break;
+                            case 6 :
+                                health = "B";
+                                break;
+                            default:
+                                health = "F";
+                                break;
+                        }
+
                         return new RepositoryMinimal(repo.getRepositoryId(), repo.getRepositoryName(),
-                                analysis.getTimestamp());
+                                analysis.getTimestamp(),health);
                     })
                     .collect(Collectors.toList());
             repositoryResponse.setRepositories(reposAdded);
