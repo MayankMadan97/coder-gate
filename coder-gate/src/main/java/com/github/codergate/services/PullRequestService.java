@@ -19,7 +19,7 @@ public class PullRequestService {
     @Autowired
     PullRequestUtil pullRequestUtil;
 
-    Boolean pullRequestCheck(Integer repositoryId){
+    public boolean pullRequestCheck(Integer repositoryId){
         ThresholdEntity thresholdEntity = thresholdRepository.findByRepositoryId(repositoryId);
         AnalysisEntity analysisEntity = analysisRepository.findLatestAnalysisByRepositoryId(repositoryId);
         return pullRequestUtil.checkThreshold(analysisEntity,thresholdEntity);

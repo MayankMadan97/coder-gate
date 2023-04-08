@@ -20,7 +20,7 @@ public class ThresholdService {
     public ThresholdDTO addThreshold(ThresholdDTO thresholdToAdd, int repositoryID) {
         ThresholdDTO thresholdDTO = null;
         if (thresholdRepository.findByRepositoryId(repositoryID) != null) {
-            updateThresholdByID(thresholdToAdd, repositoryID);
+            thresholdDTO = updateThresholdByID(thresholdToAdd, repositoryID);
         } else {
 
             ThresholdEntity thresholdEntity = convertThresholdDtoToEntity(thresholdToAdd, repositoryID);
@@ -80,7 +80,7 @@ public class ThresholdService {
         return thresholdDTO;
     }
 
-    public ThresholdEntity convertThresholdDtoToEntity(ThresholdDTO thresholdDTO, int repositoryID) {
+    private ThresholdEntity convertThresholdDtoToEntity(ThresholdDTO thresholdDTO, int repositoryID) {
         ThresholdEntity thresholdEntity = new ThresholdEntity();
 
         if (thresholdDTO != null) {
@@ -105,6 +105,9 @@ public class ThresholdService {
             thresholdEntity.setEmptyCatchClause(thresholdDTO.getEmptyCatchClause());
             thresholdEntity.setMissingAssertion(thresholdDTO.getMissingAssertion());
             thresholdEntity.setEmptyTest(thresholdDTO.getEmptyTest());
+            thresholdEntity.setArchSmellDensity(thresholdDTO.getArchSmellDensity());
+            thresholdEntity.setDesignSmellDensity(thresholdDTO.getDesignSmellDensity());
+            thresholdEntity.setImpSmellDensity(thresholdDTO.getImpSmellDensity());
             LOGGER.info("convertThresholdDtoToEntity : Converted Threshold DTO to Entity {}", thresholdEntity);
         } else {
             LOGGER.warn("convertThresholdDtoToEntity : ThresholdDTO value is null");
@@ -112,7 +115,7 @@ public class ThresholdService {
         return thresholdEntity;
     }
 
-    public ThresholdDTO convertThresholdEntityToDTO(ThresholdEntity thresholdEntity) {
+    private ThresholdDTO convertThresholdEntityToDTO(ThresholdEntity thresholdEntity) {
         ThresholdDTO thresholdDTO = null;
         if (thresholdEntity != null) {
             thresholdDTO = new ThresholdDTO();
@@ -132,6 +135,9 @@ public class ThresholdService {
             thresholdDTO.setEmptyCatchClause(thresholdEntity.getEmptyCatchClause());
             thresholdDTO.setMissingAssertion(thresholdEntity.getMissingAssertion());
             thresholdDTO.setEmptyTest(thresholdEntity.getEmptyTest());
+            thresholdDTO.setArchSmellDensity(thresholdEntity.getArchSmellDensity());
+            thresholdDTO.setDesignSmellDensity(thresholdEntity.getDesignSmellDensity());
+            thresholdDTO.setImpSmellDensity(thresholdEntity.getImpSmellDensity());
             LOGGER.info("convertThresholdDtoToEntity : Converted Threshold Entity to DTO {}", thresholdDTO);
         } else {
             LOGGER.warn("convertThresholdDtoToEntity : Threshold Entity is null");
