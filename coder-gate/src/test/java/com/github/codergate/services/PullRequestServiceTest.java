@@ -4,6 +4,7 @@ import com.github.codergate.entities.*;
 import com.github.codergate.repositories.AnalysisRepository;
 import com.github.codergate.repositories.ThresholdRepository;
 import com.github.codergate.services.utility.PullRequestUtil;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,8 +29,6 @@ public class PullRequestServiceTest {
     @InjectMocks
     private PullRequestService pullRequestService;
 
-
-
     private int thresholdId = 1;
     private int bugs = 10;
     private int vulnerabilities = 5;
@@ -38,46 +37,28 @@ public class PullRequestServiceTest {
     private double duplicatedLines = 0.5;
     private double cyclomaticComplexity = 2.5;
     private double documentedLines = 0.8;
-
-    // Architecture Smells
     private int cyclicDependency = 2;
     private int godComponents = 1;
-
-    // Design Smells
     private int cycDependentMod = 3;
     private int insufficientModularization = 1;
     private int unnecessaryAbstraction = 0;
-
-    // Implementation Smells
     private int complexConditional = 4;
     private int emptyCatchClause = 2;
-
-    // Test Smells
     private int missingAssertion = 3;
     private int emptyTest = 1;
-
-    // Densities
     private double archSmellDensity = 0.2;
     private double designSmellDensity = 0.3;
     private double impSmellDensity = 0.1;
-
-
     private int repositoryId = 1;
     private String repositoryName = "example-repo";
     private boolean fork = false;
     private String installationId = "1234";
-
-
     private long userId = 1L;
     private String userName = "john_doe";
     private String email = "john_doe@example.com";
-
-
     private int id = 1;
     private String type = "static";
     private long timestamp = 1648825200;
-
-
     private String branchUrl = "https://branchurl";
 
     ThresholdEntity thresholdEntity = new ThresholdEntity();
@@ -87,9 +68,9 @@ public class PullRequestServiceTest {
     BranchEntity branchEntity = new BranchEntity();
     BranchId branchId = new BranchId();
 
-    @Test
-    public void testPullRequestCheckWithValidThresholdAndAnalysisEntities() {
-        // mock the required entities
+
+    @Before
+    public void setUp(){
         userEntity.setUserId(userId);
         userEntity.setUserName(userName);
         userEntity.setEmail(email);
@@ -144,58 +125,38 @@ public class PullRequestServiceTest {
         analysisEntity.setImpSmellDensity(impSmellDensity);
         analysisEntity.setDesignSmellDensity(designSmellDensity);
         analysisEntity.setBranchId(branchEntity);
+    }
 
+    @Test
+    public void testPullRequestCheckWithValidThresholdAndAnalysisEntities() {
         when(thresholdRepository.findByRepositoryId(repositoryId)).thenReturn(thresholdEntity);
         when(analysisRepository.findLatestAnalysisByRepositoryId(repositoryId)).thenReturn(analysisEntity);
-
-        // mock the pull request util
         when(pullRequestUtil.checkThreshold(analysisEntity, thresholdEntity)).thenReturn(true);
-
-        // call the service method
         Boolean result = pullRequestService.pullRequestCheck(1);
-
-        // assert the result
         assertEquals(true, result);
     }
 
-//    @Test
-//    public void testPullRequestCheckWithNullThresholdEntity() {
-//        // mock the required entities
-//        AnalysisEntity analysisEntity = new AnalysisEntity();
-//        when(thresholdRepository.findByRepositoryId(1)).thenReturn(null);
-//        when(analysisRepository.findLatestAnalysisByRepositoryId(1)).thenReturn(analysisEntity);
-//
-//        // call the service method
-//        Boolean result = pullRequestService.pullRequestCheck(1);
-//
-//        // assert the result
-//        assertEquals(false, result);
-//    }
-//
-//    @Test
-//    public void testPullRequestCheckWithNullAnalysisEntity() {
-//        // mock the required entities
-//        ThresholdEntity thresholdEntity = new ThresholdEntity();
-//        when(thresholdRepository.findByRepositoryId(1)).thenReturn(thresholdEntity);
-//        when(analysisRepository.findLatestAnalysisByRepositoryId(1)).thenReturn(null);
-//
-//        // call the service method
-//        Boolean result = pullRequestService.pullRequestCheck(1);
-//
-//        // assert the result
-//        assertEquals(false, result);
-//    }
-//
-//    @Test
-//    public void testPullRequestCheckWithNullThresholdAndAnalysisEntities() {
-//        // mock the required entities
-//        when(thresholdRepository.findByRepositoryId(1)).thenReturn(null);
-//        when(analysisRepository.findLatestAnalysisByRepositoryId(1)).thenReturn(null);
-//
-//        // call the service method
-//        Boolean result = pullRequestService.pullRequestCheck(1);
-//
-//        // assert the result
-//        assertEquals(false, result);
-//    }
+    @Test
+    public void testPullRequestCheckWithNullThresholdEntity() {
+        when(thresholdRepository.findByRepositoryId(repositoryId)).thenReturn(null);
+        when(analysisRepository.findLatestAnalysisByRepositoryId(repositoryId)).thenReturn(analysisEntity);
+        Boolean result = pullRequestService.pullRequestCheck(1);
+        assertEquals(false, result);
+    }
+
+    @Test
+    public void testPullRequestCheckWithNullAnalysisEntity() {
+        when(thresholdRepository.findByRepositoryId(repositoryId)).thenReturn(thresholdEntity);
+        when(analysisRepository.findLatestAnalysisByRepositoryId(repositoryId)).thenReturn(null);
+        Boolean result = pullRequestService.pullRequestCheck(1);
+        assertEquals(false, result);
+    }
+
+    @Test
+    public void testPullRequestCheckWithNullThresholdAndAnalysisEntities() {
+        when(thresholdRepository.findByRepositoryId(repositoryId)).thenReturn(null);
+        when(analysisRepository.findLatestAnalysisByRepositoryId(repositoryId)).thenReturn(null);
+        Boolean result = pullRequestService.pullRequestCheck(1);
+        assertEquals(false, result);
+    }
 }
