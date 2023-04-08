@@ -1,8 +1,12 @@
 package com.github.codergate.services;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.codergate.dto.event.UserEventDTO;
 import com.github.codergate.entities.AnalysisEntity;
 import com.github.codergate.repositories.AnalysisRepository;
 import com.github.codergate.repositories.RepositoryRepository;
@@ -23,6 +27,9 @@ public class EventService {
 
     @Autowired
     EventRepository eventRepository;
+
+    @Autowired
+    UserService userService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
     @Autowired
@@ -246,6 +253,27 @@ public class EventService {
         }
 
         return totalCodeScans;
+    }
+    public List<UserEventDTO> getUserEventDetails(String githubAccessToken) throws IOException {
+        List<UserEventDTO> userEventDTOS = new ArrayList<>();
+        String userDetails = userService.getUserDetails(githubAccessToken);
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(userDetails);
+        String name = rootNode.get("login").asText();
+        String userAvatar = rootNode.get("avatar_url").asText();
+        String userId = rootNode.get("id").asText();
+        List<EventEntity> eventsByUserId = eventRepository.findEventsByUserId(Long.parseLong(userId));
+        for(EventEntity event : eventsByUserId){
+            UserEventDTO userEventDTO = new UserEventDTO();
+            userEventDTO.setUserName(name);
+            userEventDTO.setUserAvatar(userAvatar);
+            userEventDTO.setEventName(event.getEventName());
+            userEventDTO.setCommitId(event.getCommitId());
+            Optional<RepositoryEntity> repository = repositoryRepository.findById(event.getRepositoryIdInEvent().getRepositoryId());
+            userEventDTO.setRepositoryName(repository.get().getRepositoryName());
+            userEventDTOS.add(userEventDTO);
+        }
+        return userEventDTOS;
     }
 
 }
