@@ -19,7 +19,7 @@ public class GithubOAuthController {
     public Mono<String> getAccessToken(@RequestParam("code") String code) {
         String clientId = "86c61a5d24378f5a9ea0";
         String clientSecret = "26f94b9f588a5179b1c1b3388f387c6ee593ff14";
-        String redirectUri = "http://localhost:4200/github-callback";
+        String redirectUri = "http://csci5308vm19.research.cs.dal.ca/github-callback";
         String accessTokenUrl = "https://github.com/login/oauth/access_token";
 
         return webClient.post()
