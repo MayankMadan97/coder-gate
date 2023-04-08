@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from "@angular/material/dialog";
+import { ActivatedRoute } from '@angular/router';
 import { RepositoryResponse } from 'src/app/repository.interface';
 import { RepositoryService } from 'src/app/repository.service';
 import { ThresholdService } from 'src/app/shared/threshold.service';
@@ -34,8 +35,8 @@ export interface ThresholdDTO {
 
 @Component({
   selector: 'app-threshold',
-  templateUrl: './Threshold.component.html',
-  styleUrls: ['./Threshold.component.css']
+  templateUrl: './threshold.component.html',
+  styleUrls: ['./threshold.component.css']
 })
 export class ThresholdComponent implements OnInit {
 
@@ -43,13 +44,19 @@ export class ThresholdComponent implements OnInit {
   dataSource: any;
   thresholdDTO!: ThresholdDTO;
   myForm?: FormGroup;
-  repoId: number = 0;
+  links = [
+    { name: 'Threshold', routerLink: ['/dashboard/threshold', this.selectedRepo, this.selectedRepoId] },
+    { name: 'Insight', routerLink: ['/dashboard/insights', this.selectedRepo, this.selectedRepoId] }
+  ];
+  activeLink: string = "Threshold";
   //bugs: AbstractControl | undefined;
 
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private thresholdService: ThresholdService, private repositoryService: RepositoryService, public alert: MatDialog) { }
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private http: HttpClient,
+    private thresholdService: ThresholdService, private repositoryService: RepositoryService, public alert: MatDialog) { }
 
   public selectedRepo?: string;
+  public selectedRepoId?: number;
   repositoryResponse!: RepositoryResponse;
 
   openDialog() { this.alert.open(OnSubmitAlert); }
@@ -59,19 +66,23 @@ export class ThresholdComponent implements OnInit {
     if (this.myForm?.valid) {
       // Do something with the form data here
       //const formValues = this.myForm.value;
-      console.log("Inside onSubmit()", this.repoId)
-      this.thresholdService.postThresholdValues(this.myForm.value, this.repoId).subscribe(
+      console.log("Inside onSubmit()", this.selectedRepoId)
+      this.thresholdService.postThresholdValues(this.myForm.value, this.selectedRepoId || 0).subscribe(
         response => {
           console.log(response);
-          console.log("repoId in threshold,POST", this.repoId);
+          console.log("repoId in threshold,POST", this.selectedRepoId);
           this.openDialog();
         });
     }
   }
 
   public ngOnInit() {
-    console.log("repoId in threshold,GET", this.repoId);
-    this.thresholdService.getThresholdValues(this.repoId).subscribe(
+
+    let params = this.route.parent?.snapshot.params || {};
+    this.selectedRepo = params['repoName'];
+    this.selectedRepoId = params['repoId'];
+
+    this.thresholdService.getThresholdValues(this.selectedRepoId || 0).subscribe(
       response => {
         if (response == null) {
 
@@ -125,7 +136,6 @@ export class ThresholdComponent implements OnInit {
           console.log(this.thresholdDTO.allowAction);
         }
       });
-
 
   }
 

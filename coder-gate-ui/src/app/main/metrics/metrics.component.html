@@ -40,7 +40,7 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row [routerLink]="['/dashboard/threshold', row.title, row.id]" *matRowDef="let row; columns: displayedColumns;"
+        <tr mat-row [routerLink]="['/dashboard/repo', row.title, row.id]" *matRowDef="let row; columns: displayedColumns;"
           role="button">
         </tr>
       </table>
