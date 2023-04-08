@@ -35,6 +35,12 @@ public class InsightService {
     codeSmellsSeries.setData(codeSmellsData);
     seriesDTOList.add(codeSmellsSeries);
 
+    DataDTO archSmellDensityData = insightUtil.getArchSmellDensityData(repoId, branchId);
+    SeriesDTO archSmellDensitySeries = new SeriesDTO();
+    archSmellDensitySeries.setName("Architectural Smell Density");
+    archSmellDensitySeries.setData(archSmellDensityData);
+    seriesDTOList.add(archSmellDensitySeries);
+
     DataDTO designSmellDensityData = insightUtil.getDesignSmellDensityData(repoId, branchId);
     SeriesDTO designSmellDensitySeries = new SeriesDTO();
     designSmellDensitySeries.setName("Design Smell Density");

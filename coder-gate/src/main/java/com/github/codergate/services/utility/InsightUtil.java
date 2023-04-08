@@ -16,56 +16,72 @@ public class InsightUtil {
     @Autowired
     AnalysisRepository analysisRepository;
 
-
-    public DataDTO getCodeSmellsData(String repoId, String branchId){
+    public DataDTO getCodeSmellsData(String repoId, String branchId) {
         DataDTO codeSmellsData = new DataDTO();
-        List<AnalysisEntity> analysisList = analysisRepository.findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
+        List<AnalysisEntity> analysisList = analysisRepository
+                .findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
         Map<Long, Double> timeStampMap = new LinkedHashMap<>();
-        for(AnalysisEntity analysis : analysisList){
+        for (AnalysisEntity analysis : analysisList) {
             timeStampMap.put(analysis.getTimestamp(), analysis.getCodeSmell());
         }
         codeSmellsData.setDataValuesMap(timeStampMap);
         return codeSmellsData;
     }
 
-    public DataDTO getDesignSmellDensityData(String repoId, String branchId){
-        DataDTO designSmellDensityData = new DataDTO();
-        List<AnalysisEntity> analysisList = analysisRepository.findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
+    public DataDTO getArchSmellDensityData(String repoId, String branchId) {
+        DataDTO archSmellDensityData = new DataDTO();
+        List<AnalysisEntity> analysisList = analysisRepository
+                .findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
         Map<Long, Double> timeStampMap = new LinkedHashMap<>();
-        for(AnalysisEntity analysis : analysisList){
+        for (AnalysisEntity analysis : analysisList) {
+            timeStampMap.put(analysis.getTimestamp(), analysis.getArchSmellDensity());
+        }
+        archSmellDensityData.setDataValuesMap(timeStampMap);
+        return archSmellDensityData;
+    }
+
+    public DataDTO getDesignSmellDensityData(String repoId, String branchId) {
+        DataDTO designSmellDensityData = new DataDTO();
+        List<AnalysisEntity> analysisList = analysisRepository
+                .findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
+        Map<Long, Double> timeStampMap = new LinkedHashMap<>();
+        for (AnalysisEntity analysis : analysisList) {
             timeStampMap.put(analysis.getTimestamp(), analysis.getDesignSmellDensity());
         }
         designSmellDensityData.setDataValuesMap(timeStampMap);
         return designSmellDensityData;
     }
 
-    public DataDTO getImplementationSmellDensityData(String repoId, String branchId){
+    public DataDTO getImplementationSmellDensityData(String repoId, String branchId) {
         DataDTO implementationSmellDensityData = new DataDTO();
-        List<AnalysisEntity> analysisList = analysisRepository.findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
+        List<AnalysisEntity> analysisList = analysisRepository
+                .findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
         Map<Long, Double> timeStampMap = new LinkedHashMap<>();
-        for(AnalysisEntity analysis : analysisList){
+        for (AnalysisEntity analysis : analysisList) {
             timeStampMap.put(analysis.getTimestamp(), analysis.getImpSmellDensity());
         }
         implementationSmellDensityData.setDataValuesMap(timeStampMap);
         return implementationSmellDensityData;
     }
 
-    public DataDTO getLocData(String repoId, String branchId){
+    public DataDTO getLocData(String repoId, String branchId) {
         DataDTO locData = new DataDTO();
-        List<AnalysisEntity> analysisList = analysisRepository.findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
+        List<AnalysisEntity> analysisList = analysisRepository
+                .findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
         Map<Long, Double> timeStampMap = new LinkedHashMap<>();
-        for(AnalysisEntity analysis : analysisList){
+        for (AnalysisEntity analysis : analysisList) {
             timeStampMap.put(analysis.getTimestamp(), analysis.getDocumentedLines());
         }
         locData.setDataValuesMap(timeStampMap);
         return locData;
     }
 
-    public DataDTO getDuplicatedLinesData(String repoId, String branchId){
+    public DataDTO getDuplicatedLinesData(String repoId, String branchId) {
         DataDTO duplicatedLinesData = new DataDTO();
-        List<AnalysisEntity> analysisList = analysisRepository.findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
+        List<AnalysisEntity> analysisList = analysisRepository
+                .findAnalysisByRepositoryAndBranchId(Integer.parseInt(repoId), branchId);
         Map<Long, Double> timeStampMap = new LinkedHashMap<>();
-        for(AnalysisEntity analysis : analysisList){
+        for (AnalysisEntity analysis : analysisList) {
             timeStampMap.put(analysis.getTimestamp(), analysis.getDuplicatedLines());
         }
         duplicatedLinesData.setDataValuesMap(timeStampMap);

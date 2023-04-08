@@ -38,6 +38,19 @@ interface OccurrencesSeries {
   "Cyclic Dependent Modularization": number;
 }
 
+interface DataValuesMap {
+  [timestamp: string]: number;
+}
+
+interface SeriesData {
+  dataValuesMap: DataValuesMap;
+}
+
+interface Series {
+  name: string;
+  data: SeriesData;
+}
+
 @Component({
   selector: 'app-insights',
   templateUrl: './insight.component.html',
@@ -92,6 +105,32 @@ export class InsightsComponent implements OnInit {
     }
   };
 
+  densityTimeline: Highcharts.Options = {
+    title: {
+      text: "Timestamp vs Smell Density",
+      align: "center"
+    },
+    yAxis: {
+      title: {
+        text: "Density"
+      }
+    },
+    xAxis: {
+      type: 'datetime',
+      dateTimeLabelFormats: {
+        hour: '%H:%M',
+      },
+      title: {
+        text: "Time"
+      },
+    },
+    legend: {
+      align: "right",
+      verticalAlign: "top",
+      layout: "horizontal",
+      floating: false
+    },
+  };
 
 
   ngOnInit() {
@@ -111,8 +150,9 @@ export class InsightsComponent implements OnInit {
 
 
   public getAnalysisData() {
-    const url = `${BACKEND_URL}/getOccurrencesInsight/${this.selectedRepoId}/${this.userSelectedBranch}`;
-    this.http.get<any>(url).subscribe((input: { occurrencesSeries: OccurrencesSeries }) => {
+    const occurencesUrl = `${BACKEND_URL}/getOccurrencesInsight/${this.selectedRepoId}/${this.userSelectedBranch}`;
+    const timelineUrl = `${BACKEND_URL}/getTimeStampInsight/${this.selectedRepoId}/${this.userSelectedBranch}`;
+    this.http.get<any>(occurencesUrl).subscribe((input: { occurrencesSeries: OccurrencesSeries }) => {
       console.log(JSON.stringify(input));
       this.smellDensityOccuranceChartOptions.series = [{
         name: 'No of Occurences',
@@ -125,83 +165,43 @@ export class InsightsComponent implements OnInit {
       }];
       console.log(JSON.stringify(this.smellDensityOccuranceChartOptions))
     });
+
+    this.http.get<any>(timelineUrl).subscribe((input: { seriesList: Series[] }) => {
+      console.log(JSON.stringify(input));
+      this.densityTimeline.series = [
+        {
+          name: 'Architectural',
+          data: input.seriesList.filter(item => item.name.includes("Architectural")).map(series => {
+            const dataValuesMap = series.data.dataValuesMap;
+            return Object.keys(dataValuesMap).map(timestamp =>
+              [parseInt(timestamp), Number.parseFloat(dataValuesMap[timestamp].toFixed(4))]
+            );
+          }).flat(),
+          type: 'line'
+        },
+        {
+          name: 'Design',
+          data: input.seriesList.filter(item => item.name.includes("Design")).map(series => {
+            const dataValuesMap = series.data.dataValuesMap;
+            return Object.keys(dataValuesMap).map(timestamp =>
+              [parseInt(timestamp), Number.parseFloat(dataValuesMap[timestamp].toFixed(4))]
+            );
+          }).flat(),
+          type: 'line'
+        },
+        {
+          name: 'Implementation',
+          data: input.seriesList.filter(item => item.name.includes("Implementation")).map(series => {
+            const dataValuesMap = series.data.dataValuesMap;
+            return Object.keys(dataValuesMap).map(timestamp =>
+              [parseInt(timestamp), Number.parseFloat(dataValuesMap[timestamp].toFixed(4))]
+            );
+          }).flat(),
+          type: 'line'
+        }
+      ];
+      console.log(JSON.stringify(this.densityTimeline))
+    });
   }
 
-  time_loc_duplines_chartOptions: Highcharts.Options = {
-
-    title: {
-      text: "Timestamp vs LOC & Duplicated Lines",
-      align: "left"
-    },
-
-    subtitle: {
-      text: "",
-      align: "left"
-    },
-
-    yAxis: {
-      title: {
-        text: "Lines of Code & Duplicated Lines"
-      },
-      min: 0,
-      max: 100,
-      tickInterval: 10
-    },
-
-    xAxis: {
-      type: 'datetime',
-      dateTimeLabelFormats: {
-        hour: '%H:%M',
-      },
-      min: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-      max: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59),
-      tickInterval: 3600 * 1000,
-      title: {
-        text: "Time"
-      },
-    },
-
-    legend: {
-      align: "right",
-      verticalAlign: "top",
-      layout: "vertical",
-      floating: true,
-      borderWidth: 1,
-      shadow: true
-    },
-
-    series: [{
-      name: 'Lines of Code',
-      data: [
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0), 25],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 3, 0), 65],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 4, 5), 9],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 5, 59), 85],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 10, 2), 11],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 12, 30), 62],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 13, 40), 25],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 19, 55), 95],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 20, 9), 72],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 2), 20],
-      ],
-      type: 'line'
-    },
-    {
-      name: 'Dulicated LInes',
-      data: [
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 1, 0), 11],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 6, 0), 25],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 7, 5), 95],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 9, 59), 99],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 11, 2), 1],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 14, 30), 32],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 15, 40), 45],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 18, 55), 35],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 21, 9), 62],
-        [Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 22, 2), 78],
-      ],
-      type: 'line'
-    },
-    ]
-  };
 }
