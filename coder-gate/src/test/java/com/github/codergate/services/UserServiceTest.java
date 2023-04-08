@@ -1,4 +1,5 @@
 package com.github.codergate.services;
+
 import com.github.codergate.dto.installation.AccountDTO;
 import com.github.codergate.entities.UserEntity;
 import com.github.codergate.repositories.UserRepository;
@@ -11,256 +12,185 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
     @Mock
-    UserRepository userRepository;
-    @Mock
-    UserEntity userEntityMock;
+    UserRepository userRepositoryMock;
     @InjectMocks
     UserService userServiceMock;
-    UserService userService =new UserService();
 
+    private final UserEntity userEntity = new UserEntity();
+    private final AccountDTO accountDTO = new AccountDTO();
+    private final long userId =32;
+    int userIds = 32;
+    int expectedId =32;
 
     @Test
-    void testConvertAccountDTOToEntityWhenDataIsNull()
-    {
-        AccountDTO accountDTO = new AccountDTO();
-        UserEntity expected =new UserEntity();
-        UserEntity actual = userService.convertAccountDtoToEntity(accountDTO);
-        assertNotNull(actual);
-        assertEquals(expected.toString(),actual.toString());
+    void testDeleteUserByID() {
+        int wantedNumberOfInvocation =1;
+        Mockito.doNothing().when(userRepositoryMock).deleteById(userId);
+        boolean isDeleted = userServiceMock.deleteUserByID(userId);
+        assertTrue(isDeleted);
+        verify(userRepositoryMock, Mockito.times(wantedNumberOfInvocation)).deleteById(userId);
     }
 
     @Test
-    void testConvertAccountDTOToEntityWhenDTOValueIsNull()
-    {
-        AccountDTO accountDTO = null;
-        UserEntity actual = userService.convertAccountDtoToEntity(accountDTO);
+    void testDeleteUserByIDWhenNull() {
+        int wantedNumberOfInvocation =0;
+        Long userId = null;
+        boolean isDeleted = userServiceMock.deleteUserByID(userId);
+        assertFalse(isDeleted);
+        verify(userRepositoryMock, Mockito.times(wantedNumberOfInvocation)).deleteById(userId);
+    }
+
+    @Test
+    void testGetUserByID() {
+        userEntity.setUserName("TestBot");
+        userEntity.setUserId(userId);
+        when(userRepositoryMock.findById(anyLong())).thenReturn(Optional.of(userEntity));
+        AccountDTO expected = new AccountDTO();
+        expected.setId(expectedId);
+        expected.setLogin("TestBot");
+        AccountDTO actual = userServiceMock.getUserById(userId);
+        assertNotNull(actual);
+    }
+
+    @Test
+    void testGetUserByIDWhenIdIsNull() {
+        Long userId = null;
+        AccountDTO actual = userServiceMock.getUserById(userId);
         assertNull(actual);
     }
 
     @Test
-    void testConvertAccountDTOToEntityWhenDTOIsEmpty()
-    {
-        AccountDTO accountDTO = new AccountDTO();
+    void testAddUser() {
+        int wantedNumberOfInvocation =1;
+        accountDTO.setId(userIds);
+        accountDTO.setLogin("TestBot");
+        UserEntity expected = new UserEntity();
+        expected.setUserId(userIds);
+        expected.setUserName("TestBot");
+        Mockito.when(userRepositoryMock.save(Mockito.any(UserEntity.class))).thenReturn(expected);
+        AccountDTO actual = userServiceMock.addUser(accountDTO);
+        assertEquals(expected.getUserId(), actual.getId().intValue());
+        verify(userRepositoryMock, Mockito.times(wantedNumberOfInvocation)).save(Mockito.any(UserEntity.class));
+    }
+
+    @Test
+    void testAddUserWithNullValues() {
+        AccountDTO accountDTO = null;
+        AccountDTO actual = userServiceMock.addUser(accountDTO);
+        assertNull(actual);
+
+    }
+
+    @Test
+    void testAddUserWithAccountDTOIsNUllOrUserIdIsNull() {
+
         accountDTO.setId(null);
         accountDTO.setLogin(null);
-        UserEntity expected =new UserEntity();
-        UserEntity actual = userService.convertAccountDtoToEntity(accountDTO);
+        AccountDTO actual = userServiceMock.addUser(accountDTO);
+        assertNull(actual);
+        verify(userRepositoryMock, never()).saveAll(anyList());
+
+    }
+
+    @Test
+    void testAddUserWithUserEntityIsNUllOrUserIdIsNull() {
+
+        int userId =0;
+        accountDTO.setId(userId);
+        accountDTO.setLogin(null);
+        UserEntity expected = new UserEntity();
+        expected.setUserId(userId);
+        expected.setUserName(null);
+        Mockito.when(userRepositoryMock.save(Mockito.any(UserEntity.class))).thenReturn(expected);
+        AccountDTO actual = userServiceMock.addUser(accountDTO);
         assertNotNull(actual);
-        assertEquals(expected.toString(),actual.toString());
-    }
+        verify(userRepositoryMock, never()).saveAll(anyList());
 
-
-    @Test
-    void testConvertAccountDTOToEntityWhenSomeDataIsMissing()
-    {
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setId(32);
-        UserEntity expected =new UserEntity();
-        expected.setUserId(32);
-        UserEntity actual = userService.convertAccountDtoToEntity(accountDTO);
-        assertEquals(expected.toString(),actual.toString());
     }
 
     @Test
-    void testConvertAccountDTOToEntityWhenDataIsPresent()
-    {
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setId(32);
+    void testAddUserHandlesException() {
+        int wantedNumberOfInvocation =1;
+        accountDTO.setId(userIds);
         accountDTO.setLogin("TestBot");
-        UserEntity expected =new UserEntity();
-        expected.setUserId(32);
-        expected.setUserName("TestBot");
-        UserEntity actual = userService.convertAccountDtoToEntity(accountDTO);
-        assertEquals(expected.toString(),actual.toString());
+        Mockito.doThrow(new RuntimeException()).when(userRepositoryMock).save(Mockito.any(UserEntity.class));
+        assertThrows(RuntimeException.class, () -> userServiceMock.addUser(accountDTO));
+        verify(userRepositoryMock, Mockito.times(wantedNumberOfInvocation)).save(Mockito.any(UserEntity.class));
     }
 
+
     @Test
-    void testConvertSenderDTOToEntityWhenDataIsPresent()
-    {
-        int id =32;
+    void testUpdateUser() {
+
+        int wantedNumberOfInvocation =1;
         String login = "TestBot";
-        String email ="testbot@gmail.com";
-        UserEntity expected =new UserEntity();
-        expected.setUserId(id);
-        expected.setUserName(login);
-        expected.setEmail(email);
-        UserEntity actual = userService.convertSenderDtoToEntity(id,login,email);
-        assertEquals(expected.toString(),actual.toString());
-    }
-    @Test
-    void testConvertSenderDTOToEntityWhenSomeDataIsMissing()
-    {
-        int id = 32;
-        String login = null;
-        String email ="testbot@gmail.com";
-        UserEntity expected =new UserEntity();
-        expected.setUserId(id);
-        expected.setUserName(login);
-        expected.setEmail(email);
-        UserEntity actual = userService.convertSenderDtoToEntity(id,login,email);
-        assertEquals(expected.toString(),actual.toString());
+        accountDTO.setId(expectedId);
+        accountDTO.setLogin(login);
+        userEntity.setUserName(login);
+        userEntity.setUserId(userId);
+        when(userRepositoryMock.findById(userId)).thenReturn(Optional.of(userEntity));
+        when(userRepositoryMock.save(userEntity)).thenReturn(userEntity);
+        AccountDTO actual = userServiceMock.updateUserById(userId);
+        verify(userRepositoryMock, times(wantedNumberOfInvocation)).findById(userId);
+        verify(userRepositoryMock, times(wantedNumberOfInvocation)).save(userEntity);
+        assertNotNull(actual);
     }
 
     @Test
-    void testConvertSenderDTOToEntityWhenAllDataAreNull()
-    {
-        Integer id = null;
-        String login = null;
-        String email =null;
-        UserEntity expected =new UserEntity();
-        expected.setUserName(login);
-        expected.setEmail(email);
-        UserEntity actual = userService.convertSenderDtoToEntity(id,login,email);
-        assertEquals(expected.toString(),actual.toString());
-    }
-
-    @Test
-    void testConvertEntityToAccountDTOWithNonNullValues()
-    {
-        // set up the mock
-        when(userEntityMock.getUserId()).thenReturn(32L);
-        when(userEntityMock.getUserName()).thenReturn("TestBot");
-
-        AccountDTO expectedAccountDTO = new AccountDTO();
-        expectedAccountDTO.setId((int) userEntityMock.getUserId());
-        expectedAccountDTO.setLogin(userEntityMock.getUserName());
-
-        // call method to check
-        AccountDTO accountDTO = userServiceMock.convertEntityToAccountDto(userEntityMock);
-
-        // check result
-        assertNotNull(accountDTO);
-        assertEquals(expectedAccountDTO.getId(),accountDTO.getId());
-        assertEquals(expectedAccountDTO.getLogin(),accountDTO.getLogin());
-
-    }
-
-    @Test
-    void testConvertEntityToAccountDTOWithEmptyInput()
-    {
-        // set up the mock
-        when(userEntityMock.getUserId()).thenReturn(0L);
-        when(userEntityMock.getUserName()).thenReturn(null);
-
-        // call method to check
-        AccountDTO accountDTO = userServiceMock.convertEntityToAccountDto(userEntityMock);
-
-        // check result
-        assertNull(accountDTO.getId());
-        assertNull(accountDTO.getLogin());
-
-    }
-
-    @Test
-    void testConvertEntityToAccountDTOWithNullInput()
-    {
-        UserEntity userEntity=null;
-
-        // call method to check
-        AccountDTO accountDTO = userServiceMock.convertEntityToAccountDto(userEntity);
-
-        // check result
+    void testUpdateUserIfNull() {
+        when(userRepositoryMock.findById(userId)).thenReturn(Optional.empty());
+        AccountDTO accountDTO = userServiceMock.updateUserById(userId);
         assertNull(accountDTO);
     }
 
     @Test
-    void testDeleteUserByID()
-    {
-        Long userId = 32L;
-        // set up the  mock
-        Mockito.doNothing().when(userRepository).deleteById(userId);
-        // call method to check
-        boolean isDeleted = userServiceMock.deleteUserByID(userId);
-        assertTrue(isDeleted);
-        // verify method is called
-        Mockito.verify(userRepository,Mockito.times(1)).deleteById(userId);
-    }
+    void testAddUserForPush() {
 
-    @Test
-    void testDeleteUserByIDWhenNull()
-    {
-        Long userId = null;
-        boolean isDeleted = userServiceMock.deleteUserByID(userId);
-        assertFalse(isDeleted);
-        Mockito.verify(userRepository,Mockito.times(0)).deleteById(userId);
-    }
-
-    @Test
-    void testGetUserByID()
-    {
-        Long userId = 32L;
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUserName("TestBot");
+        String login = "TestBot";
+        String email = "test@abc.com";
+        userEntity.setUserName(login);
+        userEntity.setEmail(email);
         userEntity.setUserId(userId);
+        when(userRepositoryMock.save(any(UserEntity.class))).thenReturn(userEntity);
+        UserEntity actual = userServiceMock.addUser(userIds, login, email);
+        assertEquals(actual.getEmail(), email);
+        verify(userRepositoryMock, times(1)).save(any(UserEntity.class));
+    }
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
-        AccountDTO expected = new AccountDTO();
 
-        expected.setId(32);
-        expected.setLogin("TestBot");
-
-        AccountDTO actual = userServiceMock.getUserById(userId);
-        assertEquals(expected, actual);
+    @Test
+    void testAddUserWhenUserEntityForPushIsNull() {
+        Integer userId = null;
+        String login = null;
+        String userEmail = null;
+        UserEntity actual = userServiceMock.addUser(userId, login, userEmail);
+        assertNull(actual.getEmail());
     }
 
     @Test
-    void testGetUserByIDWhenIdIsNull()
-    {
-        Long userId = null;
-
-        AccountDTO actual = userServiceMock.getUserById(userId);
-        assertNull(actual);
+    void testAddUserWithNullUserEntity() {
+        UserEntity userEntity = null;
+        int userId=0;
+        Mockito.when(userRepositoryMock.save(Mockito.any(UserEntity.class))).thenReturn(userEntity);
+        UserEntity actual = userServiceMock.addUser(null, null, null);
+        assertEquals(actual.getUserId(), userId);
     }
 
     @Test
-    void testAddUser()
-    {
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setId(32);
-        accountDTO.setLogin("TestBot");
-
-        UserEntity expected = new UserEntity();
-        expected.setUserId(32);
-        expected.setUserName("TestBot");
-
-        Mockito.when(userRepository.save(Mockito.any(UserEntity.class))).thenReturn(expected);
-
-        AccountDTO actual=userServiceMock.addUser(accountDTO);
-
-        assertEquals(expected.getUserId(), actual.getId().intValue());
-        assertEquals(expected.getUserName(), actual.getLogin());
-
-        Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any(UserEntity.class));
+    void testAddUserWhenUserEntityNameIsNull() {
+        when(userRepositoryMock.save(any(UserEntity.class))).thenReturn(null);
+        UserEntity actual = userServiceMock.addUser(null, null, null);
+        assertNull(actual.getUserName());
     }
-
-    @Test
-    void testAddUserWithNullValues()
-    {
-        AccountDTO accountDTO = null;
-
-        AccountDTO actual=userServiceMock.addUser(accountDTO);
-
-        assertNull(actual);
-
-    }
-
-    @Test
-    void testAddUserHandlesException()
-    {
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setId(32);
-        accountDTO.setLogin("TestBot");
-        Mockito.doThrow(new RuntimeException()).when(userRepository).save(Mockito.any(UserEntity.class));
-        assertThrows(RuntimeException.class, ()-> userServiceMock.addUser(accountDTO));
-        Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any(UserEntity.class));
-    }
-
 }
