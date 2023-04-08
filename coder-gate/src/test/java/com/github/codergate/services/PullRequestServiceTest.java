@@ -29,37 +29,37 @@ public class PullRequestServiceTest {
     @InjectMocks
     private PullRequestService pullRequestService;
 
-    private int thresholdId = 1;
-    private int bugs = 10;
-    private int vulnerabilities = 5;
-    private double codeSmell = 0.7;
-    private double testCoverage = 0.9;
-    private double duplicatedLines = 0.5;
-    private double cyclomaticComplexity = 2.5;
-    private double documentedLines = 0.8;
-    private int cyclicDependency = 2;
-    private int godComponents = 1;
-    private int cycDependentMod = 3;
-    private int insufficientModularization = 1;
-    private int unnecessaryAbstraction = 0;
-    private int complexConditional = 4;
-    private int emptyCatchClause = 2;
-    private int missingAssertion = 3;
-    private int emptyTest = 1;
-    private double archSmellDensity = 0.2;
-    private double designSmellDensity = 0.3;
-    private double impSmellDensity = 0.1;
-    private int repositoryId = 1;
-    private String repositoryName = "example-repo";
-    private boolean fork = false;
-    private String installationId = "1234";
-    private long userId = 1L;
-    private String userName = "john_doe";
-    private String email = "john_doe@example.com";
-    private int id = 1;
-    private String type = "static";
-    private long timestamp = 1648825200;
-    private String branchUrl = "https://branchurl";
+    private final int thresholdId = 1;
+    private final int bugs = 10;
+    private final int vulnerabilities = 5;
+    private final double codeSmell = 0.7;
+    private final double testCoverage = 0.9;
+    private final double duplicatedLines = 0.5;
+    private final double cyclomaticComplexity = 2.5;
+    private final double documentedLines = 0.8;
+    private final int cyclicDependency = 2;
+    private final int godComponents = 1;
+    private final int cycDependentMod = 3;
+    private final int insufficientModularization = 1;
+    private final int unnecessaryAbstraction = 0;
+    private final int complexConditional = 4;
+    private final int emptyCatchClause = 2;
+    private final int missingAssertion = 3;
+    private final int emptyTest = 1;
+    private final double archSmellDensity = 0.2;
+    private final double designSmellDensity = 0.3;
+    private final double impSmellDensity = 0.1;
+    private final int repositoryId = 1;
+    private final String repositoryName = "example-repo";
+    private final boolean fork = false;
+    private final String installationId = "1234";
+    private final long userId = 1L;
+    private final String userName = "john_doe";
+    private final String email = "john_doe@example.com";
+    private final int id = 1;
+    private final String type = "static";
+    private final long timestamp = 1648825200;
+    private final String branchUrl = "https://branchurl";
 
     ThresholdEntity thresholdEntity = new ThresholdEntity();
     AnalysisEntity analysisEntity = new AnalysisEntity();
@@ -132,7 +132,7 @@ public class PullRequestServiceTest {
         when(thresholdRepository.findByRepositoryId(repositoryId)).thenReturn(thresholdEntity);
         when(analysisRepository.findLatestAnalysisByRepositoryId(repositoryId)).thenReturn(analysisEntity);
         when(pullRequestUtil.checkThreshold(analysisEntity, thresholdEntity)).thenReturn(true);
-        Boolean result = pullRequestService.pullRequestCheck(1);
+        boolean result = pullRequestService.pullRequestCheck(1);
         assertEquals(true, result);
     }
 
