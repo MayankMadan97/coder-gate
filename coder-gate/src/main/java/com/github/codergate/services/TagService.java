@@ -1,6 +1,8 @@
 package com.github.codergate.services;
 
 import com.github.codergate.dto.push.RepositoryDTO;
+import com.github.codergate.entities.BranchEntity;
+import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.TagEntity;
 import com.github.codergate.entities.TagId;
 import com.github.codergate.repositories.TagRepository;
@@ -36,7 +38,10 @@ public class TagService {
         TagEntity tagEntity = null;
         tagEntity = new TagEntity();
         TagId tagId = new TagId(id, tagUrls);
+        RepositoryEntity repositoryEntity = new RepositoryEntity();
+        repositoryEntity.setRepositoryId(id);
         tagEntity.setTagId(tagId);
+        tagEntity.setRepositoryIdInTag(repositoryEntity);
         return tagEntity;
     }
 
