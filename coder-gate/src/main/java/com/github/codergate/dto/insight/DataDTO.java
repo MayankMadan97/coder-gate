@@ -2,16 +2,15 @@ package com.github.codergate.dto.insight;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.SortedMap;
 
 public class DataDTO {
-        Map<Long, Integer> dataValuesMap = new LinkedHashMap<>();
+        Map<Long, Double> dataValuesMap = new LinkedHashMap<>();
 
-    public Map<Long, Integer> getDataValuesMap() {
+    public Map<Long, Double> getDataValuesMap() {
         return dataValuesMap;
     }
 
-    public void setDataValuesMap(Map<Long, Integer> dataValuesMap) {
+    public void setDataValuesMap(Map<Long, Double> dataValuesMap) {
         this.dataValuesMap = dataValuesMap;
     }
 

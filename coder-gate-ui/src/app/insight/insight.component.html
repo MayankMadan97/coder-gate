@@ -1,28 +1,33 @@
-<div class="dashboard-container">
-  <div class="row py-4">
-    <div class="col-7">
-      <h1 style="text-align: center">{{selectedRepo}}</h1>
-      <div class="col-3 d-flex align-self-center">
+<div class="row">
+  <div class="col-12">
+    <div class="row">
+      <div *ngIf="branches" class="col-3 d-flex align-self-center">
         <mat-form-field appearance="fill">
           <mat-label>Branches</mat-label>
-          <mat-select>
-            <mat-option *ngFor="let branch of branches">
+          <mat-select [(value)]="branches[0]">
+            <mat-option *ngFor="let branch of branches" [value]="branch">
               {{branches}}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-      <br>
-      <highcharts-chart [Highcharts]="Highcharts" [options]="time_bugs_vuln_code_chartOptions"
-        style="width: 100%; height: 400px; display: block;"></highcharts-chart>
-      <br><br>
-      <highcharts-chart [Highcharts]="Highcharts" [options]="time_loc_duplines_chartOptions"
-        style="width: 100%; height: 400px; display: block;"></highcharts-chart>
-      <br><br>
-      <highcharts-chart [Highcharts]="Highcharts" [options]="type_number_chartOptions"
-        style="width: 50%; height: 400px; display: block;"></highcharts-chart>
-      <div id="type_number_chart"></div>
+    </div>
+    <div class="chart-section">
+      <div class="row">
+        <div class="col-6 p-4">
+          <highcharts-chart *ngIf="smellDensityOccuranceChartOptions.series" [Highcharts]="Highcharts"
+            [options]="smellDensityOccuranceChartOptions"
+            style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+        </div>
+        <div class="col-6  p-4">
+          <highcharts-chart [Highcharts]="Highcharts" [options]="time_loc_duplines_chartOptions"
+            style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 p-4">
+        </div>
+      </div>
     </div>
   </div>
 </div>
-<br><br>

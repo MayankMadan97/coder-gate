@@ -3,7 +3,7 @@ package com.github.codergate.dto.insight;
 import java.util.Map;
 
 public class OccurrencesDTO {
-    Map<String, Integer> occurrencesSeries;
+    Map<String, Double> occurrencesSeries;
 
     @Override
     public String toString() {
@@ -12,11 +12,11 @@ public class OccurrencesDTO {
                 '}';
     }
 
-    public Map<String, Integer> getOccurrencesSeries() {
+    public Map<String, Double> getOccurrencesSeries() {
         return occurrencesSeries;
     }
 
-    public void setOccurrencesSeries(Map<String, Integer> occurrencesSeries) {
+    public void setOccurrencesSeries(Map<String, Double> occurrencesSeries) {
         this.occurrencesSeries = occurrencesSeries;
     }
 }

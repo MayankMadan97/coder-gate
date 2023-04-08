@@ -7,78 +7,49 @@ import { BranchService } from '../branch.service';
 import { Repository, RepositoryResponse } from '../repository.interface';
 import { RepositoryService } from '../repository.service';
 
+interface ChartData {
+  seriesList: ChartSeries[];
+}
+
+interface ChartSeries {
+  name: string;
+  data: ChartDataValues;
+}
+
+interface ChartDataValues {
+  dataValuesMap: Record<string, number>;
+}
+
+interface OccurrencesSeries {
+  "Documented Lines": number;
+  "CyclomaticComplexity": number;
+  "Duplicated Lines": number;
+  "Missing Assertion": number;
+  "Design Smell Density": number;
+  "Complex Conditional": number;
+  "Cyclic Dependencies": number;
+  "God Components": number;
+  "Empty Test": number;
+  "Implementation Smell Density": number;
+  "Insufficient Modularization": number;
+  "Empty Catch Clause": number;
+  "Architecture Smell Density": number;
+  "Test Coverage": number;
+  "Cyclic Dependent Modularization": number;
+}
+
 @Component({
   selector: 'app-insights',
   templateUrl: './insight.component.html',
   styleUrls: ['./insight.component.css']
 })
+
 export class InsightsComponent implements OnInit {
 
   public selectedRepo?: string;
   public selectedRepoId?: number;
   public showDropdown = false;
   Highcharts: typeof Highcharts = Highcharts;
-
-
-  time_bugs_vuln_code_chartOptions: any = {
-    title: {
-      text: "Timestamp vs Bugs, Vulnerabilities & Code Smells",
-      align: "left"
-    },
-    subtitle: {
-      text: "",
-      align: "left"
-    },
-
-    yAxis: {
-      title: {
-        text: "Number of Bugs, Vulnerabilities & Code Smells"
-      },
-      min: 0,
-      max: 100,
-      tickInterval: 10
-    },
-
-    xAxis: {
-      type: 'datetime',
-      dateTimeLabelFormats: {
-        hour: '%H:%M',
-      },
-      min: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-      max: Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59),
-      tickInterval: 3600 * 1000,
-      title: {
-        text: "Time"
-      },
-    },
-
-    legend: {
-      align: "right",
-      verticalAlign: "top",
-      layout: "vertical",
-
-      floating: true,
-      borderWidth: 1,
-      shadow: true
-    },
-    series: [{
-      name: '',
-      data: [],
-      type: 'line'
-    },
-    {
-      name: '',
-      data: [],
-      type: 'line'
-    },
-    {
-      name: '',
-      data: [],
-      type: 'line'
-    },
-    ]
-  };
-
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private repositoryService: RepositoryService,
     private branchService: BranchService) { }
@@ -89,45 +60,11 @@ export class InsightsComponent implements OnInit {
   branches!: string[];
   userSelectedBranch!: string
 
-  ngOnInit() {
-
-    this.route.params.subscribe(params => {
-      this.selectedRepo = params['selectedRepo'];
-      this.selectedRepoId = params['repoId'];
-
-    });
-
-    this.branchService.getBranches(this.selectedRepoId || 0).subscribe(branches => {
-      this.branches = branches.filter(branch => !branch.includes("http"));
-
-      this.userSelectedBranch = this.branches[0];
-
-      const url = `${BACKEND_URL}/getTimeStampInsight/${this.selectedRepoId}/${this.userSelectedBranch}`;
-      this.http.get<any>(url).subscribe(data => {
-        this.time_bugs_vuln_code_chartOptions.series[0].name = data.seriesList[0].get("name");
-        this.time_bugs_vuln_code_chartOptions.series[0].data[0][0] = data.seriesList[0].get("data").get("dataValuesMap");
-        Highcharts.chart('type_number_chart', this.time_bugs_vuln_code_chartOptions);
-      });
-    });
-  }
-
-
-
-  type_number_chartOptions: Highcharts.Options = {
-
+  smellDensityOccuranceChartOptions: Highcharts.Options = {
     title: {
-      text: "Type of Code Smell vs No of Occurrences",
-      align: "left"
+      text: "Code smell densities",
+      align: "center"
     },
-    subtitle: {
-      text: "",
-      align: "left"
-    },
-
-    tooltip: {
-      valueSuffix: ""
-    },
-
     plotOptions: {
       column: {
         pointWidth: 70,
@@ -136,45 +73,59 @@ export class InsightsComponent implements OnInit {
         }
       }
     },
-
     xAxis: {
-      categories: ["Implementation", "Design", "Architecture"],
+      categories: ["Architecture", "Design", "Implementation"],
       title: {
         text: "Type of Code Smells"
       },
     },
-
     yAxis: {
       title: {
-        text: "No of Occurrences",
+        text: "Density",
       },
-      min: 0,
-      max: 100,
       labels: {
         overflow: "justify"
       }
     },
-
-
-    legend: {
-      layout: "vertical",
-      align: "right",
-      verticalAlign: "top",
-      floating: true,
-      borderWidth: 1,
-      shadow: true
-    },
-
     credits: {
       enabled: false
-    },
-
-    series: [{
-      name: 'No of Occurences',
-      data: [40, 75, 39],
-      type: 'column'
-    }]
+    }
   };
+
+
+
+  ngOnInit() {
+
+    let params = this.route.parent?.snapshot.params || {};
+    this.selectedRepo = params['repoName'];
+    this.selectedRepoId = params['repoId'];
+
+
+    this.branchService.getBranches(this.selectedRepoId || 0).subscribe(branches => {
+      this.branches = branches.filter(branch => !branch.includes("http"));
+
+      this.userSelectedBranch = this.branches[0];
+      this.getAnalysisData();
+    });
+  }
+
+
+  public getAnalysisData() {
+    const url = `${BACKEND_URL}/getOccurrencesInsight/${this.selectedRepoId}/${this.userSelectedBranch}`;
+    this.http.get<any>(url).subscribe((input: { occurrencesSeries: OccurrencesSeries }) => {
+      console.log(JSON.stringify(input));
+      this.smellDensityOccuranceChartOptions.series = [{
+        name: 'No of Occurences',
+        data: [
+          Number.parseFloat(input.occurrencesSeries['Architecture Smell Density'].toFixed(4)),
+          Number.parseFloat(input.occurrencesSeries['Design Smell Density'].toFixed(4)),
+          Number.parseFloat(input.occurrencesSeries['Implementation Smell Density'].toFixed(4))
+        ],
+        type: 'column'
+      }];
+      console.log(JSON.stringify(this.smellDensityOccuranceChartOptions))
+    });
+  }
 
   time_loc_duplines_chartOptions: Highcharts.Options = {
 
@@ -253,5 +204,4 @@ export class InsightsComponent implements OnInit {
     },
     ]
   };
-
 }
