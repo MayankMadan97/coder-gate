@@ -231,22 +231,22 @@ public class RepositoryService {
                     .map(repo -> {
                         AnalysisDTO analysis = analysisService.getLatestAnalysis(repo.getRepositoryId());
                         String health;
-                        switch((int)(analysis.getCodeSmell()*10)){
-                            case 10:
-                            case 9 :
+                        switch((int)(analysis.getCodeSmell())){
+                            case 2:
+                            case 1 :
                                 health = "A+";
                                 break;
-                            case 8 :
+                            case 3 :
                                 health = "A";
                                 break;
-                            case 7:
+                            case 5:
                                 health = "B+";
                                 break;
-                            case 6 :
+                            case 7 :
                                 health = "B";
                                 break;
                             default:
-                                health = "F";
+                                health = "-";
                                 break;
                         }
 

@@ -49,7 +49,7 @@ export class MetricsComponent implements OnInit {
           title: this.repositories[i].name,
           description: this.repositories[i].name,
           lastUpdatedOn: this.repositories[i].timestamp ? moment(this.repositories[i].timestamp).format('LLLL') : "Yet to update",
-          health: 100,
+          health: this.repositories[i].health,
           tag: "New"
         });
       }
