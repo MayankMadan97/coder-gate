@@ -1,0 +1,97 @@
+<div class="dashboard-container">
+  <div class="row py-4">
+    <div class="col-2 border-end sidebar">
+      <div class="row insights-sidebar-item sidebar-item p-3 active" role="button">
+        <i class="col-2 fa fa-code align-self-center" aria-hidden="true"></i>
+        <div class="col-10">Repositories</div>
+      </div>
+      <div class="row insights-sidebar-item sidebar-item p-3" role="button">
+        <i class="col-2 fa fa-lightbulb-o align-self-center" aria-hidden="true"></i>
+        <div class="col-10">Insights</div>
+      </div>
+      <div class="row insights-sidebar-item sidebar-item p-3" role="button">
+        <i class="col-2 fa fa-comments-o align-self-center" aria-hidden="true"></i>
+        <div class="col-10">Feedback</div>
+      </div>
+    </div>
+    <div class="col-7 dashboard-internal-view" *ngIf="showDashboardInternalView">
+      <div class="row mb-3 mx-2">
+        <div class="col-12 p-3 commit-chart">
+          <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
+            style="width: 100%; height: 270px; display: block;"></highcharts-chart>
+        </div>
+      </div>
+      <div class="px-4 repository-list row">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{element.title}}</td>
+          </ng-container>
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Last updated">
+            <th mat-header-cell *matHeaderCellDef>Last updated on</th>
+            <td mat-cell *matCellDef="let element">{{element.lastUpdatedOn}}</td>
+          </ng-container>
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="health">
+            <th mat-header-cell *matHeaderCellDef>Health</th>
+            <td mat-cell *matCellDef="let element">{{element.health}}%</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row (click)="repoClicked(row.title)" *matRowDef="let row; columns: displayedColumns;" role="button">
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="col-7 threshold-form-view" *ngIf="!showDashboardInternalView">
+      <div class="row">
+        <div class="col-12 d-flex align-self-center" role="button" (click)="showDashboardInternalView = true">
+          <img src="../../assets/images/back.png" height="20" alt="back arrow"
+            class="back-arrow mx-2 align-self-center">
+          <span class="repo-title">
+            Threshold
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <form class="threshold-container" [formGroup]="options">
+            <div class="row">
+              <div class="col-12">
+                <mat-form-field appearance="fill" floatLabel="always">
+                  <mat-label>Repository</mat-label>
+                  <input matInput placeholder="{{selectedRepo}}" disabled>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <mat-form-field appearance="fill">
+                  <mat-label>Bugs</mat-label>
+                  <mat-slider>
+                    <input matSliderThumb>
+                  </mat-slider>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <mat-form-field appearance="fill">
+                  <mat-label>Textarea</mat-label>
+                  <textarea matInput></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <button type="submit" mat-raised-button color="primary">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

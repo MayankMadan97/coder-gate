@@ -1,0 +1,30 @@
+<header class="navbar-container pt-3 position-sticky">
+    <div class="row border-bottom pb-3">
+        <div class="col-2 border-end">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <a class="navbar-brand mx-5 font-monospace" href="">CoderGate</a>
+                </div>
+            </nav>
+        </div>
+        <div class="col-2 d-flex align-self-center text-center mx-4">
+            <span class="dashboard-title">Dashboard</span>
+        </div>
+        <div class="col-7 d-flex justify-content-end align-self-center">
+            <img src="{{ user.avatar_url }}" alt="User profile picture" role='button' height="45" class="profile-picture"
+                (click)="showUserMenu=!showUserMenu">
+        </div>
+    </div>
+    <div *ngIf="showUserMenu" class="position-absolute px-4 py-2 user-menu">
+        <div class="row border-bottom">
+            <div class="col-12 p-2">
+                <span role="button" class="user-menu-item">{{ this.user.login }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 p-2">
+                <span role="button" class="user-menu-item" (click)="logout()">Logout</span>
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,36 +1,95 @@
 stages:
+  - code-Quality
   - test
   - build
+  - deploy
+
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
+code_quality:
+  stage: code-Quality
+  artifacts:
+    paths: [gl-code-quality-report.json] 
+  tags:
+    - Group19Runner
 
 test:
   stage: test
   image: maven:latest
-  artifacts:
-    paths:
-      - coder-gate/target
-    reports:
-      junit:
-        - coder-gate/target/ProjectReports/TEST_*.xml
   script:
     - cd coder-gate
     - echo "Pipeline test started"
     - mvn verify
+  artifacts: 
+      paths:
+        - coder-gate/target/surefire-reports
+      reports:
+        junit:
+          - coder-gate/target/surefire-reports/TEST-*.xml
   tags:
     - Group19Runner
-  only:
-    - dev
 
-build:
+build-frontend:
+  stage: build
+  image: node:latest
+  script:
+    - cd coder-gate-ui
+    - npm install
+    - ng build --configuration=production
+  artifacts:
+    paths:
+      - coder-gate-ui/dist
+  tags:
+    - Group19Runner
+
+build-backend:
   stage: build
   image: maven:latest
   script:
     - cd coder-gate
     - echo "Building the pipeline"
     - mvn clean package
+  dependencies:
+    - code_quality
+    - test
+    - build-frontend
   artifacts:
     paths:
       - coder-gate/target
+      - coder-gate-ui/dist
+  tags:
+    - Group19Runner
+
+
+deploy-backend:
+  stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - chmod og-rwx ${DEPLOY_SSH_KEY}
+    - ssh -o StrictHostKeyChecking=no -i ${DEPLOY_SSH_KEY} ${DEPLOY_USER}@${DEPLOY_HOST} "docker stop coder-gate-backend || true"
+    - ssh -o StrictHostKeyChecking=no -i ${DEPLOY_SSH_KEY} ${DEPLOY_USER}@${DEPLOY_HOST} "docker rm coder-gate-backend || true"
+    - scp -r -o StrictHostKeyChecking=no -i ${DEPLOY_SSH_KEY} coder-gate/target/*.jar "${DEPLOY_USER}@${DEPLOY_HOST}:/home/${DEPLOY_USER}${DEPLOY_DIR_BACK_END}/coder-gate-0.0.1-SNAPSHOT.jar"
+    - ssh -o StrictHostKeyChecking=no -i ${DEPLOY_SSH_KEY} ${DEPLOY_USER}@${DEPLOY_HOST} "cd ${DOCKER_BACK_END_PATH} && docker build -t coder-gate-backend:latest -f Dockerfile-backend ."
+    - ssh -o StrictHostKeyChecking=no -i ${DEPLOY_SSH_KEY} ${DEPLOY_USER}@${DEPLOY_HOST} "docker run -d --name coder-gate-backend -p 8080:8080 coder-gate-backend"
+  tags:
+    - Group19Runner
+  only:
+  - dev
+
+deploy-frontend:
+  stage: deploy
+  image: alpine
+  script:
+    - chmod og-rwx ${DEPLOY_SSH_KEY}
+    - ssh -o StrictHostKeyChecking=no -i ${DEPLOY_SSH_KEY} ${DEPLOY_USER}@${DEPLOY_HOST} "rm -f /var/www/html/index.html"
+    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${Distribution} "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/html/my-angular-app/"
+    - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'sudo service apache2 restart'" < <(echo ${SUDO_PASSWORD})
   tags:
     - Group19Runner
   only:
     - dev
+
+    

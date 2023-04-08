@@ -58,6 +58,7 @@ public class ThresholdEntity {
     private double archSmellDensity;
     private double designSmellDensity;
     private double impSmellDensity;
+    private boolean allowAction;
 
     public int getThresholdId() {
         return thresholdId;
@@ -201,5 +202,37 @@ public class ThresholdEntity {
 
     public void setEmptyTest(int emptyTest) {
         this.emptyTest = emptyTest;
+    }
+
+    public double getArchSmellDensity() {
+        return archSmellDensity;
+    }
+
+    public void setArchSmellDensity(double archSmellDensity) {
+        this.archSmellDensity = archSmellDensity;
+    }
+
+    public double getDesignSmellDensity() {
+        return designSmellDensity;
+    }
+
+    public void setDesignSmellDensity(double designSmellDensity) {
+        this.designSmellDensity = designSmellDensity;
+    }
+
+    public double getImpSmellDensity() {
+        return impSmellDensity;
+    }
+
+    public void setImpSmellDensity(double impSmellDensity) {
+        this.impSmellDensity = impSmellDensity;
+    }
+
+    public boolean isAllowAction() {
+        return allowAction;
+    }
+
+    public void setAllowAction(boolean allowAction) {
+        this.allowAction = allowAction;
     }
 }

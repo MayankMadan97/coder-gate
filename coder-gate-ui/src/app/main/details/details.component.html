@@ -1,0 +1,25 @@
+<div class="col-12 threshold-form-view">
+  <div class="row">
+    <div class="col-5 d-flex align-self-center" [routerLink]="['/dashboard']">
+      <img src="../../assets/images/back.png" height="20" alt="back arrow" class="back-arrow mx-2 align-self-center"
+        role="button">
+      <span class="repo-title" role="button">
+        {{selectedRepo}}
+      </span>
+    </div>
+    <div class="col-4 offset-3">
+      <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+        <a class="text-decoration-none" mat-tab-link *ngFor="let link of links" (click)="activeLink = link.name"
+          [active]="activeLink == link.name" [routerLink]="link.routerLink">
+          {{link.name}}
+        </a>
+      </nav>
+      <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-12 px-4">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

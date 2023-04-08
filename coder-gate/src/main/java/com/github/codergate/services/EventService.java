@@ -1,9 +1,16 @@
 package com.github.codergate.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.codergate.dto.event.UserEventDTO;
+import com.github.codergate.dto.installation.RepositoriesAddedDTO;
+import com.github.codergate.entities.AnalysisEntity;
+import com.github.codergate.repositories.AnalysisRepository;
+import com.github.codergate.repositories.RepositoryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +29,17 @@ public class EventService {
     @Autowired
     EventRepository eventRepository;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    RepositoryService repositoryService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
+    @Autowired
+    private RepositoryRepository repositoryRepository;
+    @Autowired
+    private AnalysisRepository analysisRepository;
 
     /***
      * adds the required event done by user into the database
@@ -213,6 +230,66 @@ public class EventService {
             LOGGER.warn("entityToHeadCommitDto : converting entity to headCommitDTO is null");
         }
         return headCommitDTO;
+    }
+
+    public Integer getCollaborators(String userId){
+        List<RepositoryEntity> repositories = repositoryRepository.findByUserId(Long.parseLong(userId));
+        List<Integer> repositoryIds = repositories.stream()
+                .map(RepositoryEntity::getRepositoryId)
+                .collect(Collectors.toList());
+        Set<Long> userIdSet = new HashSet<>();
+        for(Integer id : repositoryIds){
+            List<Long> usersByRepoId = eventRepository.findUsersByRepoId(id);
+            userIdSet.addAll(usersByRepoId);
+        }
+        return userIdSet.size();
+    }
+
+    public Integer getCodeScans(String userId){
+        List<RepositoryEntity> repositories = repositoryRepository.findByUserId(Long.parseLong(userId));
+        List<Integer> repositoryIds = repositories.stream()
+                .map(RepositoryEntity::getRepositoryId)
+                .collect(Collectors.toList());
+        int totalCodeScans = 0;
+        for(Integer id : repositoryIds){
+            Integer codeScansOfRepository = analysisRepository.findCodeScansOfRepository(id);
+            totalCodeScans+=codeScansOfRepository;
+        }
+
+        return totalCodeScans;
+    }
+    public List<UserEventDTO> getUserEventDetails(String userId) throws IOException {
+        List<UserEventDTO> userEventDTOS = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<RepositoriesAddedDTO> repositoriesFromUserId = repositoryService.getRepositoryFromUserId(Long.parseLong(userId));
+        List<Integer> repositoryIds = repositoriesFromUserId.stream()
+                .map(RepositoriesAddedDTO::getId)
+                .collect(Collectors.toList());
+
+        List<EventEntity> eventEntityList = new ArrayList<>();
+
+        for(Integer repoId : repositoryIds){
+            List<EventEntity> eventsByRepoId = eventRepository.findEventsByRepoId(repoId);
+            eventEntityList.addAll(eventsByRepoId);
+        }
+
+        for(EventEntity event : eventEntityList){
+            UserEventDTO userEventDTO = new UserEventDTO();
+            String userDetails = userService.getPublicUserDetails(String.valueOf(event.getUserIdInEvent().getUserId()));
+            JsonNode rootNode = objectMapper.readTree(userDetails);
+            String name = rootNode.get("login").asText();
+            String userAvatar = rootNode.get("avatar_url").asText();
+            userEventDTO.setUserName(name);
+            userEventDTO.setUserAvatar(userAvatar);
+            userEventDTO.setEventName(event.getEventName());
+            userEventDTO.setCommitId(event.getCommitId());
+            Optional<RepositoryEntity> repository = repositoryRepository.findById(event.getRepositoryIdInEvent().getRepositoryId());
+            userEventDTO.setRepositoryName(repository.get().getRepositoryName());
+            userEventDTOS.add(userEventDTO);
+        }
+
+        return userEventDTOS;
     }
 
 }

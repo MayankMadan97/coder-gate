@@ -1,0 +1,163 @@
+.homepage-container .main-section .illustration-section {
+  height: calc(100vh - 6em);
+  display: flex;
+}
+
+.homepage-container .main-section .illustration-section .illustration {
+  height: 35em;
+  align-self: center;
+}
+
+.homepage-container .main-section .message-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.homepage-container .main-section .tagline {
+  color: #4b4b4b;
+  font-size: 3.5em;
+  line-height: 1.1em;
+}
+
+.homepage-container .main-section .description {
+  color: #4b4b4b;
+  font-size: 1.3em;
+  line-height: 1.1em;
+}
+
+.github-integrated {
+  font-size: 1em;
+}
+
+ul a:hover {
+  color: #fab81b !important;
+}
+
+li>a:after {
+  content: '';
+  display: block;
+  height: 1.5px;
+  background: #fab81b;
+  transform: scaleX(0);
+  transition: transform .3s;
+}
+
+li>a:hover:after {
+  transform: scaleX(1);
+  transition: transform .3s;
+}
+
+.active {
+  color: #fab81b !important;
+}
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  background-color: white;
+}
+
+.features-section,
+.contact-section {
+  background-color: #fab81b;
+  min-height: 50vh;
+}
+
+.supported-languages {
+  background-color: #fab81b;
+  min-height: 20vh;
+}
+
+.supported-languages .title {
+  font-size: 3em;
+  color: #333333;
+}
+
+.supported-languages .language-icon {
+  height: 5em;
+  width: 5em;
+}
+
+.supported-languages .language-item-title {
+  font-size: 1.3em;
+  color: #333333;
+}
+
+
+
+footer {
+  background: #111;
+  height: auto;
+  width: 100vw;
+  padding-top: 3em;
+  color: #fff;
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.footer-content h3 {
+  font-size: 2.1rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  line-height: 3rem;
+}
+
+.footer-content p {
+  max-width: 35em;
+  margin: 0.5em auto;
+  line-height: 2em;
+  color: #cacdd2;
+}
+
+.socials {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0 1rem 0;
+}
+
+.socials li {
+  margin: 0 0.6em;
+}
+
+.socials a {
+  text-decoration: none;
+  color: #fff;
+  padding: 0.3em;
+}
+
+.socials a i {
+  font-size: 1.1rem;
+  width: 1.2em;
+  transition: color 0.4s ease;
+}
+
+.socials a:hover i {
+  color: #fab81b !important;
+}
+
+
+.github-login-button {
+  padding-left: 1em;
+  border-radius: 2.2em;
+  background: linear-gradient(to right, #fab81b 50%, rgb(225 226 235) 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: all .5s ease-out;
+}
+
+
+.github-login-button:hover {
+  background-position: left bottom;
+}

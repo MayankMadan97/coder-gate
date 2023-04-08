@@ -1,0 +1,9 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-size: 16px;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

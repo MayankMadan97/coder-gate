@@ -81,6 +81,66 @@ public class AnalysisService {
         AnalysisEntity analysisEntity = analysisRepository.findLatestAnalysisByRepositoryId(repositoryID);
         if (analysisEntity != null) {
             if (newInformation != null) {
+                if (newInformation.getAnalysisType() != null) {
+                    analysisEntity.setType(newInformation.getAnalysisType());
+                }
+                if (newInformation.getBugs() != 0) {
+                    analysisEntity.setBugs(newInformation.getBugs());
+                }
+                if (newInformation.getVulnerabilities() != 0) {
+                    analysisEntity.setVulnerabilities(newInformation.getVulnerabilities());
+                }
+                if (newInformation.getCodeSmell() != 0D) {
+                    analysisEntity.setCodeSmell(newInformation.getCodeSmell());
+                }
+                if (newInformation.getTestCoverage() != 0D) {
+                    analysisEntity.setTestCoverage(newInformation.getTestCoverage());
+                }
+                if (newInformation.getDuplicatedLines() != 0D) {
+                    analysisEntity.setDuplicatedLines(newInformation.getDuplicatedLines());
+                }
+                if (newInformation.getCyclomaticComplexity() != 0D) {
+                    analysisEntity.setCyclomaticComplexity(newInformation.getCyclomaticComplexity());
+                }
+                if (newInformation.getDocumentedLines() != 0D) {
+                    analysisEntity.setDocumentedLines(newInformation.getDocumentedLines());
+                }
+                if (newInformation.getCyclicDependency() != 0) {
+                    analysisEntity.setCyclicDependency(newInformation.getCyclicDependency());
+                }
+                if (newInformation.getGodComponents() != 0) {
+                    analysisEntity.setGodComponents(newInformation.getGodComponents());
+                }
+
+                if (newInformation.getInsufficientModularization() != 0) {
+                    analysisEntity.setInsufficientModularization(newInformation.getInsufficientModularization());
+                }
+                if (newInformation.getUnnecessaryAbstraction() != 0) {
+                    analysisEntity.setUnnecessaryAbstraction(newInformation.getUnnecessaryAbstraction());
+                }
+                if (newInformation.getComplexConditional() != 0) {
+                    analysisEntity.setComplexConditional(newInformation.getComplexConditional());
+                }
+                if (newInformation.getEmptyCatchClause() != 0) {
+                    analysisEntity.setEmptyCatchClause(newInformation.getEmptyCatchClause());
+                }
+                if (newInformation.getMissingAssertion() != 0) {
+                    analysisEntity.setMissingAssertion(newInformation.getMissingAssertion());
+                }
+                if (newInformation.getEmptyTest() != 0) {
+                    analysisEntity.setEmptyTest(newInformation.getEmptyTest());
+                }
+                if (newInformation.getArchSmellDensity() != 0D) {
+                    analysisEntity.setArchSmellDensity(newInformation.getArchSmellDensity());
+                }
+                if (newInformation.getDesignSmellDensity() != 0D) {
+                    analysisEntity.setDesignSmellDensity(newInformation.getDesignSmellDensity());
+                }
+                if (newInformation.getImpSmellDensity() != 0D) {
+                    analysisEntity.setImpSmellDensity(newInformation.getImpSmellDensity());
+                }
+                // Date date = new Date();
+                // analysisEntity.setTimestamp(date.getTime());
                 analysisEntity.setType(newInformation.getAnalysisType());
                 analysisEntity.setBugs(newInformation.getBugs());
                 analysisEntity.setVulnerabilities(newInformation.getVulnerabilities());
@@ -111,6 +171,66 @@ public class AnalysisService {
         AnalysisEntity analysisEntity = null;
         if (analysisDTO != null) {
             analysisEntity = new AnalysisEntity();
+            if (analysisDTO.getAnalysisType() != null) {
+                analysisEntity.setType(analysisDTO.getAnalysisType());
+            }
+            if (analysisDTO.getBugs() != 0) {
+                analysisEntity.setBugs(analysisDTO.getBugs());
+            }
+            if (analysisDTO.getVulnerabilities() != 0) {
+                analysisEntity.setVulnerabilities(analysisDTO.getVulnerabilities());
+            }
+            if (analysisDTO.getCodeSmell() != 0D) {
+                analysisEntity.setCodeSmell(analysisDTO.getCodeSmell());
+            }
+            if (analysisDTO.getTestCoverage() != 0D) {
+                analysisEntity.setTestCoverage(analysisDTO.getTestCoverage());
+            }
+            if (analysisDTO.getDuplicatedLines() != 0D) {
+                analysisEntity.setDuplicatedLines(analysisDTO.getDuplicatedLines());
+            }
+            if (analysisDTO.getCyclomaticComplexity() != 0D) {
+                analysisEntity.setCyclomaticComplexity(analysisDTO.getCyclomaticComplexity());
+            }
+            if (analysisDTO.getDocumentedLines() != 0D) {
+                analysisEntity.setDocumentedLines(analysisDTO.getDocumentedLines());
+            }
+            if (analysisDTO.getCyclicDependency() != 0) {
+                analysisEntity.setCyclicDependency(analysisDTO.getCyclicDependency());
+            }
+            if (analysisDTO.getGodComponents() != 0) {
+                analysisEntity.setGodComponents(analysisDTO.getGodComponents());
+            }
+
+            if (analysisDTO.getInsufficientModularization() != 0) {
+                analysisEntity.setInsufficientModularization(analysisDTO.getInsufficientModularization());
+            }
+            if (analysisDTO.getUnnecessaryAbstraction() != 0) {
+                analysisEntity.setUnnecessaryAbstraction(analysisDTO.getUnnecessaryAbstraction());
+            }
+            if (analysisDTO.getComplexConditional() != 0) {
+                analysisEntity.setComplexConditional(analysisDTO.getComplexConditional());
+            }
+            if (analysisDTO.getEmptyCatchClause() != 0) {
+                analysisEntity.setEmptyCatchClause(analysisDTO.getEmptyCatchClause());
+            }
+            if (analysisDTO.getMissingAssertion() != 0) {
+                analysisEntity.setMissingAssertion(analysisDTO.getMissingAssertion());
+            }
+            if (analysisDTO.getEmptyTest() != 0) {
+                analysisEntity.setEmptyTest(analysisDTO.getEmptyTest());
+            }
+            if (analysisDTO.getArchSmellDensity() != 0D) {
+                analysisEntity.setArchSmellDensity(analysisDTO.getArchSmellDensity());
+            }
+            if (analysisDTO.getDesignSmellDensity() != 0D) {
+                analysisEntity.setDesignSmellDensity(analysisDTO.getDesignSmellDensity());
+            }
+            if (analysisDTO.getImpSmellDensity() != 0D) {
+                analysisEntity.setImpSmellDensity(analysisDTO.getImpSmellDensity());
+            }
+            // Date date = new Date();
+            // analysisEntity.setTimestamp(date.getTime());
             analysisEntity.setType(analysisDTO.getAnalysisType());
             analysisEntity.setBugs(analysisDTO.getBugs());
             analysisEntity.setVulnerabilities(analysisDTO.getVulnerabilities());
@@ -142,27 +262,70 @@ public class AnalysisService {
      * @return AnalysisDTO
      */
     public AnalysisDTO convertAnalysisEntityToDto(AnalysisEntity analysisEntity) {
-        AnalysisDTO analysisDTO = null;
+        AnalysisDTO analysisDTO = new AnalysisDTO();
         if (analysisEntity != null) {
-            analysisDTO = new AnalysisDTO();
-            analysisDTO.setAnalysisType(analysisEntity.getType());
-            analysisDTO.setBugs(analysisEntity.getBugs());
-            analysisDTO.setVulnerabilities(analysisEntity.getVulnerabilities());
-            analysisDTO.setCodeSmell(analysisEntity.getCodeSmell());
-            analysisDTO.setTestCoverage(analysisEntity.getTestCoverage());
-            analysisDTO.setDuplicatedLines(analysisEntity.getDuplicatedLines());
-            analysisDTO.setCyclomaticComplexity(analysisEntity.getCyclomaticComplexity());
-            analysisDTO.setDocumentedLines(analysisEntity.getDocumentedLines());
-            analysisDTO.setCyclicDependency(analysisEntity.getCyclicDependency());
-            analysisDTO.setGodComponents(analysisEntity.getGodComponents());
-            analysisDTO.setCycDependentMod(analysisEntity.getCyclicallyDependentModularization());
-            analysisDTO.setInsufficientModularization(analysisEntity.getInsufficientModularization());
-            analysisDTO.setUnnecessaryAbstraction(analysisEntity.getUnnecessaryAbstraction());
-            analysisDTO.setComplexConditional(analysisEntity.getComplexConditional());
-            analysisDTO.setEmptyCatchClause(analysisEntity.getEmptyCatchClause());
-            analysisDTO.setMissingAssertion(analysisEntity.getMissingAssertion());
-            analysisDTO.setEmptyTest(analysisEntity.getEmptyTest());
-            analysisDTO.setTimestamp(analysisEntity.getTimestamp());
+            if (analysisEntity.getType() != null) {
+                analysisDTO.setAnalysisType(analysisEntity.getType());
+            }
+            if (analysisEntity.getBugs() != 0) {
+                analysisDTO.setBugs(analysisEntity.getBugs());
+            }
+            if (analysisEntity.getVulnerabilities() != 0) {
+                analysisDTO.setVulnerabilities(analysisEntity.getVulnerabilities());
+            }
+            if (analysisEntity.getCodeSmell() != 0D) {
+                analysisDTO.setCodeSmell(analysisEntity.getCodeSmell());
+            }
+            if (analysisEntity.getTestCoverage() != 0D) {
+                analysisDTO.setTestCoverage(analysisEntity.getTestCoverage());
+            }
+            if (analysisEntity.getDuplicatedLines() != 0D) {
+                analysisDTO.setDuplicatedLines(analysisEntity.getDuplicatedLines());
+            }
+            if (analysisEntity.getCyclomaticComplexity() != 0D) {
+                analysisDTO.setCyclomaticComplexity(analysisEntity.getCyclomaticComplexity());
+            }
+            if (analysisEntity.getDocumentedLines() != 0D) {
+                analysisDTO.setDocumentedLines(analysisEntity.getDocumentedLines());
+            }
+            if (analysisEntity.getCyclicDependency() != 0) {
+                analysisDTO.setCyclicDependency(analysisEntity.getCyclicDependency());
+            }
+            if (analysisEntity.getGodComponents() != 0) {
+                analysisDTO.setGodComponents(analysisEntity.getGodComponents());
+            }
+
+            if (analysisEntity.getInsufficientModularization() != 0) {
+                analysisDTO.setInsufficientModularization(analysisEntity.getInsufficientModularization());
+            }
+            if (analysisEntity.getUnnecessaryAbstraction() != 0) {
+                analysisDTO.setUnnecessaryAbstraction(analysisEntity.getUnnecessaryAbstraction());
+            }
+            if (analysisEntity.getComplexConditional() != 0D) {
+                analysisDTO.setComplexConditional(analysisEntity.getComplexConditional());
+            }
+            if (analysisEntity.getEmptyCatchClause() != 0D) {
+                analysisDTO.setEmptyCatchClause(analysisEntity.getEmptyCatchClause());
+            }
+            if (analysisEntity.getMissingAssertion() != 0) {
+                analysisDTO.setMissingAssertion(analysisEntity.getMissingAssertion());
+            }
+            if (analysisEntity.getEmptyTest() != 0) {
+                analysisDTO.setEmptyTest(analysisEntity.getEmptyTest());
+            }
+            if (analysisEntity.getArchSmellDensity() != 0D) {
+                analysisDTO.setArchSmellDensity(analysisEntity.getArchSmellDensity());
+            }
+            if (analysisEntity.getDesignSmellDensity() != 0D) {
+                analysisDTO.setDesignSmellDensity(analysisEntity.getDesignSmellDensity());
+            }
+            if (analysisEntity.getImpSmellDensity() != 0D) {
+                analysisDTO.setImpSmellDensity(analysisEntity.getImpSmellDensity());
+            }
+            if (analysisEntity.getTimestamp() != 0L) {
+                analysisDTO.setTimestamp(analysisEntity.getTimestamp());
+            }
+            LOGGER.info("convertAnalysisDtoToEntity : Converted Analysis Entity to DTO {}", analysisDTO);
         }
         LOGGER.info("convertAnalysisDtoToEntity :: Exiting the method with {}", analysisDTO);
         return analysisDTO;

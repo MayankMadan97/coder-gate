@@ -6,14 +6,14 @@ import com.github.codergate.dto.RepositoryMinimal;
 
 public class RepositoryResponse {
 
-    List<RepositoryMinimal> repositoriesAddedDTO;
+    List<RepositoryMinimal> repositories;
 
-    public List<RepositoryMinimal> getRepositoriesAddedDTO() {
-        return repositoriesAddedDTO;
+    public List<RepositoryMinimal> getRepositories() {
+        return repositories;
     }
 
-    public void setRepositoriesAddedDTO(List<RepositoryMinimal> repositoriesAddedDTO) {
-        this.repositoriesAddedDTO = repositoriesAddedDTO;
+    public void setRepositories(List<RepositoryMinimal> repositories) {
+        this.repositories = repositories;
     }
 
 }

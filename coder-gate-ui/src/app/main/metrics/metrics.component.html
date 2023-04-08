@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-7">
+    <div class="row mb-3 px-4 d-flex justify-content-between">
+      <div class="p-3 metric repository-metric">
+        <img src="../../../assets/images/repo.png" class="metric-icon" alt="repositories">
+        <div class="metric-value mt-4">{{repositories.length}}</div>
+        <div class="metric-name">Repositories</div>
+      </div>
+      <div class="p-3 metric collaborator-metric">
+        <img src="../../../assets/images/coder-head.png" class="metric-icon" alt="collaborators">
+        <div class="metric-value mt-4">{{collaborators}}</div>
+        <div class="metric-name">Collaborators</div>
+      </div>
+      <div class="p-3 metric scan-metric">
+        <img src="../../../assets/images/loupe.png" class="metric-icon" alt="scanning">
+        <div class="metric-value mt-4">{{scans}}</div>
+        <div class="metric-name">Code scanning</div>
+      </div>
+    </div>
+    <div class="px-4 py-1 repository-list row">
+      <div class="col-12 p-0">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{element.title}}</td>
+          </ng-container>
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Last updated">
+            <th mat-header-cell *matHeaderCellDef>Last updated on</th>
+            <td mat-cell *matCellDef="let element">{{element.lastUpdatedOn}}</td>
+          </ng-container>
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="health">
+            <th mat-header-cell *matHeaderCellDef>Health</th>
+            <td mat-cell *matCellDef="let element">{{element.health}}</td>
+          </ng-container>
+          <ng-container matColumnDef="id" class="d-none">
+            <th mat-header-cell *matHeaderCellDef>Id</th>
+            <td mat-cell *matCellDef="let element">{{element.id}}%</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row [routerLink]="['/dashboard/repo', row.title, row.id]"
+            *matRowDef="let row; columns: displayedColumns;" role="button">
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-5 px-3">
+
+  </div>
+</div>

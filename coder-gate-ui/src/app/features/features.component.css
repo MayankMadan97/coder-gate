@@ -1,0 +1,19 @@
+.title {
+  font-size: 3em;
+  color: #333333;
+}
+
+.feature-icon {
+  height: 5em;
+  width: 5em;
+}
+
+.feature-item-title {
+  font-size: 1.3em;
+  color: #333333;
+}
+
+.feature-item-description {
+  font-size: 0.9em;
+  color: #333333;
+}

@@ -33,6 +33,8 @@ public class ThresholdDTO implements Serializable {
     private double archSmellDensity;
     private double designSmellDensity;
     private double impSmellDensity;
+    private boolean allowAction;
+    
 
     public int getBugs() {
         return bugs;
@@ -186,4 +188,11 @@ public class ThresholdDTO implements Serializable {
         this.impSmellDensity = impSmellDensity;
     }
 
+    public boolean isAllowAction() {
+        return allowAction;
+    }
+
+    public void setAllowAction(boolean allowAction) {
+        this.allowAction = allowAction;
+    }
 }

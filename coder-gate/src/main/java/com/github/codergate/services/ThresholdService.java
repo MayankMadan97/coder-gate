@@ -20,7 +20,7 @@ public class ThresholdService {
     public ThresholdDTO addThreshold(ThresholdDTO thresholdToAdd, int repositoryID) {
         ThresholdDTO thresholdDTO = null;
         if (thresholdRepository.findByRepositoryId(repositoryID) != null) {
-            thresholdDTO = updateThresholdByID(thresholdToAdd, repositoryID);
+            updateThresholdByID(thresholdToAdd, repositoryID);
         } else {
 
             ThresholdEntity thresholdEntity = convertThresholdDtoToEntity(thresholdToAdd, repositoryID);
@@ -43,6 +43,7 @@ public class ThresholdService {
                     repositoryEntity.setRepositoryId(repositoryID);
                     thresholdEntity.setRepositoryIdInThreshold(repositoryEntity);
                 }
+                thresholdEntity.setAllowAction(newInformation.isAllowAction());
                 thresholdEntity.setBugs(newInformation.getBugs());
                 thresholdEntity.setVulnerabilities(newInformation.getVulnerabilities());
                 thresholdEntity.setCodeSmell(newInformation.getCodeSmell());
@@ -80,7 +81,7 @@ public class ThresholdService {
         return thresholdDTO;
     }
 
-    private ThresholdEntity convertThresholdDtoToEntity(ThresholdDTO thresholdDTO, int repositoryID) {
+    public ThresholdEntity convertThresholdDtoToEntity(ThresholdDTO thresholdDTO, int repositoryID) {
         ThresholdEntity thresholdEntity = new ThresholdEntity();
 
         if (thresholdDTO != null) {
@@ -89,6 +90,7 @@ public class ThresholdService {
                 repositoryEntity.setRepositoryId(repositoryID);
                 thresholdEntity.setRepositoryIdInThreshold(repositoryEntity);
             }
+            thresholdEntity.setAllowAction(thresholdDTO.isAllowAction());
             thresholdEntity.setBugs(thresholdDTO.getBugs());
             thresholdEntity.setVulnerabilities(thresholdDTO.getVulnerabilities());
             thresholdEntity.setCodeSmell(thresholdDTO.getCodeSmell());
@@ -115,10 +117,10 @@ public class ThresholdService {
         return thresholdEntity;
     }
 
-    private ThresholdDTO convertThresholdEntityToDTO(ThresholdEntity thresholdEntity) {
-        ThresholdDTO thresholdDTO = null;
+    public ThresholdDTO convertThresholdEntityToDTO(ThresholdEntity thresholdEntity) {
+        ThresholdDTO thresholdDTO = new ThresholdDTO();
         if (thresholdEntity != null) {
-            thresholdDTO = new ThresholdDTO();
+            thresholdDTO.setAllowAction(thresholdEntity.isAllowAction());
             thresholdDTO.setBugs(thresholdEntity.getBugs());
             thresholdDTO.setVulnerabilities(thresholdEntity.getVulnerabilities());
             thresholdDTO.setCodeSmell(thresholdEntity.getCodeSmell());
