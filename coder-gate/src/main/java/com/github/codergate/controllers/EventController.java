@@ -22,10 +22,9 @@ public class EventController {
     EventService eventService;
 
     @GetMapping("/getUserEventDetails")
-    public ResponseEntity<String> getUserEvent(@RequestParam("githubAccessToken") String githubAccessToken) throws IOException {
-        String accessToken = githubAccessToken;
+    public ResponseEntity<String> getUserEvent(@RequestParam("userId") String userId) throws IOException {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String output = ow.writeValueAsString(eventService.getUserEventDetails(githubAccessToken));
+        String output = ow.writeValueAsString(eventService.getUserEventDetails(userId));
         return ResponseEntity.ok(output);
     }
 }

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.codergate.dto.event.UserEventDTO;
+import com.github.codergate.dto.installation.RepositoriesAddedDTO;
 import com.github.codergate.entities.AnalysisEntity;
 import com.github.codergate.repositories.AnalysisRepository;
 import com.github.codergate.repositories.RepositoryRepository;
@@ -30,6 +31,9 @@ public class EventService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    RepositoryService repositoryService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventService.class);
     @Autowired
@@ -254,17 +258,28 @@ public class EventService {
 
         return totalCodeScans;
     }
-    public List<UserEventDTO> getUserEventDetails(String githubAccessToken) throws IOException {
+    public List<UserEventDTO> getUserEventDetails(String userId) throws IOException {
         List<UserEventDTO> userEventDTOS = new ArrayList<>();
-        String userDetails = userService.getUserDetails(githubAccessToken);
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(userDetails);
-        String name = rootNode.get("login").asText();
-        String userAvatar = rootNode.get("avatar_url").asText();
-        String userId = rootNode.get("id").asText();
-        List<EventEntity> eventsByUserId = eventRepository.findEventsByUserId(Long.parseLong(userId));
-        for(EventEntity event : eventsByUserId){
+
+        List<RepositoriesAddedDTO> repositoriesFromUserId = repositoryService.getRepositoryFromUserId(Long.parseLong(userId));
+        List<Integer> repositoryIds = repositoriesFromUserId.stream()
+                .map(RepositoriesAddedDTO::getId)
+                .collect(Collectors.toList());
+
+        List<EventEntity> eventEntityList = new ArrayList<>();
+
+        for(Integer repoId : repositoryIds){
+            List<EventEntity> eventsByRepoId = eventRepository.findEventsByRepoId(repoId);
+            eventEntityList.addAll(eventsByRepoId);
+        }
+
+        for(EventEntity event : eventEntityList){
             UserEventDTO userEventDTO = new UserEventDTO();
+            String userDetails = userService.getPublicUserDetails(String.valueOf(event.getUserIdInEvent().getUserId()));
+            JsonNode rootNode = objectMapper.readTree(userDetails);
+            String name = rootNode.get("login").asText();
+            String userAvatar = rootNode.get("avatar_url").asText();
             userEventDTO.setUserName(name);
             userEventDTO.setUserAvatar(userAvatar);
             userEventDTO.setEventName(event.getEventName());
@@ -273,6 +288,7 @@ public class EventService {
             userEventDTO.setRepositoryName(repository.get().getRepositoryName());
             userEventDTOS.add(userEventDTO);
         }
+
         return userEventDTOS;
     }
 
