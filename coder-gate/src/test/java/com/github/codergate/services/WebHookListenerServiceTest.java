@@ -6,6 +6,7 @@ import com.github.codergate.dto.installation.InstallationPayloadDTO;
 import com.github.codergate.dto.installation.RepositoriesAddedDTO;
 import com.github.codergate.dto.pullRequest.Payload;
 import com.github.codergate.dto.push.*;
+import com.github.codergate.dto.threshold.ThresholdDTO;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.TagEntity;
 import com.github.codergate.entities.TagId;
@@ -57,6 +58,8 @@ class WebHookListenerServiceTest {
 
     @Mock
     WebHookListenerUtil webHookListenerUtil = new WebHookListenerUtil();
+    @Mock
+    ThresholdService thresholdService = new ThresholdService();
 
 
 
@@ -540,6 +543,7 @@ class WebHookListenerServiceTest {
     @Test
     void testHandlePullEvent() {
 
+        ThresholdDTO thresholdDTO = new ThresholdDTO();
         String repoName ="abcRepo";
         String login = "alex";
         String email = "alex@gmail.com";
@@ -577,6 +581,7 @@ class WebHookListenerServiceTest {
         tagEntity.setRepositoryIdInTag(repositoryEntity);
         when(userServiceMock.addUser(setId,login,senderDTO.getUrl())).thenReturn(userEntity);
         when(repositoryServiceMock.addRepository(repositoryId,repoName,fork,setId,installationId)).thenReturn(repositoryEntity);
+        when(thresholdService.getThresholdByID(repositoryId)).thenReturn(thresholdDTO);
         doNothing().when(tagServiceMock).addTag(tagUrl,repositoryId);
         webHookListenerServiceMock.listen(mockPayload);
         verify(userServiceMock).addUser(setId,login,senderDTO.getUrl());

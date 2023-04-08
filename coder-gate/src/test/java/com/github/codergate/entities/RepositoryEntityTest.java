@@ -216,12 +216,13 @@ class RepositoryEntityTest {
     void testRepositoryThresholdMapping() {
         RepositoryEntity repositoryEntity = new RepositoryEntity();
         repositoryEntity.setRepositoryId(repositoryId);
+        boolean action = true;
         repositoryEntity.setRepositoryName("example");
         repositoryEntity.setFork(true);
         ThresholdEntity thresholdEntity = new ThresholdEntity(thresholdId,repositoryEntity,bugs,vulnerabilities,codeSmell,
                 testCoverage,duplicatedLines,cyclomaticComplexity,documentedLines,cyclicDependency,
                 godComponents,cycDependentMod,insufficientModularization,unnecessaryAbstraction,complexConditional,
-                emptyCatchClause,missingAssertion,emptyTest,archSmellDensity,designSmellDensity,impSmellDensity);
+                emptyCatchClause,missingAssertion,emptyTest,archSmellDensity,designSmellDensity,impSmellDensity,action);
         repositoryEntity.setThresholdAndRepository(thresholdEntity);
         entityManager.persist(repositoryEntity);
         entityManager.flush();

@@ -53,6 +53,8 @@ class ThresholdEntityTest {
     double archSmellDensity =12;
     double designSmellDensity =76;
     double impSmellDensity =111;
+    boolean action = true;
+
 
 
     @Test
@@ -65,7 +67,7 @@ class ThresholdEntityTest {
         ThresholdEntity thresholdEntity = new ThresholdEntity(thresholdId,repositoryIdInThreshold,bugs,vulnerabilities,codeSmell,
                 testCoverage,duplicatedLines,cyclomaticComplexity,documentedLines,cyclicDependency,
                 godComponents,cycDependentMod,insufficientModularization,unnecessaryAbstraction,complexConditional,
-                emptyCatchClause,missingAssertion,emptyTest,archSmellDensity,designSmellDensity,impSmellDensity);
+                emptyCatchClause,missingAssertion,emptyTest,archSmellDensity,designSmellDensity,impSmellDensity,action);
 
         assertEquals(thresholdId,thresholdEntity.getThresholdId());
         assertEquals(repositoryIdInThreshold,thresholdEntity.getRepositoryIdInThreshold());

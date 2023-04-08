@@ -114,7 +114,7 @@ public class AnalysisEntityTest {
 
         analysisEntity.setTimestamp(timestamp);
 
-        return  analysisEntity;
+        return analysisEntity;
     }
 
     @Test
@@ -156,7 +156,7 @@ public class AnalysisEntityTest {
 
         AnalysisEntity retrievedAnalysis = entityManager.find(AnalysisEntity.class, analysisEntity.getId());
         if(retrievedAnalysis != null) {
-            System.out.println("Successfully  retrieved");
+            System.out.println("Successfully retrieved");
         }
 
         entityManager.remove(retrievedAnalysis);

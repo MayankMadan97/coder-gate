@@ -69,9 +69,12 @@ public class AnalysisEntity {
     private long timestamp;
 
     public AnalysisEntity(int repoId, String branchName,
-            long timestamp) {
+                          long timestamp) {
         BranchEntity branch = new BranchEntity();
         branch.setBranchId(new BranchId(repoId, branchName));
+        RepositoryEntity repositoryEntity = new RepositoryEntity();
+        repositoryEntity.setRepositoryId(repoId);
+        branch.setRepositoryIdInBranch(repositoryEntity);
         this.branchId = branch;
         this.timestamp = timestamp;
     }
