@@ -11,18 +11,6 @@ import { RepositoryService } from '../repository.service';
 
 More(Highcharts);
 Exporting(Highcharts)
-interface ChartData {
-  seriesList: ChartSeries[];
-}
-
-interface ChartSeries {
-  name: string;
-  data: ChartDataValues;
-}
-
-interface ChartDataValues {
-  dataValuesMap: Record<string, number>;
-}
 
 interface OccurrencesSeries {
   "Documented Lines": number;
@@ -194,7 +182,6 @@ export class InsightsComponent implements OnInit {
     const occurencesUrl = `${BACKEND_URL}/getOccurrencesInsight/${this.selectedRepoId}/${this.userSelectedBranch}`;
     const timelineUrl = `${BACKEND_URL}/getTimeStampInsight/${this.selectedRepoId}/${this.userSelectedBranch}`;
     this.http.get<any>(occurencesUrl).subscribe((input: { occurrencesSeries: OccurrencesSeries }) => {
-      console.log(JSON.stringify(input));
       this.smellDensityOccuranceChartOptions.series = [{
         name: 'No of Occurences',
         data: [
@@ -207,16 +194,16 @@ export class InsightsComponent implements OnInit {
 
       this.packedBubbleSmells.series = [{
         type: 'packedbubble', // Set the type to 'packedbubble'
-        data: Object.entries(input.occurrencesSeries).filter(entry => entry[1]!= 0 && entry[1]!= -1
-          && !entry[0].includes("Density") ).map(([key, value]) => ({
-          name: key,
-          value: value
-        }))
+        data: Object.entries(input.occurrencesSeries).filter(entry => entry[1] != 0 && entry[1] != -1
+          && !entry[0].includes("Density")).map(([key, value]) => ({
+            name: key,
+            value: value
+          }))
       }];
-      console.log(JSON.stringify(this.packedBubbleSmells))
     });
 
     this.http.get<any>(timelineUrl).subscribe((input: { seriesList: Series[] }) => {
+      console.log(JSON.stringify(input));
       this.densityTimeline.series = [
         {
           name: 'Architectural',

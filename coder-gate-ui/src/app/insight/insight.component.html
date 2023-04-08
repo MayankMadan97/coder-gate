@@ -14,20 +14,20 @@
     </div>
     <div class="chart-section">
       <div class="row">
-        <div class="col-6 p-4">
+        <div class="col-6 p-4 border-end">
           <highcharts-chart *ngIf="smellDensityOccuranceChartOptions.series" [Highcharts]="Highcharts"
             [options]="smellDensityOccuranceChartOptions"
             style="width: 100%; height: 400px; display: block;"></highcharts-chart>
         </div>
         <div class="col-6  p-4">
-          <highcharts-chart *ngIf="densityTimeline.series" [Highcharts]="Highcharts" [options]="densityTimeline"
+          <highcharts-chart *ngIf="packedBubbleSmells.series" [Highcharts]="Highcharts" [options]="packedBubbleSmells"
             style="width: 100%; height: 400px; display: block;"></highcharts-chart>
         </div>
       </div>
       <div class="row">
-        <div class="col-6 p-4">
-          <highcharts-chart *ngIf="packedBubbleSmells.series" [Highcharts]="Highcharts" [options]="packedBubbleSmells"
-            style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+        <div class="col-12 p-4 border-top mt-4">
+          <highcharts-chart *ngIf="densityTimeline.series" [Highcharts]="Highcharts" [options]="densityTimeline"
+          style="width: 100%; height: 400px; display: block;"></highcharts-chart>
         </div>
       </div>
     </div>
