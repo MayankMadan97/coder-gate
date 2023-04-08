@@ -2,11 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as Highcharts from 'highcharts';
+import More from 'highcharts/highcharts-more';
+import Exporting from 'highcharts/modules/exporting';
 import { BACKEND_URL } from '../app.constants';
 import { BranchService } from '../branch.service';
 import { Repository, RepositoryResponse } from '../repository.interface';
 import { RepositoryService } from '../repository.service';
 
+More(Highcharts);
+Exporting(Highcharts)
 interface ChartData {
   seriesList: ChartSeries[];
 }
@@ -63,6 +67,7 @@ export class InsightsComponent implements OnInit {
   public selectedRepoId?: number;
   public showDropdown = false;
   Highcharts: typeof Highcharts = Highcharts;
+
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private repositoryService: RepositoryService,
     private branchService: BranchService) { }
@@ -132,6 +137,42 @@ export class InsightsComponent implements OnInit {
     },
   };
 
+  packedBubbleSmells: Highcharts.Options = {
+    chart: {
+      type: 'packedbubble',
+      height: '100%'
+    },
+    title: {
+      text: 'Smell Types and Occurances',
+      align: 'left'
+    },
+    tooltip: {
+      useHTML: true,
+      pointFormat: '<b>{point.name}:</b> {point.value}'
+    },
+    plotOptions: {
+      packedbubble: {
+        layoutAlgorithm: {
+          splitSeries: false,
+          gravitationalConstant: 0.02
+        },
+        dataLabels: {
+          enabled: true,
+          format: '{point.name}',
+          filter: {
+            property: 'y',
+            operator: '>',
+            value: 250
+          },
+          style: {
+            color: 'black',
+            textOutline: 'none',
+            fontWeight: 'normal'
+          }
+        }
+      }
+    }
+  };
 
   ngOnInit() {
 
@@ -163,11 +204,19 @@ export class InsightsComponent implements OnInit {
         ],
         type: 'column'
       }];
-      console.log(JSON.stringify(this.smellDensityOccuranceChartOptions))
+
+      this.packedBubbleSmells.series = [{
+        type: 'packedbubble', // Set the type to 'packedbubble'
+        data: Object.entries(input.occurrencesSeries).filter(entry => entry[1]!= 0 && entry[1]!= -1
+          && !entry[0].includes("Density") ).map(([key, value]) => ({
+          name: key,
+          value: value
+        }))
+      }];
+      console.log(JSON.stringify(this.packedBubbleSmells))
     });
 
     this.http.get<any>(timelineUrl).subscribe((input: { seriesList: Series[] }) => {
-      console.log(JSON.stringify(input));
       this.densityTimeline.series = [
         {
           name: 'Architectural',
@@ -200,7 +249,6 @@ export class InsightsComponent implements OnInit {
           type: 'line'
         }
       ];
-      console.log(JSON.stringify(this.densityTimeline))
     });
   }
 
