@@ -30,8 +30,8 @@
 
 4. ### **User wants to see insights for a repository**
     When a user clicks on a repository, they are presented with the Threshold tab and Insights tab. When the user clicks on the Insights tab, they are presented with the following charts:
-    * Code Smell Densities Vs their Number of Occurrences
-    * Types Of Smell Vs their Number of OCcurrences
+    * Code Smell Densities Vs Number of Occurrences
+    * Types Of Smell Vs Number of Occurrences
     * Implementation, Design, Architecture Smell Density Vs Timestamp
 
 5. ### **Contributer raises a pull request**
