@@ -12,8 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
-import java.util.Optional;
-
 //import static org.hamcrest.MatcherAssert.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,7 +26,7 @@ class ThresholdServiceTest {
     private final int vulnerabilities = 20;
     private final double codeSmell = 30.5;
     private final double testCoverage = 40.6;
-    private final double duplicatedLines5 = 0.7;
+    private final double duplicatedLines = 0.7;
     private final double cyclomaticComplexity = 60.8;
     private final double documentedLines= 70.9;
     private final int cyclicDependency = 80;
@@ -57,7 +55,7 @@ class ThresholdServiceTest {
         thresholdDTO.setVulnerabilities(vulnerabilities);
         thresholdDTO.setCodeSmell(codeSmell);
         thresholdDTO.setTestCoverage(testCoverage);
-        thresholdDTO.setDuplicatedLines(duplicatedLines5);
+        thresholdDTO.setDuplicatedLines(duplicatedLines);
         thresholdDTO.setCyclomaticComplexity(cyclomaticComplexity);
         thresholdDTO.setDocumentedLines(documentedLines);
         thresholdDTO.setCyclicDependency(cyclicDependency);
@@ -81,7 +79,7 @@ class ThresholdServiceTest {
         thresholdEntity.setVulnerabilities(vulnerabilities);
         thresholdEntity.setCodeSmell(codeSmell);
         thresholdEntity.setTestCoverage(testCoverage);
-        thresholdEntity.setDuplicatedLines(duplicatedLines5);
+        thresholdEntity.setDuplicatedLines(duplicatedLines);
         thresholdEntity.setCyclomaticComplexity(cyclomaticComplexity);
         thresholdEntity.setDocumentedLines(documentedLines);
         thresholdEntity.setCyclicDependency(cyclicDependency);

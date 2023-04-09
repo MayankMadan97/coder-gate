@@ -3,6 +3,7 @@ package com.github.codergate.controllers;
 import com.github.codergate.dto.RepositoryMinimal;
 import com.github.codergate.dto.controller.RepositoryResponse;
 import com.github.codergate.services.RepositoryService;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,13 @@ class RepositoryControllerTest {
     int repoIdOne =1;
     int repoIdTwo =2;
 
+    String urlTemplate ="/getRepositories/{userId}";
+    String expectedResponse = "{\"repositories\":[{\"timestamp\":0,\"id\":1,\"name\":\"repo1\"}," +
+            "{\"timestamp\":0,\"id\":2,\"name\":\"repo2\"}]}";
+
+    RepositoryResponse repositoryResponse = new RepositoryResponse();
+
+
     @Test
     void testFetchRepositoriesWithValidUserId() throws Exception {
         RepositoryMinimal repository1 = new RepositoryMinimal();
@@ -47,17 +55,15 @@ class RepositoryControllerTest {
         repository2.setId(repoIdTwo);
         repository2.setName("repo2");
 
-        RepositoryResponse repositoryResponse = new RepositoryResponse();
         repositoryResponse.setRepositories(Arrays.asList(repository1, repository2));
 
         when(repositoryService.getRepositoryResponse(eq(userId))).thenReturn(repositoryResponse);
 
-        MvcResult result = mockMvc.perform(get("/getRepositories/{userId}", userId))
+        MvcResult result = mockMvc.perform(get(urlTemplate, userId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        String expectedResponse = "{\"repositories\":[{\"timestamp\":0,\"id\":1,\"name\":\"repo1\"},{\"timestamp\":0,\"id\":2,\"name\":\"repo2\"}]}";
         String actualResponse = result.getResponse().getContentAsString();
 
         assertEquals(expectedResponse, actualResponse);
@@ -67,12 +73,11 @@ class RepositoryControllerTest {
     @Test
     void testFetchRepositoriesWithNoRepositoriesForValidUserId() throws Exception {
 
-        RepositoryResponse repositoryResponse = new RepositoryResponse();
         repositoryResponse.setRepositories(Collections.emptyList());
 
         when(repositoryService.getRepositoryResponse(eq(userId))).thenReturn(repositoryResponse);
 
-        MvcResult result = mockMvc.perform(get("/getRepositories/{userId}", userId))
+        MvcResult result = mockMvc.perform(get(urlTemplate, userId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();

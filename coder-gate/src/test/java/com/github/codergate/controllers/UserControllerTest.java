@@ -30,17 +30,18 @@ public class UserControllerTest {
     public void testGetUserDetailsWithValidAccessToken() throws Exception {
         String accessToken = "valid-access-token";
         String userDetails = "User details for valid access token";
+        String token ="githubAccessToken";
+        String urlTemplate ="/getUserDetails";
 
         when(userService.getUserDetails(accessToken)).thenReturn(userDetails);
 
-        MvcResult mvcResult = mockMvc.perform(get("/getUserDetails")
-                        .param("githubAccessToken", accessToken))
+        MvcResult result = mockMvc.perform(get(urlTemplate)
+                        .param(token, accessToken))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        String responseContent = mvcResult.getResponse().getContentAsString();
+        String responseContent = result.getResponse().getContentAsString();
         assertEquals(userDetails, responseContent);
-
         verify(userService, times(1)).getUserDetails(accessToken);
     }
 
