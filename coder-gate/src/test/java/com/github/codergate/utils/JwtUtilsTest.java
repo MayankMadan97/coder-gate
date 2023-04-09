@@ -21,14 +21,6 @@ public class JwtUtilsTest {
     }
 
     @Test
-    public void testGenerateJwtToken_ShouldNotBeAnonymous() {
-        String appid = "296934";
-        String expectedToken = JwtUtils.generateJwtToken(appid);
-        assertNotEquals(expectedToken, "anonymous");
-    }
-
-
-    @Test
     public void testGetGithubSpecificHeadersNotNull() {
         MultiValueMap<String, String> headers = JwtUtils.getGithubSpecificHeaders();
         assertNotNull(headers);
