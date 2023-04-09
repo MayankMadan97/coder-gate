@@ -93,6 +93,14 @@ public class InsightService {
     occurrencesMap.put("Implementation Smell Density",
         latestAnalysisByRepositoryIdAndBranchId.getImpSmellDensity());
     occurrencesMap.put("Design Smell Density", latestAnalysisByRepositoryIdAndBranchId.getDesignSmellDensity());
+    occurrencesMap.put("LOC", (double)latestAnalysisByRepositoryIdAndBranchId.getLoc());
+    occurrencesMap.put("Method Count", (double)latestAnalysisByRepositoryIdAndBranchId.getMethodCount());
+    occurrencesMap.put("Total Architecture Smell", (double)latestAnalysisByRepositoryIdAndBranchId.getTotalArchSmellCount());
+    occurrencesMap.put("Total Design Smell", (double)latestAnalysisByRepositoryIdAndBranchId.getTotalDesignSmellCount());
+    occurrencesMap.put("Total Implementation Smell", (double)latestAnalysisByRepositoryIdAndBranchId.getTotalImplSmellCount());
+    occurrencesMap.put("Component Count", (double)latestAnalysisByRepositoryIdAndBranchId.getComponentCount());
+    occurrencesMap.put("Metric Violations", (double)latestAnalysisByRepositoryIdAndBranchId.getMetricVoilations());
+    occurrencesMap.put("Type Count", (double)latestAnalysisByRepositoryIdAndBranchId.getTypeCount());
     occurrencesDTO.setOccurrencesSeries(occurrencesMap);
 
     return occurrencesDTO;
