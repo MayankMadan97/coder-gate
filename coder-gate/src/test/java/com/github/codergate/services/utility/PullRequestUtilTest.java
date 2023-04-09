@@ -101,21 +101,66 @@ public class PullRequestUtilTest {
         PullRequestUtil pullRequestUtil = new PullRequestUtil();
 
         List<String> expected = new ArrayList<>();
-        expected.add("Code smell density");
-        expected.add("Cyclomatic complexity");
-        expected.add("Line duplication");
-        expected.add("Architecture smell density");
-        expected.add("Design smell density");
-        expected.add("Implementation smell density");
-        expected.add("Complex conditions");
-        expected.add("Cyclically dependent modularization");
-        expected.add("Cyclic dependencie");
-        expected.add("Empty catch clause");
-        expected.add("Empty test method");
-        expected.add("God component");
-        expected.add("Insufficient modularization");
-        expected.add("Missing assertion");
-        expected.add("Unnecessary abstraction");
+
+        String codeSmell = "Code smell density : ";
+        String values = "Expected (" + thresholdEntity.getCodeSmell() + ") | Actual (" + analysisEntity.getCodeSmell() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Cyclomatic complexity: ";
+        values = "Expected (" + thresholdEntity.getCyclomaticComplexity() + ") | Actual (" + analysisEntity.getCyclomaticComplexity() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Line duplication: ";
+        values = "Expected (" + thresholdEntity.getDuplicatedLines() + ") | Actual (" + analysisEntity.getDuplicatedLines() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Architecture smell density : ";
+        values = "Expected (" + thresholdEntity.getArchSmellDensity() + ") | Actual (" + analysisEntity.getArchSmellDensity() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Design smell density: ";
+        values = "Expected (" + thresholdEntity.getDesignSmellDensity() + ") | Actual (" + analysisEntity.getDesignSmellDensity() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Implementation smell density : ";
+        values = "Expected (" + thresholdEntity.getImpSmellDensity() + ") | Actual (" + analysisEntity.getImpSmellDensity() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Complex conditions: ";
+        values = "Expected (" + thresholdEntity.getComplexConditional() + ") | Actual (" + analysisEntity.getComplexConditional() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Cyclically dependent modularization : ";
+        values = "Expected (" + thresholdEntity.getCycDependentMod() + ") | Actual (" + analysisEntity.getCyclicallyDependentModularization() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Cyclic dependencie : ";
+        values = "Expected (" + thresholdEntity.getCyclicDependency() + ") | Actual (" + analysisEntity.getCyclicDependency() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Empty catch clause : ";
+        values = "Expected (" + thresholdEntity.getEmptyCatchClause() + ") | Actual (" + analysisEntity.getEmptyCatchClause() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Empty test method : ";
+        values = "Expected (" + thresholdEntity.getEmptyTest() + ") | Actual (" + analysisEntity.getEmptyTest() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "God component : ";
+        values = "Expected (" + thresholdEntity.getGodComponents() + ") | Actual (" + analysisEntity.getGodComponents() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Insufficient modularization : ";
+        values = "Expected (" + thresholdEntity.getInsufficientModularization() + ") | Actual (" + analysisEntity.getInsufficientModularization() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Missing assertion : ";
+        values = "Expected (" + thresholdEntity.getMissingAssertion() + ") | Actual (" + analysisEntity.getMissingAssertion() + ")";
+        expected.add(codeSmell+values);
+
+        codeSmell = "Unnecessary abstraction : ";
+        values = "Expected (" + thresholdEntity.getUnnecessaryAbstraction() + ") | Actual (" + analysisEntity.getUnnecessaryAbstraction() + ")";
+        expected.add(codeSmell+values);
 
         List<String> actual = pullRequestUtil.getFalseThresholdKeys(analysisEntity, thresholdEntity);
         Assertions.assertIterableEquals(expected, actual);
