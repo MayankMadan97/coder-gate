@@ -1,4 +1,4 @@
-package com.github.codergate.services.utility;
+package com.github.codergate.utils;
 
 import com.github.codergate.dto.controller.PullRequestRestRequest;
 import com.github.codergate.utils.RestClient;

@@ -2,6 +2,8 @@ package com.github.codergate.services;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -138,7 +140,7 @@ class WebHookListenerServiceTest {
         mockPayload.put("action", "deleted");
         webHookListenerServiceMock.listen(mockPayload);
         assertNotNull(mockPayload);
-        verify(logger,never()).info(eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
 
     }
 
@@ -212,7 +214,7 @@ class WebHookListenerServiceTest {
         mockPayload.put("repositories", repositoriesList);
         mockPayload.put("installation", installationMock);
         when(userServiceMock.addUser(Mockito.any(AccountDTO.class))).thenReturn(accountDTO);
-        when(repositoryServiceMock.addRepository(any(List.class),eq(userID)))
+        when(repositoryServiceMock.addRepository(any(List.class), eq(userID)))
                 .thenReturn(repositoriesAddedDTOList);
         when(eventServiceMock.addEvent(eventType, userID, repositoryIdList))
                 .thenReturn(installationPayloadDTO);
@@ -247,7 +249,7 @@ class WebHookListenerServiceTest {
         repositoryIdList.add(repositoriesAddedDTO.getId());
         installationPayloadDTO.setAction(eventType);
         when(userServiceMock.getUserById(userId)).thenReturn(accountDTO);
-        when(repositoryServiceMock.addRepository(any(List.class),eq(userID)))
+        when(repositoryServiceMock.addRepository(any(List.class), eq(userID)))
                 .thenReturn(repositoriesAddedDTOList);
         when(eventServiceMock.addEvent(eventType, userID, repositoryIdList))
                 .thenReturn(installationPayloadDTO);
