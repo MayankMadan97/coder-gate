@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute } from '@angular/router';
 import * as Highcharts from 'highcharts';
 import More from 'highcharts/highcharts-more';
@@ -177,8 +178,16 @@ export class InsightsComponent implements OnInit {
     });
   }
 
+  public onOptionChange(branch: string) {
+    this.userSelectedBranch = branch;
+    this.getAnalysisData();
+  }
+
 
   public getAnalysisData() {
+    this.packedBubbleSmells.series = undefined;
+    this.densityTimeline.series = undefined;
+    this.smellDensityOccuranceChartOptions.series = undefined;
     const occurencesUrl = `${BACKEND_URL}/getOccurrencesInsight/${this.selectedRepoId}/${this.userSelectedBranch}`;
     const timelineUrl = `${BACKEND_URL}/getTimeStampInsight/${this.selectedRepoId}/${this.userSelectedBranch}`;
     this.http.get<any>(occurencesUrl).subscribe((input: { occurrencesSeries: OccurrencesSeries }) => {
