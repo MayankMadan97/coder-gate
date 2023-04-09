@@ -1,9 +1,20 @@
 package com.github.codergate.services;
 
-import com.github.codergate.dto.installation.RepositoriesAddedDTO;
-import com.github.codergate.entities.RepositoryEntity;
-import com.github.codergate.entities.UserEntity;
-import com.github.codergate.repositories.RepositoryRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,14 +22,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.*;
+import com.github.codergate.dto.installation.RepositoriesAddedDTO;
+import com.github.codergate.entities.RepositoryEntity;
+import com.github.codergate.entities.UserEntity;
+import com.github.codergate.repositories.RepositoryRepository;
 
 @ExtendWith(MockitoExtension.class)
 class RepositoryServiceTest {
@@ -33,17 +40,12 @@ class RepositoryServiceTest {
     private final List<RepositoryEntity> repositoryEntities = new ArrayList<>();
     private final RepositoryEntity repositoryOne = new RepositoryEntity();
     private final List<RepositoriesAddedDTO> repositoriesAddedDTOS = new ArrayList<>();
-    private final  UserEntity userEntity = new UserEntity();
-
-
+    private final UserEntity userEntity = new UserEntity();
 
     long userId = 32;
     int repositoryId = 1234;
     int repositoryIdTwo = 4567;
     int id = 10;
-
-
-
 
     @Test
     void testGetRepositoryFromUserId() {
@@ -86,7 +88,7 @@ class RepositoryServiceTest {
 
     @Test
     void testDeleteRepositoryById() {
-        int wantedNumberOfInvocation =1;
+        int wantedNumberOfInvocation = 1;
         Mockito.doNothing().when(repositoryMock).deleteById(repositoryId);
         boolean isDeleted = repositoryServiceMock.deleteRepositoryById(repositoryId);
         assertTrue(isDeleted);
@@ -96,12 +98,11 @@ class RepositoryServiceTest {
     @Test
     void testDeleteRepositoryByIDWhenNullOrZero() {
         int repositoryId = 0;
-        int wantedNumberOfInvocation =0;
+        int wantedNumberOfInvocation = 0;
         boolean isDeleted = repositoryServiceMock.deleteRepositoryById(repositoryId);
         assertFalse(isDeleted);
         verify(repositoryMock, Mockito.times(wantedNumberOfInvocation)).deleteById(repositoryId);
     }
-
 
     @Test
     void testGetRepositoryByIdWhenIdsAreValidAndInValid() {
@@ -115,14 +116,12 @@ class RepositoryServiceTest {
         assertEquals(expected.get(0).getRepositoryName(), actual.get(0).getName());
     }
 
-
     @Test
     void testAddRepositoryWithEmptyList() {
-        List<RepositoriesAddedDTO> actual = repositoryServiceMock.addRepository(repositoriesAddedDTOS, (int)userId);
+        List<RepositoriesAddedDTO> actual = repositoryServiceMock.addRepository(repositoriesAddedDTOS, (int) userId);
         assertTrue(actual.isEmpty());
 
     }
-
 
     @Test
     void testAddRepositoryWithNullValues() {
@@ -132,7 +131,6 @@ class RepositoryServiceTest {
         assertNull(actual);
 
     }
-
 
     @Test
     void testAddRepositoryWithCorrectValues() {
@@ -155,7 +153,7 @@ class RepositoryServiceTest {
         repositoryEntityTwo.setRepositoryName("DevRepository");
         expected.add(repositoryEntityTwo);
         when(repositoryMock.saveAll(anyList())).thenReturn(expected);
-        List<RepositoriesAddedDTO> actual = repositoryServiceMock.addRepository(repositoriesAddedDTOS, (int)userId);
+        List<RepositoriesAddedDTO> actual = repositoryServiceMock.addRepository(repositoriesAddedDTOS, (int) userId);
         assertEquals(expected.get(0).getRepositoryId(), actual.get(0).getId());
 
     }
@@ -175,18 +173,18 @@ class RepositoryServiceTest {
 
     @Test
     void testUpdateRepository() {
-        repositoryOne.setRepositoryId((int)userId);
+        repositoryOne.setRepositoryId((int) userId);
         repositoryOne.setRepositoryName("TestRepository");
         List<RepositoryEntity> savedEntities = new ArrayList<>();
         savedEntities.add(repositoryOne);
         List<RepositoriesAddedDTO> expectedDto = new ArrayList<>();
         RepositoriesAddedDTO repositoryDto = new RepositoriesAddedDTO();
-        repositoryDto.setId((int)userId);
+        repositoryDto.setId((int) userId);
         repositoryDto.setName("TestRepository");
         expectedDto.add(repositoryDto);
         Mockito.when(repositoryMock.findById(Mockito.anyInt())).thenReturn(Optional.of(repositoryOne));
         Mockito.when(repositoryMock.save(Mockito.any(RepositoryEntity.class))).thenReturn(repositoryOne);
-        List<RepositoriesAddedDTO> actualDto = repositoryServiceMock.updateRepository((int)userId);
+        List<RepositoriesAddedDTO> actualDto = repositoryServiceMock.updateRepository((int) userId);
         assertNotNull(expectedDto.toString(), actualDto.toString());
     }
 
@@ -201,11 +199,10 @@ class RepositoryServiceTest {
     @Test
     void testAddRepositoryWhenIdIsNUll() {
 
-        int id = 0;
+        int repositoryId = 0;
         String name = "abc";
-        boolean fork = true;
         String installationId = "12344";
-        RepositoryEntity result = repositoryServiceMock.addRepository(id, name, fork, (int)userId, installationId);
+        RepositoryEntity result = repositoryServiceMock.addRepository(repositoryId, name, (int) userId, installationId);
         assertNull(result);
 
     }
@@ -214,9 +211,8 @@ class RepositoryServiceTest {
     void testAddRepositoryReturnsNullWhenNameIsNull() {
 
         String name = null;
-        boolean fork = true;
         String installationId = "12344";
-        RepositoryEntity result = repositoryServiceMock.addRepository(id, name, fork, (int)userId, installationId);
+        RepositoryEntity result = repositoryServiceMock.addRepository(id, name, (int) userId, installationId);
         assertNull(result);
 
     }
@@ -225,37 +221,35 @@ class RepositoryServiceTest {
     void testAddRepositoryReturnsNullUserIdIsNull() {
 
         String name = "abc";
-        boolean fork = true;
         int userId = 0;
         String installationId = "12344";
-        RepositoryEntity result = repositoryServiceMock.addRepository(id, name, fork, userId, installationId);
+        RepositoryEntity result = repositoryServiceMock.addRepository(id, name, userId, installationId);
         assertNull(result);
 
     }
+
     @Test
     void testAddRepositoryReturnsNullInstallationIdIsNull() {
 
         String name = "abc";
-        boolean fork = true;
         String installationId = null;
-        RepositoryEntity result = repositoryServiceMock.addRepository(id, name, fork, (int)userId, installationId);
+        RepositoryEntity result = repositoryServiceMock.addRepository(id, name, (int) userId, installationId);
         assertNull(result);
 
     }
+
     @Test
     void testAddRepositoryWithCorrectValuesForPush() {
 
         String name = "Test Repository";
-        boolean fork = true;
         String installationId = "123";
         repositoryOne.setRepositoryId(id);
         repositoryOne.setRepositoryName(name);
-        repositoryOne.setFork(fork);
         userEntity.setUserId(userId);
         repositoryOne.setUserEntity(userEntity);
         repositoryOne.setInstallationId(installationId);
         Mockito.when(repositoryMock.save(Mockito.any(RepositoryEntity.class))).thenReturn(repositoryOne);
-        RepositoryEntity actualEntity = repositoryServiceMock.addRepository(id, name, fork, (int)userId, installationId);
+        RepositoryEntity actualEntity = repositoryServiceMock.addRepository(id, name, (int) userId, installationId);
         assertEquals(id, actualEntity.getRepositoryId());
     }
 

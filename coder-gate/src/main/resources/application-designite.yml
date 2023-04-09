@@ -11,8 +11,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Set build system
+        id: set-build-system
+        run: |
+          if [[ -f pom.xml ]]; then
+            echo "::set-output name=build-system::maven"
+          elif [[ -f build.gradle ]]; then
+            echo "::set-output name=build-system::gradle"
+          else
+            echo "Build system not found"
+            exit 1
+          fi
       - name: Build with Maven
-        run: mvn clean install
+        run: |
+          if [[ "${{ steps.set-build-system.outputs.build-system }}" == "maven" ]]; then
+            mvn clean install
+          fi
+      - name: Build with Gradle
+        run: |
+          if [[ "${{ steps.set-build-system.outputs.build-system }}" == "gradle" ]]; then
+            ./gradlew build
+          fi
       - name: Download DesigniteJava
         run: wget "https://www.designite-tools.com/static/download/DJE/DesigniteJava.jar"
       - name: Analyze project with DesigniteJava
@@ -31,4 +50,4 @@ jobs:
           path: Designite_output
       - name: Send DesigniteAnalysis.xml to Analysis controller
         run: |
-          curl -X POST -F 'file=@Designite_output/DesigniteAnalysis.xml' https://0931-156-34-1-52.ngrok.io/analysis/${{github.repository_id}}/${{github.ref_name}}
+          curl -X POST -F 'file=@Designite_output/DesigniteAnalysis.xml' https://f8f4-156-34-1-52.ngrok.io/analysis/${{github.repository_id}}/${{github.ref_name}}

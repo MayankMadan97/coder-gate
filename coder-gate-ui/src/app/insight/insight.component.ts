@@ -204,47 +204,50 @@ export class InsightsComponent implements OnInit {
       this.packedBubbleSmells.series = [{
         type: 'packedbubble', // Set the type to 'packedbubble'
         data: Object.entries(input.occurrencesSeries).filter(entry => entry[1] != 0 && entry[1] != -1
-          && !entry[0].includes("Density")).map(([key, value]) => ({
-            name: key,
-            value: value
-          }))
+          && !(entry[0].includes("Density") || entry[0].includes("LOC")
+            || entry[0].includes("Smell") || entry[0].includes("Count"))).map(([key, value]) => ({
+              name: key,
+              value: value
+            }))
       }];
     });
 
     this.http.get<any>(timelineUrl).subscribe((input: { seriesList: Series[] }) => {
       console.log(JSON.stringify(input));
-      this.densityTimeline.series = [
-        {
-          name: 'Architectural',
-          data: input.seriesList.filter(item => item.name.includes("Architectural")).map(series => {
-            const dataValuesMap = series.data.dataValuesMap;
-            return Object.keys(dataValuesMap).map(timestamp =>
-              [parseInt(timestamp), Number.parseFloat(dataValuesMap[timestamp].toFixed(4))]
-            );
-          }).flat(),
-          type: 'line'
-        },
-        {
-          name: 'Design',
-          data: input.seriesList.filter(item => item.name.includes("Design")).map(series => {
-            const dataValuesMap = series.data.dataValuesMap;
-            return Object.keys(dataValuesMap).map(timestamp =>
-              [parseInt(timestamp), Number.parseFloat(dataValuesMap[timestamp].toFixed(4))]
-            );
-          }).flat(),
-          type: 'line'
-        },
-        {
-          name: 'Implementation',
-          data: input.seriesList.filter(item => item.name.includes("Implementation")).map(series => {
-            const dataValuesMap = series.data.dataValuesMap;
-            return Object.keys(dataValuesMap).map(timestamp =>
-              [parseInt(timestamp), Number.parseFloat(dataValuesMap[timestamp].toFixed(4))]
-            );
-          }).flat(),
-          type: 'line'
-        }
-      ];
+      if (input?.seriesList.length > 0) {
+        this.densityTimeline.series = [
+          {
+            name: 'Architectural',
+            data: input.seriesList.filter(item => item.name.includes("Architectural")).map(series => {
+              const dataValuesMap = series.data.dataValuesMap;
+              return Object.keys(dataValuesMap).map(timestamp =>
+                [parseInt(timestamp), Number.parseFloat(dataValuesMap[timestamp].toFixed(4))]
+              );
+            }).flat(),
+            type: 'line'
+          },
+          {
+            name: 'Design',
+            data: input.seriesList.filter(item => item.name.includes("Design")).map(series => {
+              const dataValuesMap = series.data.dataValuesMap;
+              return Object.keys(dataValuesMap).map(timestamp =>
+                [parseInt(timestamp), Number.parseFloat(dataValuesMap[timestamp].toFixed(4))]
+              );
+            }).flat(),
+            type: 'line'
+          },
+          {
+            name: 'Implementation',
+            data: input.seriesList.filter(item => item.name.includes("Implementation")).map(series => {
+              const dataValuesMap = series.data.dataValuesMap;
+              return Object.keys(dataValuesMap).map(timestamp =>
+                [parseInt(timestamp), Number.parseFloat(dataValuesMap[timestamp].toFixed(4))]
+              );
+            }).flat(),
+            type: 'line'
+          }
+        ];
+      }
     });
   }
 

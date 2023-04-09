@@ -1,4 +1,4 @@
-package com.github.codergate.services.utility;
+package com.github.codergate.utils;
 
 import com.github.codergate.dto.insight.DataDTO;
 import com.github.codergate.entities.AnalysisEntity;

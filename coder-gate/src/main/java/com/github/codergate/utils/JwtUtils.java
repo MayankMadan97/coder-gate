@@ -38,7 +38,7 @@ public class JwtUtils {
                 try {
                         Path privateKeyFilePath = Path.of(
                                         System.getProperty("user.dir")
-                                                        + "/src/main/resources/private-key.pem");
+                                                        + "/coder-gate/src/main/resources/private-key.pem");
                         // setting bounty castle provider for private key encryption
                         java.security.Security.addProvider(
                                         new org.bouncycastle.jce.provider.BouncyCastleProvider());

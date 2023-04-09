@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +28,11 @@ import com.github.codergate.dto.push.PusherPayloadDTO;
 import com.github.codergate.dto.threshold.ThresholdDTO;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
-import com.github.codergate.services.utility.WebHookListenerUtil;
 import com.github.codergate.utils.Constants;
 import com.github.codergate.utils.JwtUtils;
 import com.github.codergate.utils.Mapper;
 import com.github.codergate.utils.RestClient;
+import com.github.codergate.utils.WebHookListenerUtil;
 
 /*
  * service handles subscribed webhooks from GitHub
@@ -42,7 +41,6 @@ import com.github.codergate.utils.RestClient;
 public class WebHookListenerService {
 
     // Depednencies
-
     @Autowired
     UserService userService;
 
@@ -93,22 +91,7 @@ public class WebHookListenerService {
             } else if (webhookPayload.containsKey(PULL_REQUEST)) {
                 handlePullRequestEvent(webhookPayload);
             } else if (webhookPayload.get(Constants.ACTION) != null) {
-                switch (webhookPayload.get(Constants.ACTION).toString()) {
-                    case Constants.ADDITION:
-                    case Constants.CREATION:
-                        handleNewRepositoryInstallation(webhookPayload);
-                        configureCodeScanning(webhookPayload);
-                        break;
-                    case Constants.DELETION:
-                        handleInstallationDeletion(webhookPayload);
-                        break;
-                    case Constants.REMOVAL:
-                        removeRepository(webhookPayload);
-                        break;
-                    default:
-                        LOGGER.warn("handleIncomingRequest : Following webhook payload is not yet supported {}",
-                                webhookPayload);
-                }
+                actOnWebhook(webhookPayload);
             }
             LOGGER.debug("listen :: Exiting the method");
         }
@@ -124,19 +107,19 @@ public class WebHookListenerService {
      */
     private void handleNewRepositoryInstallation(Map<String, Object> webhookPayload) {
 
-            InstallationPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload,
-                    InstallationPayloadDTO.class);
-            if (payload != null && payload.getInstallation() != null) {
-                if (payload.getRepositories() != null) {
-                    handleRepositoryCreation(payload.getRepositories(),
-                            payload.getInstallation(), payload.getAction());
-                    LOGGER.info("installationAddRepositoryWebhookListener : user has installed the application");
-                } else if (payload.getRepositoriesAdded() != null) {
-                    handleRepositoryAddition(payload.getRepositoriesAdded(),
-                            payload.getInstallation(), payload.getAction());
-                    LOGGER.info("installationAddRepositoryWebhookListener : user has added repositories");
-                }
+        InstallationPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload,
+                InstallationPayloadDTO.class);
+        if (payload != null && payload.getInstallation() != null) {
+            if (payload.getRepositories() != null) {
+                handleRepositoryCreation(payload.getRepositories(),
+                        payload.getInstallation(), payload.getAction());
+                LOGGER.info("installationAddRepositoryWebhookListener : user has installed the application");
+            } else if (payload.getRepositoriesAdded() != null) {
+                handleRepositoryAddition(payload.getRepositoriesAdded(),
+                        payload.getInstallation(), payload.getAction());
+                LOGGER.info("installationAddRepositoryWebhookListener : user has added repositories");
             }
+        }
 
     }
 
@@ -162,7 +145,7 @@ public class WebHookListenerService {
     }
 
     /**
-     * @param  repositories, installation, and action payloads
+     * @param repositories, installation, and action payloads
      */
     private void handleRepositoryCreation(List<RepositoriesDTO> repositories, Installation installation,
             String action) {
@@ -192,22 +175,18 @@ public class WebHookListenerService {
      * @param webhookPayload data
      */
     private void removeRepository(Map<String, Object> webhookPayload) {
-
         InstallationPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload,
                 InstallationPayloadDTO.class);
-
-        if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
-                && payload.getRepositoriesRemoved() != null) {
-            List<RepositoriesAddedDTO> removedRepositories = Mapper.getInstance()
+        if (payload != null && payload.getRepositoriesRemoved() != null) {
+            List<RepositoriesAddedDTO> removedRepos = Mapper.getInstance()
                     .convertValue(payload.getRepositoriesRemoved(), new TypeReference<>() {
                     });
-
-            List<Integer> removedRepositoryIds = removedRepositories.stream().map(RepositoriesAddedDTO::getId)
+            List<Integer> removedRepoIds = removedRepos.stream()
+                    .map(RepositoriesAddedDTO::getId)
                     .collect(Collectors.toList());
-
-            if (!removedRepositoryIds.isEmpty()) {
+            if (!removedRepoIds.isEmpty()) {
                 List<RepositoriesAddedDTO> repositoriesToRemove = repositoryService
-                        .getRepositoryById(removedRepositoryIds);
+                        .getRepositoryById(removedRepoIds);
                 if (repositoriesToRemove != null) {
                     for (RepositoriesAddedDTO repositoryId : repositoriesToRemove) {
                         repositoryService.deleteRepositoryById(repositoryId.getId());
@@ -225,24 +204,24 @@ public class WebHookListenerService {
      * @param webhookPayload data
      */
     private void handleInstallationDeletion(Map<String, Object> webhookPayload) {
-
         InstallationPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload,
                 InstallationPayloadDTO.class);
-
-        if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
-                && payload.getRepositories() != null) {
-
+        if (isAccountPresent(payload)) {
             // Extract the user ID from the payload
             long userId = payload.getInstallation().getAccount().getId();
             // Check if the user exists in the database
             if (userService.getUserById(userId) != null) {
                 userService.deleteUserByID(userId);
                 LOGGER.info("removeRepository : user has deleted the application");
-
             } else {
                 LOGGER.error("handleInstallationDeletion : User doesn't exist");
             }
         }
+    }
+
+    private boolean isAccountPresent(InstallationPayloadDTO payload) {
+        return payload != null && payload.getInstallation() != null
+                && payload.getInstallation().getAccount() != null;
     }
 
     /**
@@ -250,14 +229,12 @@ public class WebHookListenerService {
      */
     private void handlePushEvent(Map<String, Object> webhookPayload) {
         PusherPayloadDTO pushEventPayload = Mapper.getInstance().convertValue(webhookPayload, PusherPayloadDTO.class);
-        if (pushEventPayload != null && pushEventPayload.getPusher() != null && pushEventPayload.getSender() != null
-                && pushEventPayload.getHeadCommit() != null && pushEventPayload.getRepository() != null) {
-
+        if (doesPushPropExist(pushEventPayload)) {
             UserEntity userEntity = userService.addUser(pushEventPayload.getSender().getId(),
                     pushEventPayload.getSender().getLogin(), pushEventPayload.getPusher().getEmail());
             RepositoryEntity repositoryEntity = repositoryService.addRepository(
                     pushEventPayload.getRepository().getId(), pushEventPayload.getRepository().getName(),
-                    pushEventPayload.getRepository().getFork(), pushEventPayload.getRepository().getOwner().getId(),
+                    pushEventPayload.getRepository().getOwner().getId(),
                     pushEventPayload.getInstallation().getId().toString());
             repositoryTagService.addTag(pushEventPayload.getRepository().getTagsUrl(),
                     pushEventPayload.getRepository().getId());
@@ -272,6 +249,11 @@ public class WebHookListenerService {
         }
     }
 
+    private boolean doesPushPropExist(PusherPayloadDTO pushEventPayload) {
+        return pushEventPayload != null && pushEventPayload.getPusher() != null && pushEventPayload.getSender() != null
+                && pushEventPayload.getHeadCommit() != null && pushEventPayload.getRepository() != null;
+    }
+
     /**
      * @param webhookPayload
      */
@@ -284,7 +266,7 @@ public class WebHookListenerService {
                 List<Integer> repositoryEntitiesIds = new ArrayList<>();
                 UserEntity userEntity = userService.addUser(sender.getId(), sender.getLogin(), sender.getUrl());
                 RepositoryEntity repositoryEntity = repositoryService.addRepository(
-                        repo.getId(), repo.getName(), repo.getFork(), repo.getOwner().getId(),
+                        repo.getId(), repo.getName(), repo.getOwner().getId(),
                         payload.getInstallation().getId().toString());
                 repositoryTagService.addTag(repo.getTagsUrl(), repo.getId());
                 repositoryBranchService.addBranch(repo.getBranchesUrl(), repo.getId());
@@ -296,9 +278,14 @@ public class WebHookListenerService {
         }
     }
 
+    /**
+     * @param payload
+     * @param repo
+     * @param pullRequestCheck
+     */
     private void actOnPullRequest(Payload payload, Repository repo, List<String> pullRequestCheck) {
         ThresholdDTO threshold = thresholdService.getThresholdByID(repo.getId());
-        if (pullRequestCheck != null && !pullRequestCheck.isEmpty() && threshold != null) {
+        if (pullRequestCheck != null && threshold != null) {
             if (threshold.isAllowAction()) {
                 webHookListenerUtil.rejectPullRequest(
                         repo.getOwner().getLogin(), repo.getName(),
@@ -309,7 +296,8 @@ public class WebHookListenerService {
                         "Pull Request failed - Code Quality Falls Short of Benchmark Standards - " +
                                 payload.getPullRequest().getId(),
                         "Defecting parameters - \n"
-                                + pullRequestCheck.stream().collect(Collectors.joining(System.lineSeparator())),
+                                + pullRequestCheck.stream()
+                                        .collect(Collectors.joining(System.lineSeparator())),
                         payload.getSender().getLogin(),
                         new String[] { "Code quality" }, payload.getInstallation().getId().toString());
             }
@@ -358,6 +346,28 @@ public class WebHookListenerService {
                     LOGGER.error("installationWebhookListener : Failed to read github action file");
                 }
             }
+        }
+    }
+
+    /**
+     * @param webhookPayload
+     */
+    private void actOnWebhook(Map<String, Object> webhookPayload) {
+        switch (webhookPayload.get(Constants.ACTION).toString()) {
+            case Constants.ADDITION:
+            case Constants.CREATION:
+                handleNewRepositoryInstallation(webhookPayload);
+                configureCodeScanning(webhookPayload);
+                break;
+            case Constants.DELETION:
+                handleInstallationDeletion(webhookPayload);
+                break;
+            case Constants.REMOVAL:
+                removeRepository(webhookPayload);
+                break;
+            default:
+                LOGGER.warn("handleIncomingRequest : Following webhook payload is not yet supported {}",
+                        webhookPayload);
         }
     }
 

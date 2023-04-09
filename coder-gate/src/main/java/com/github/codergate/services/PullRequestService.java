@@ -9,7 +9,7 @@ import com.github.codergate.entities.AnalysisEntity;
 import com.github.codergate.entities.ThresholdEntity;
 import com.github.codergate.repositories.AnalysisRepository;
 import com.github.codergate.repositories.ThresholdRepository;
-import com.github.codergate.services.utility.PullRequestUtil;
+import com.github.codergate.utils.PullRequestUtil;
 @Service
 public class PullRequestService {
 

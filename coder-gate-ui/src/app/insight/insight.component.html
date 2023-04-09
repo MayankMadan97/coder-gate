@@ -14,20 +14,27 @@
     </div>
     <div class="chart-section">
       <div class="row">
-        <div class="col-6 p-4 border-end">
+        <div
+          [ngClass]="{'col-6 p-4 border-end': true, 'd-flex justify-content-center': smellDensityOccuranceChartOptions.series === null}">
           <highcharts-chart *ngIf="smellDensityOccuranceChartOptions.series" [Highcharts]="Highcharts"
             [options]="smellDensityOccuranceChartOptions"
             style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+          <img *ngIf="!smellDensityOccuranceChartOptions.series" src="../../assets/images/not-found.png" alt="no-data"
+            height="400" />
         </div>
-        <div class="col-6  p-4">
+        <div
+          [ngClass]="{'col-6 p-4 border-end': true, 'd-flex justify-content-center': packedBubbleSmells.series === null}">
           <highcharts-chart *ngIf="packedBubbleSmells.series" [Highcharts]="Highcharts" [options]="packedBubbleSmells"
             style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+          <img *ngIf="!packedBubbleSmells.series" src="../../assets/images/not-found.png" alt="no-data" height="400" />
         </div>
       </div>
       <div class="row">
-        <div class="col-12 p-4 border-top mt-4">
+        <div
+          [ngClass]="{'col-12 p-4 border-end': true, 'd-flex justify-content-center': densityTimeline.series === null}">
           <highcharts-chart *ngIf="densityTimeline.series" [Highcharts]="Highcharts" [options]="densityTimeline"
-          style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+            style="width: 100%; height: 400px; display: block;"></highcharts-chart>
+          <img *ngIf="!densityTimeline.series" src="../../assets/images/not-found.png" alt="no-data" height="400" />
         </div>
       </div>
     </div>
