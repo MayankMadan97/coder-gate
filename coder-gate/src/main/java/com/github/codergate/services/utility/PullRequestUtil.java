@@ -21,49 +21,70 @@ public class PullRequestUtil {
     public List<String> getFalseThresholdKeys(AnalysisEntity analysisEntity, ThresholdEntity thresholdEntity) {
         List<String> falseKeys = new ArrayList<>();
         if (analysisEntity.getCodeSmell() >= thresholdEntity.getCodeSmell()) {
-            falseKeys.add("Code smell density");
+            falseKeys.add("Code smell density : Expected (" + thresholdEntity.getCodeSmell() + ") | Actual ("
+                    + analysisEntity.getCodeSmell() + ")");
         }
         if (analysisEntity.getCyclomaticComplexity() >= thresholdEntity.getCyclomaticComplexity()) {
-            falseKeys.add("Cyclomatic complexity");
+            falseKeys.add(
+                    "Cyclomatic complexity: Expected (" + thresholdEntity.getCyclomaticComplexity() + ") | Actual ("
+                            + analysisEntity.getCyclomaticComplexity() + ")");
         }
         if (analysisEntity.getDuplicatedLines() >= thresholdEntity.getDuplicatedLines()) {
-            falseKeys.add("Line duplication");
+            falseKeys.add("Line duplication: Expected (" + thresholdEntity.getDuplicatedLines() + ") | Actual ("
+                    + analysisEntity.getDuplicatedLines() + ")");
         }
         if (analysisEntity.getArchSmellDensity() >= thresholdEntity.getArchSmellDensity()) {
-            falseKeys.add("Architecture smell density");
+            falseKeys.add(
+                    "Architecture smell density : Expected (" + thresholdEntity.getArchSmellDensity() + ") | Actual ("
+                            + analysisEntity.getArchSmellDensity() + ")");
         }
         if (analysisEntity.getDesignSmellDensity() >= thresholdEntity.getDesignSmellDensity()) {
-            falseKeys.add("Design smell density");
+            falseKeys.add("Design smell density: Expected (" + thresholdEntity.getDesignSmellDensity() + ") | Actual ("
+                    + analysisEntity.getDesignSmellDensity() + ")");
         }
         if (analysisEntity.getImpSmellDensity() >= thresholdEntity.getImpSmellDensity()) {
-            falseKeys.add("Implementation smell density");
+            falseKeys.add(
+                    "Implementation smell density : Expected (" + thresholdEntity.getImpSmellDensity() + ") | Actual ("
+                            + analysisEntity.getImpSmellDensity() + ")");
         }
         if (analysisEntity.getComplexConditional() >= thresholdEntity.getComplexConditional()) {
-            falseKeys.add("Complex conditions");
+            falseKeys.add("Complex conditions: Expected (" + thresholdEntity.getComplexConditional() + ") | Actual ("
+                    + analysisEntity.getComplexConditional() + ")");
         }
         if (analysisEntity.getCyclicallyDependentModularization() >= thresholdEntity.getCycDependentMod()) {
-            falseKeys.add("Cyclically dependent modularization");
+            falseKeys.add("Cyclically dependent modularization : Expected (" + thresholdEntity.getCycDependentMod()
+                    + ") | Actual ("
+                    + analysisEntity.getCyclicallyDependentModularization() + ")");
         }
         if (analysisEntity.getCyclicDependency() >= thresholdEntity.getCyclicDependency()) {
-            falseKeys.add("Cyclic dependencie");
+            falseKeys.add("Cyclic dependencie : Expected (" + thresholdEntity.getCyclicDependency() + ") | Actual ("
+                    + analysisEntity.getCyclicDependency() + ")");
         }
         if (analysisEntity.getEmptyCatchClause() >= thresholdEntity.getEmptyCatchClause()) {
-            falseKeys.add("Empty catch clause");
+            falseKeys.add("Empty catch clause : Expected (" + thresholdEntity.getEmptyCatchClause() + ") | Actual ("
+                    + analysisEntity.getEmptyCatchClause() + ")");
         }
         if (analysisEntity.getEmptyTest() >= thresholdEntity.getEmptyTest()) {
-            falseKeys.add("Empty test method");
+            falseKeys.add("Empty test method : Expected (" + thresholdEntity.getEmptyTest() + ") | Actual ("
+                    + analysisEntity.getEmptyTest() + ")");
         }
         if (analysisEntity.getGodComponents() >= thresholdEntity.getGodComponents()) {
-            falseKeys.add("God component");
+            falseKeys.add("God component : Expected (" + thresholdEntity.getGodComponents() + ") | Actual ("
+                    + analysisEntity.getGodComponents() + ")");
         }
         if (analysisEntity.getInsufficientModularization() >= thresholdEntity.getInsufficientModularization()) {
-            falseKeys.add("Insufficient modularization");
+            falseKeys.add("Insufficient modularization : Expected (" + thresholdEntity.getInsufficientModularization()
+                    + ") | Actual ("
+                    + analysisEntity.getInsufficientModularization() + ")");
         }
         if (analysisEntity.getMissingAssertion() >= thresholdEntity.getMissingAssertion()) {
-            falseKeys.add("Missing assertion");
+            falseKeys.add("Missing assertion : Expected (" + thresholdEntity.getMissingAssertion() + ") | Actual ("
+                    + analysisEntity.getMissingAssertion() + ")");
         }
         if (analysisEntity.getUnnecessaryAbstraction() >= thresholdEntity.getUnnecessaryAbstraction()) {
-            falseKeys.add("Unnecessary abstraction");
+            falseKeys.add("Unnecessary abstraction : Expected (" + thresholdEntity.getUnnecessaryAbstraction()
+                    + ") | Actual ("
+                    + analysisEntity.getUnnecessaryAbstraction() + ")");
         }
         return falseKeys;
     }
