@@ -33,34 +33,33 @@ class WebhookListenerControllerTest {
     private WebHookListenerService serviceMock;
     Map<String, Object> payload = new HashMap<>();
 
+    ObjectMapper objectMapper = new ObjectMapper();
+
 
     @Test
     void testWebhookListenerWhenStatusIs200() throws Exception {
         payload.put("action", "deleted");
-
         MvcResult result = mockMvc.perform(post("/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(payload)))
+                        .content(objectMapper.writeValueAsString(payload)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(""))
                 .andReturn();
-
         String responseContent = result.getResponse().getContentAsString();
         assertEquals("", responseContent);
         verify(serviceMock, times(1)).listen(payload);
     }
 
     @Test
-    void testWebhookListenerWhenPayloadHasMissingActionField1() throws Exception {
+    void testWebhookListenerWhenPayloadHasMissingActionField() throws Exception {
         mockMvc.perform(post("/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(payload)))
-                .andExpect(status().isOk())
-                .andExpect(content().string(""));
+                        .content(objectMapper.writeValueAsString(payload)))
+                .andExpect(status().isOk());
         verify(serviceMock, never()).listen(any(Map.class));
+        String jsonPayload = objectMapper.writeValueAsString(payload);
         MvcResult result = mockMvc.perform(post("/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(payload)))
+                        .content(jsonPayload))
                 .andReturn();
         assertEquals("", result.getResponse().getContentAsString());
     }

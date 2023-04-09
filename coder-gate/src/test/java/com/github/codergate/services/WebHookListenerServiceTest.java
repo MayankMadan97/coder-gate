@@ -110,7 +110,7 @@ class WebHookListenerServiceTest {
         webHookListenerServiceMock.listen(mockPayload);
         verify(userServiceMock).getUserById(userId);
         assertNotNull(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
 
     }
 
@@ -124,7 +124,7 @@ class WebHookListenerServiceTest {
         installationMock.put("account", null);
         webHookListenerServiceMock.listen(mockPayload);
         assertNotNull(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
 
     }
 
@@ -138,7 +138,7 @@ class WebHookListenerServiceTest {
         mockPayload.put("action", "deleted");
         webHookListenerServiceMock.listen(mockPayload);
         assertNotNull(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger,never()).info(eq("The following payload is null"));
 
     }
 
@@ -212,7 +212,7 @@ class WebHookListenerServiceTest {
         mockPayload.put("repositories", repositoriesList);
         mockPayload.put("installation", installationMock);
         when(userServiceMock.addUser(Mockito.any(AccountDTO.class))).thenReturn(accountDTO);
-        when(repositoryServiceMock.addRepository(Mockito.any(List.class), Mockito.eq(userID)))
+        when(repositoryServiceMock.addRepository(any(List.class),eq(userID)))
                 .thenReturn(repositoriesAddedDTOList);
         when(eventServiceMock.addEvent(eventType, userID, repositoryIdList))
                 .thenReturn(installationPayloadDTO);
@@ -247,7 +247,7 @@ class WebHookListenerServiceTest {
         repositoryIdList.add(repositoriesAddedDTO.getId());
         installationPayloadDTO.setAction(eventType);
         when(userServiceMock.getUserById(userId)).thenReturn(accountDTO);
-        when(repositoryServiceMock.addRepository(Mockito.any(List.class), Mockito.eq(userID)))
+        when(repositoryServiceMock.addRepository(any(List.class),eq(userID)))
                 .thenReturn(repositoriesAddedDTOList);
         when(eventServiceMock.addEvent(eventType, userID, repositoryIdList))
                 .thenReturn(installationPayloadDTO);
@@ -270,7 +270,7 @@ class WebHookListenerServiceTest {
         repositoriesList.add(repositoriesMock);
         mockPayload.put("repositories", repositoriesList);
         webHookListenerServiceMock.listen(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
         assertNull(mockPayload.get("account"));
 
     }
@@ -283,7 +283,7 @@ class WebHookListenerServiceTest {
         installationMock.put("account", null);
         mockPayload.put("repositories_added", null);
         webHookListenerServiceMock.listen(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
         assertNull(mockPayload.get("repositories_added"));
 
     }
@@ -297,7 +297,7 @@ class WebHookListenerServiceTest {
         installationMock.put("account", null);
         mockPayload.put("repositories_added", repositoriesList);
         webHookListenerServiceMock.listen(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
         assertNull(mockPayload.get("account"));
 
     }
@@ -309,7 +309,7 @@ class WebHookListenerServiceTest {
         mockPayload.put("installation", null);
         mockPayload.put("repositories_added", repositoriesList);
         webHookListenerServiceMock.listen(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
         assertNull(mockPayload.get("installation"));
 
     }
@@ -325,7 +325,7 @@ class WebHookListenerServiceTest {
         installationMock.put("account", accountMock);
         mockPayload.put("repositories_added", repositoriesList);
         webHookListenerServiceMock.listen(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
         assertNull(mockPayload.get("userId"));
     }
 
@@ -341,7 +341,7 @@ class WebHookListenerServiceTest {
         mockPayload.put("repositories_added", repositoriesList);
         when(userServiceMock.getUserById(userId)).thenReturn(null);
         webHookListenerServiceMock.listen(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
         assertNotNull(mockPayload);
     }
 
@@ -376,7 +376,7 @@ class WebHookListenerServiceTest {
         mockPayload.put("installation", null);
         mockPayload.put("repositories_added", repositoriesList);
         webHookListenerServiceMock.listen(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
         assertNull(mockPayload.get("installation"));
 
     }
@@ -389,7 +389,7 @@ class WebHookListenerServiceTest {
         installationMock.put("account", null);
         mockPayload.put("repositories_added", repositoriesList);
         webHookListenerServiceMock.listen(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
         assertNull(mockPayload.get("account"));
     }
 
@@ -404,7 +404,7 @@ class WebHookListenerServiceTest {
         installationMock.put("account", accountMock);
         mockPayload.put("repositories_added", null);
         webHookListenerServiceMock.listen(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
         assertNull(mockPayload.get("repositories_added"));
 
     }
@@ -419,7 +419,7 @@ class WebHookListenerServiceTest {
         mockPayload.put("action", "removed");
         mockPayload.put("repositories_removed", repositoriesList);
         webHookListenerServiceMock.listen(mockPayload);
-        verify(logger, never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
         assertNotNull(mockPayload);
     }
 
@@ -439,7 +439,7 @@ class WebHookListenerServiceTest {
         mockPayload.put("repositories_removed", repositoriesList);
         when(repositoryServiceMock.getRepositoryById(repositoryIdList)).thenReturn(null);
         webHookListenerServiceMock.listen(mockPayload);
-        verify(logger, never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
         assertNotNull(mockPayload);
     }
 
@@ -615,7 +615,7 @@ class WebHookListenerServiceTest {
     void testListenIsNull() {
         Map<String, Object> webhookPayload = null;
         webHookListenerServiceMock.listen(webhookPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("The following payload is null"));
+        verify(logger, never()).info(eq("The following payload is null"));
         assertNull(webhookPayload);
     }
 
@@ -623,8 +623,7 @@ class WebHookListenerServiceTest {
     void testListenIFPayloadIsDifferent() {
         mockPayload.put("action", "newAction");
         webHookListenerServiceMock.listen(mockPayload);
-        verify(logger, Mockito.never()).info(Mockito.eq("handleIncomingRequest :" +
-                " Following webhook payload is not yet supported {}"));
+        verify(logger, never()).info(eq(" Following webhook payload is not yet supported"));
         assertNotNull(mockPayload);
     }
 

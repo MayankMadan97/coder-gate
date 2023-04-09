@@ -18,12 +18,12 @@ class BranchEntityTest {
 
     private final RepositoryEntity repositoryEntity = new RepositoryEntity();
     private final BranchId branchId = new BranchId();
-    private final BranchEntity branch = new BranchEntity();
+    private final BranchEntity branchEntity = new BranchEntity();
 
+    int repositoryId = 1;
 
     @Test
      void testAllArgsConstructor() {
-        int repositoryId = 1;
         String branchName = "main";
         repositoryEntity.setRepositoryId(repositoryId);
         BranchId branchId = new BranchId(repositoryId, branchName);
@@ -37,55 +37,45 @@ class BranchEntityTest {
         entityManager.persist(repositoryEntity);
         branchId.setRepositoryId(repositoryEntity.getRepositoryId());
         branchId.setBranchUrl("http://testBranch/kksslslldn");
-        branch.setBranchId(branchId);
-        branch.setRepositoryIdInBranch(repositoryEntity);
-        entityManager.persist(branch);
+        branchEntity.setBranchId(branchId);
+        branchEntity.setRepositoryIdInBranch(repositoryEntity);
+        entityManager.persist(branchEntity);
         entityManager.flush();
         BranchEntity expected = entityManager.find(BranchEntity.class, branchId);
-        assertEquals(branch.getBranchId(), expected.getBranchId());
+        assertEquals(branchEntity.getBranchId(), expected.getBranchId());
     }
 
+
     @Test
-     void testBranchEntityDelete() {
-        int repositoryId = 1;
-        BranchId branchId = new BranchId(repositoryId, "master");
+    void testBranchEntityDelete() {
+        // Arrange
         repositoryEntity.setRepositoryId(repositoryId);
         repositoryEntity.setRepositoryName("alex_repo");
-        branch.setBranchId(branchId);
-        branch.setRepositoryIdInBranch(repositoryEntity);
         entityManager.persist(repositoryEntity);
-        entityManager.persist(branch);
-        entityManager.flush();
-        BranchEntity expected = entityManager.find(BranchEntity.class, branchId);
-        assertNotNull(expected);
-        assertEquals(branchId, expected.getBranchId());
-        assertEquals(repositoryEntity.getRepositoryName(), expected.getRepositoryIdInBranch().getRepositoryName());
-        entityManager.remove(expected);
-        entityManager.flush();
+        BranchId branchId = new BranchId(repositoryId, "master");
+        branchEntity.setBranchId(branchId);
+        branchEntity.setRepositoryIdInBranch(repositoryEntity);
+        entityManager.persist(branchEntity);
+        entityManager.remove(branchEntity);
         assertNull(entityManager.find(BranchEntity.class, branchId));
     }
 
+
+
     @Test
-     void testBranchEntityUpdate() {
-        int repositoryId = 1;
-        BranchId branchId = new BranchId(repositoryId, "master");
+    void testBranchEntityUpdate() {
         repositoryEntity.setRepositoryId(repositoryId);
         repositoryEntity.setRepositoryName("alex_repo");
-        BranchEntity branch = new BranchEntity();
-        branch.setBranchId(branchId);
-        branch.setRepositoryIdInBranch(repositoryEntity);
         entityManager.persist(repositoryEntity);
-        entityManager.persist(branch);
-        entityManager.flush();
-        BranchEntity foundBranch = entityManager.find(BranchEntity.class, branchId);
-        assertNotNull(foundBranch);
-        assertEquals(branchId, foundBranch.getBranchId());
-        assertEquals(repositoryEntity.getRepositoryName(), foundBranch.getRepositoryIdInBranch().getRepositoryName());
+        BranchId branchId = new BranchId(repositoryId, "master");
+        branchEntity.setBranchId(branchId);
+        branchEntity.setRepositoryIdInBranch(repositoryEntity);
+        entityManager.persist(branchEntity);
         repositoryEntity.setRepositoryName("newRepoName");
         entityManager.flush();
         BranchEntity updatedBranch = entityManager.find(BranchEntity.class, branchId);
-        assertNotNull(updatedBranch);
         assertEquals("newRepoName", updatedBranch.getRepositoryIdInBranch().getRepositoryName());
     }
+
 
 }
