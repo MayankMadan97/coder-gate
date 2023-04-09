@@ -30,9 +30,9 @@
 
 4. ### **User wants to see insights for a repository**
     When a user clicks on a repository, they are presented with the Threshold tab and Insights tab. When the user clicks on the Insights tab, they are presented with the following charts:
-    *Code Smell Densities Vs their Number of Occurrences
-    *Types Of Smell Vs their Number of OCcurrences
-    *Implementation, Design, Architecture Smell Density Vs Timestamp
+    * Code Smell Densities Vs their Number of Occurrences
+    * Types Of Smell Vs their Number of OCcurrences
+    * Implementation, Design, Architecture Smell Density Vs Timestamp
 
 5. ### **Contributer raises a pull request**
     When a contributer raises a pull request, the application performs a code quality analysis and checks if it breaks the already set threshold values. If it passes the check, the application does not intervene and the final decision for the pull request getting accepted depends on the owner of the repository. It creates an issue and assigns to the contributor with the with the analysis and threshold values it broke.  
