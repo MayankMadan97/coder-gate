@@ -25,7 +25,6 @@ public class UserEntity {
    private List<RepositoryEntity> repositoryEntity;
 
 
-
    @OneToMany(mappedBy = "userIdInEvent", cascade = CascadeType.ALL)
     private Set<EventEntity> userAndEvent;
 

@@ -1,6 +1,5 @@
 package com.github.codergate.entities;
 
-import com.github.codergate.dto.installation.Installation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +29,7 @@ public class RepositoryEntity {
 
     @OneToMany(mappedBy = "repositoryIdInBranch", cascade = CascadeType.ALL)
     private List<BranchEntity> branchEntities = new ArrayList<>();
+
     @OneToMany(mappedBy = "repositoryIdInTag", cascade = CascadeType.ALL)
     private List<TagEntity> tagEntities = new ArrayList<>();
 

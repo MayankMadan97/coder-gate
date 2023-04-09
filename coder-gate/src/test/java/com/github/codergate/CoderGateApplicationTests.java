@@ -1,22 +1,17 @@
-// package com.github.codergate;
+package com.github.codergate;
 
-// import org.junit.jupiter.api.Test;
-// import com.github.codergate.services.utility.WebHookListenerUtil;
-// import org.junit.jupiter.api.Test;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.springframework.boot.test.context.SpringBootTest;
 
-// @SpringBootTest
-// class CoderGateApplicationTests {
+@SpringBootTest
+class CoderGateApplicationTests {
 
-//     @Test
-//     void contextLoads() {
-//     }
+    @Test
+    public void applicationContextTest() {
+        CoderGateApplication.main(new String[] {});
+        assertNotNull(CoderGateApplication.class);
+    }
 
-//     @Test
-//     public void applicationContextTest() {
-//         CoderGateApplication.main(new String[] {});
-//     }
-
-// }
+}
 

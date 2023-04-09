@@ -49,8 +49,6 @@ public class RepositoryService {
         return repositoriesAddedDto;
     }
 
-    // repositoryEntityList.stream().map(items ->
-    // repositoryRepository.save(items)).collect(Collectors.toList());
     /***
      * adds the repository to the table during push event
      * 
@@ -166,19 +164,21 @@ public class RepositoryService {
      * @param userID user id
      * @return RepositoryEntity
      */
-    private RepositoryEntity convertDTOToEntityForPushEvent(Integer id, String name, boolean fork, int userID,
-            String installationId) {
+    private RepositoryEntity convertDTOToEntityForPushEvent(Integer id,String name,boolean fork, int userID,String installationId) {
         RepositoryEntity repositoryEntity = null;
-        repositoryEntity = new RepositoryEntity();
-        repositoryEntity.setRepositoryId(id);
-        repositoryEntity.setRepositoryName(name);
-        repositoryEntity.setFork(fork);
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUserId(userID);
-        repositoryEntity.setUserEntity(userEntity);
-        repositoryEntity.setInstallationId(installationId);
-        LOGGER.info("convertDTOToEntityForPushEvent : RepositoryRepository DTO has been converted to Entity {}",
-                repositoryEntity);
+        if(id!=0 && name!=null && userID!=0 && installationId!=null) {
+            repositoryEntity = new RepositoryEntity();
+            repositoryEntity.setRepositoryId(id);
+            repositoryEntity.setRepositoryName(name);
+            repositoryEntity.setFork(fork);
+            UserEntity userEntity = new UserEntity();
+            userEntity.setUserId(userID);
+            repositoryEntity.setUserEntity(userEntity);
+            repositoryEntity.setInstallationId(installationId);
+            LOGGER.info("convertDTOToEntityForPushEvent : RepositoryRepository DTO has been converted to Entity {}", repositoryEntity);
+        } else {
+            LOGGER.warn("convertDTOToEntityForInstallationEvent : Repository list or userId value is null");
+        }
         return repositoryEntity;
     }
 

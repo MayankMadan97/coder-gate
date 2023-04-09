@@ -38,7 +38,7 @@ public class JwtUtils {
                 try {
                         Path privateKeyFilePath = Path.of(
                                         System.getProperty("user.dir")
-                                                        + "/coder-gate/src/main/resources/private-key.pem");
+                                                        + "/src/main/resources/private-key.pem");
                         // setting bounty castle provider for private key encryption
                         java.security.Security.addProvider(
                                         new org.bouncycastle.jce.provider.BouncyCastleProvider());
@@ -96,6 +96,19 @@ public class JwtUtils {
                 return fileContent.replace(privateKeyStart, "")
                                 .replaceAll(System.lineSeparator(), "")
                                 .replace(privateKeyEnd, "");
+        }
+
+
+
+        /**
+         * Provides read-only access to a private key file.
+         *
+         * @param file
+         * @return String
+         * @throws IOException
+         */
+        public static String getPrivateKeyContent(File file) throws IOException {
+                return readPrivateKey(file);
         }
 
         private JwtUtils() {

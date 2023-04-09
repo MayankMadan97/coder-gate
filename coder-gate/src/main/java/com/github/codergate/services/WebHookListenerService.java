@@ -86,30 +86,33 @@ public class WebHookListenerService {
      * @param webhookPayload data
      */
     public void listen(Map<String, Object> webhookPayload) {
-        LOGGER.debug("listen :: Entering the method with payload {}", webhookPayload);
-        if (webhookPayload.containsKey(PUSHER)) {
-            handlePushEvent(webhookPayload);
-        } else if (webhookPayload.containsKey(PULL_REQUEST)) {
-            handlePullRequestEvent(webhookPayload);
-        } else if (webhookPayload.get(Constants.ACTION) != null) {
-            switch (webhookPayload.get(Constants.ACTION).toString()) {
-                case Constants.ADDITION:
-                case Constants.CREATION:
-                    handleNewRepositoryInstallation(webhookPayload);
-                    configureCodeScanning(webhookPayload);
-                    break;
-                case Constants.DELETION:
-                    handleInstallationDeletion(webhookPayload);
-                    break;
-                case Constants.REMOVAL:
-                    removeRepository(webhookPayload);
-                    break;
-                default:
-                    LOGGER.warn("handleIncomingRequest : Following webhook payload is not yet supported {}",
-                            webhookPayload);
+        if (webhookPayload != null) {
+            LOGGER.debug("listen :: Entering the method with payload {}", webhookPayload);
+            if (webhookPayload.containsKey(PUSHER)) {
+                handlePushEvent(webhookPayload);
+            } else if (webhookPayload.containsKey(PULL_REQUEST)) {
+                handlePullRequestEvent(webhookPayload);
+            } else if (webhookPayload.get(Constants.ACTION) != null) {
+                switch (webhookPayload.get(Constants.ACTION).toString()) {
+                    case Constants.ADDITION:
+                    case Constants.CREATION:
+                        handleNewRepositoryInstallation(webhookPayload);
+                        configureCodeScanning(webhookPayload);
+                        break;
+                    case Constants.DELETION:
+                        handleInstallationDeletion(webhookPayload);
+                        break;
+                    case Constants.REMOVAL:
+                        removeRepository(webhookPayload);
+                        break;
+                    default:
+                        LOGGER.warn("handleIncomingRequest : Following webhook payload is not yet supported {}",
+                                webhookPayload);
+                }
             }
+            LOGGER.debug("listen :: Exiting the method");
         }
-        LOGGER.debug("listen :: Exiting the method");
+        LOGGER.warn("The following payload is null");
     }
 
     /***
@@ -120,7 +123,7 @@ public class WebHookListenerService {
      * @param webhookPayload data
      */
     private void handleNewRepositoryInstallation(Map<String, Object> webhookPayload) {
-        if (webhookPayload != null) {
+
             InstallationPayloadDTO payload = Mapper.getInstance().convertValue(webhookPayload,
                     InstallationPayloadDTO.class);
             if (payload != null && payload.getInstallation() != null) {
@@ -134,11 +137,11 @@ public class WebHookListenerService {
                     LOGGER.info("installationAddRepositoryWebhookListener : user has added repositories");
                 }
             }
-        }
+
     }
 
     /**
-     * @param payload
+     * @param
      */
     private void handleRepositoryAddition(List<RepositoriesAddedDTO> repositories, Installation installation,
             String action) {
@@ -159,7 +162,7 @@ public class WebHookListenerService {
     }
 
     /**
-     * @param payload
+     * @param  repositories, installation, and action payloads
      */
     private void handleRepositoryCreation(List<RepositoriesDTO> repositories, Installation installation,
             String action) {
@@ -194,7 +197,7 @@ public class WebHookListenerService {
                 InstallationPayloadDTO.class);
 
         if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
-                && payload.getRepositoriesRemoved() != null && payload.getAction() != null) {
+                && payload.getRepositoriesRemoved() != null) {
             List<RepositoriesAddedDTO> removedRepositories = Mapper.getInstance()
                     .convertValue(payload.getRepositoriesRemoved(), new TypeReference<>() {
                     });
@@ -227,7 +230,7 @@ public class WebHookListenerService {
                 InstallationPayloadDTO.class);
 
         if (payload != null && payload.getInstallation() != null && payload.getInstallation().getAccount() != null
-                && payload.getRepositories() != null && payload.getAction() != null) {
+                && payload.getRepositories() != null) {
 
             // Extract the user ID from the payload
             long userId = payload.getInstallation().getAccount().getId();

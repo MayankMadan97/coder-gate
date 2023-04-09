@@ -3,6 +3,7 @@ package com.github.codergate.services;
 import com.github.codergate.dto.push.RepositoryDTO;
 import com.github.codergate.entities.BranchEntity;
 import com.github.codergate.entities.BranchId;
+import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.repositories.BranchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,11 +33,14 @@ public class BranchService {
      * converts RepositoryDTO to Branch entity
      * @return Branch entity
      */
-    private BranchEntity convertDTOToEntity(String branchesUrl, Integer reposirotyId) {
+    private BranchEntity convertDTOToEntity(String branchesUrl, Integer repositoryId) {
         BranchEntity branchEntity = null;
             branchEntity = new BranchEntity();
-            BranchId branchId = new BranchId(reposirotyId, branchesUrl);
+            BranchId branchId = new BranchId(repositoryId, branchesUrl);
+            RepositoryEntity repositoryEntity = new RepositoryEntity();
+            repositoryEntity.setRepositoryId(repositoryId);
             branchEntity.setBranchId(branchId);
+            branchEntity.setRepositoryIdInBranch(repositoryEntity);
             LOGGER.info("convertDTOToEntity : Repository DTO has been converted to Branch Entity {}", branchEntity);
         return branchEntity;
     }

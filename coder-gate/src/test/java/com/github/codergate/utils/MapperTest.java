@@ -1,32 +1,28 @@
-// package com.github.codergate.utils;
+package com.github.codergate.utils;
 
-// import com.fasterxml.jackson.databind.ObjectMapper;
-// import org.junit.Test;
-// import static org.junit.Assert.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Test;
 
-// public class MapperTest {
+import java.lang.reflect.Field;
 
-//     @Test
-//     public void testGetInstanceNotNull() {
-//         ObjectMapper objectMapper = Mapper.getInstance();
-//         assertNotNull(objectMapper);
-//     }
+import static org.junit.Assert.*;
 
-//     @Test
-//     public void testGetInstanceNull() {
-//         ObjectMapper objectMapper = null;
-//         try {
-//             objectMapper = Mapper.getInstance();
-//         } catch (Exception e) {
-//             fail("getInstance() should not throw an exception.");
-//         }
-//         assertNotNull("ObjectMapper instance should not be null", objectMapper);
-//     }
+public class MapperTest {
 
-//     @Test
-//     public void testGetInstanceReturnsSameInstance() {
-//         ObjectMapper objectMapper1 = Mapper.getInstance();
-//         ObjectMapper objectMapper2 = Mapper.getInstance();
-//         assertSame(objectMapper1, objectMapper2);
-//     }
-// }
+    @Test
+    public void testGetInstanceNotNull() {
+        ObjectMapper objectMapper = Mapper.getInstance();
+        assertNotNull(objectMapper);
+    }
+
+    @Test
+    public void testGetInstanceNull() throws NoSuchFieldException, IllegalAccessException {
+        Field field = Mapper.class.getDeclaredField("objectMapper");
+        field.setAccessible(true);
+        field.set(null, null);
+        ObjectMapper objectMapper = Mapper.getInstance();
+        assertNotNull(objectMapper);
+    }
+
+}

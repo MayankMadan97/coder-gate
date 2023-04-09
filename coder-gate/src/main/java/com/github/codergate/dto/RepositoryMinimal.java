@@ -30,7 +30,7 @@ public class RepositoryMinimal extends RepositoriesAddedDTO {
         this.health = health;
     }
 
-
+    public RepositoryMinimal(){}
 
     public RepositoryMinimal(long timestamp) {
         this.timestamp = timestamp;

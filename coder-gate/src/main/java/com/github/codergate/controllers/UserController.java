@@ -19,6 +19,7 @@ import com.github.codergate.services.UserService;
 public class UserController {
     @Autowired
     UserService userService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("/getUserDetails")

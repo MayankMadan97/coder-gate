@@ -20,7 +20,7 @@ public class ThresholdService {
     public ThresholdDTO addThreshold(ThresholdDTO thresholdToAdd, int repositoryID) {
         ThresholdDTO thresholdDTO = null;
         if (thresholdRepository.findByRepositoryId(repositoryID) != null) {
-            updateThresholdByID(thresholdToAdd, repositoryID);
+            thresholdDTO = updateThresholdByID(thresholdToAdd, repositoryID);
         } else {
 
             ThresholdEntity thresholdEntity = convertThresholdDtoToEntity(thresholdToAdd, repositoryID);
