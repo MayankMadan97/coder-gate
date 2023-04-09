@@ -14,6 +14,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "Analysis")
 @Getter
@@ -35,6 +37,7 @@ public class AnalysisEntity {
     @JoinColumn(name = "repositoryId")
     private BranchEntity branchId;
 
+    private int loc;
     private int bugs;
     private int vulnerabilities;
     private double codeSmell;
@@ -67,6 +70,17 @@ public class AnalysisEntity {
 
     // Timestamp
     private long timestamp;
+
+
+    Integer methodCount ;
+    Integer totalArchSmellCount ;
+    Integer totalDesignSmellCount ;
+    Integer totalImplSmellCount ;
+    Integer componentCount ;
+    Integer metricVoilations ;
+    Integer typeCount ;
+
+
 
     public AnalysisEntity(int repoId, String branchName,
                           long timestamp) {

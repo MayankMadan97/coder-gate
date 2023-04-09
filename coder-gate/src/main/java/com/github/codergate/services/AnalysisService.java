@@ -2,6 +2,7 @@ package com.github.codergate.services;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -312,6 +313,7 @@ public class AnalysisService {
             Designate jsonifiedAnalysis = Mapper.getInstance().readValue(jsonifiedXML.toString(), Designate.class);
             if (jsonifiedAnalysis.getAnalysis() != null && jsonifiedAnalysis.getAnalysis().getSolution() != null) {
                 Solution solution = jsonifiedAnalysis.getAnalysis().getSolution();
+                Integer loc = solution.getLoc();
                 if (solution.getProject() != null) {
                     Project project = solution.getProject();
                     branchService.addBranch(branchName, repoId);
@@ -331,7 +333,28 @@ public class AnalysisService {
                     int archSmells = solution.getTotalArchSmellCount();
                     int designSmells = solution.getTotalDesignSmellCount();
                     int impSmells = solution.getTotalImplSmellCount();
+
+
+                    Integer methodCount = solution.getMethodCount();
+                    Integer totalArchSmellCount = solution.getTotalArchSmellCount();
+                    Integer totalDesignSmellCount = solution.getTotalDesignSmellCount();
+                    Integer totalImplSmellCount = solution.getTotalImplSmellCount();
+                    Integer componentCount = solution.getComponentCount();
+                    Integer metricVoilations = solution.getMetricVoilations();
+                    Integer typeCount = solution.getTypeCount();
+
+
+
                     AnalysisEntity analysisEntity = new AnalysisEntity(repoId, branchName, System.currentTimeMillis());
+                    analysisEntity.setLoc(loc);
+                    analysisEntity.setMethodCount(methodCount);
+                    analysisEntity.setTotalArchSmellCount(totalArchSmellCount);
+                    analysisEntity.setTotalDesignSmellCount(totalDesignSmellCount);
+                    analysisEntity.setTotalImplSmellCount(totalImplSmellCount);
+                    analysisEntity.setComponentCount(solution.getComponentCount());
+                    analysisEntity.setComponentCount(componentCount);
+                    analysisEntity.setMetricVoilations(metricVoilations);
+                    analysisEntity.setTypeCount(typeCount);
                     analysisEntity.setCodeSmell(solution.getSmellDensity());
                     analysisEntity.setDuplicatedLines(solution.getCodeDuplication());
                     analysisEntity.setCyclomaticComplexity(complexityDensity);
