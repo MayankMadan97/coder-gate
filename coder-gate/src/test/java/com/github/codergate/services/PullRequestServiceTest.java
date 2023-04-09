@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.List;
+
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -131,32 +133,32 @@ public class PullRequestServiceTest {
     public void testPullRequestCheckWithValidThresholdAndAnalysisEntities() {
         when(thresholdRepository.findByRepositoryId(repositoryId)).thenReturn(thresholdEntity);
         when(analysisRepository.findLatestAnalysisByRepositoryId(repositoryId)).thenReturn(analysisEntity);
-        when(pullRequestUtil.checkThreshold(analysisEntity, thresholdEntity)).thenReturn(true);
-        boolean result = pullRequestService.pullRequestCheck(1);
-        assertEquals(true, result);
+        when(pullRequestUtil.getFalseThresholdKeys(analysisEntity, thresholdEntity)).thenReturn(List.of("key1", "key2"));
+        List<String> result = pullRequestService.pullRequestCheck(1);
+        assertEquals(List.of("key1", "key2"), result);
     }
 
     @Test
     public void testPullRequestCheckWithNullThresholdEntity() {
         when(thresholdRepository.findByRepositoryId(repositoryId)).thenReturn(null);
         when(analysisRepository.findLatestAnalysisByRepositoryId(repositoryId)).thenReturn(analysisEntity);
-        Boolean result = pullRequestService.pullRequestCheck(1);
-        assertEquals(false, result);
+        List<String> result = pullRequestService.pullRequestCheck(1);
+        assertEquals(List.of(), result);
     }
 
     @Test
     public void testPullRequestCheckWithNullAnalysisEntity() {
         when(thresholdRepository.findByRepositoryId(repositoryId)).thenReturn(thresholdEntity);
         when(analysisRepository.findLatestAnalysisByRepositoryId(repositoryId)).thenReturn(null);
-        Boolean result = pullRequestService.pullRequestCheck(1);
-        assertEquals(false, result);
+        List<String> result = pullRequestService.pullRequestCheck(1);
+        assertEquals(List.of(), result);
     }
 
     @Test
     public void testPullRequestCheckWithNullThresholdAndAnalysisEntities() {
         when(thresholdRepository.findByRepositoryId(repositoryId)).thenReturn(null);
         when(analysisRepository.findLatestAnalysisByRepositoryId(repositoryId)).thenReturn(null);
-        Boolean result = pullRequestService.pullRequestCheck(1);
-        assertEquals(false, result);
+        List<String> result = pullRequestService.pullRequestCheck(1);
+        assertEquals(List.of(), result);
     }
 }
