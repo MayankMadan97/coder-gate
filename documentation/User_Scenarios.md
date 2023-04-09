@@ -16,7 +16,7 @@
 2. ### **User logs in to application's website**
     The user can log in to the website using their GitHub credentials. Once authenticated, they are sent to the dashboard. The dashboard contains important information about the user's repositories. The user can see:
     * Total number of repositories handled by the application
-    * Total number of contributers
+    * Total number of contributors
     * Health of each repository  
   
 3. ### **User wants to set threshold values for a repository**
@@ -32,7 +32,7 @@
     When a user clicks on a repository, they are presented with the Threshold tab and Insights tab. When the user clicks on the Insights tab, they are presented with the following charts:
 
 5. ### **Contributer raises a pull request**
-    When a contributer raises a pull request, the application performs a code quality analysis and checks if it breaks the already set threshold values. If it passes the check, the application does not intervene and the final decision for the pull request getting accepted depends on the owner of the repository.  
+    When a contributer raises a pull request, the application performs a code quality analysis and checks if it breaks the already set threshold values. If it passes the check, the application does not intervene and the final decision for the pull request getting accepted depends on the owner of the repository. It creates an issue and assigns to the contributor with the with the analysis and threshold values it broke.  
     However, the repository owner has the ability to enable a feature that will reject a pull request automatically if it breaks threshold values.
 
 [**Go back to README.md**](../README.md)
