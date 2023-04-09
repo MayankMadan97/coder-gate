@@ -167,7 +167,7 @@ public class RepositoryService {
     private RepositoryEntity convertDTOToEntityForPushEvent(Integer id, String name, int userID,
             String installationId) {
         RepositoryEntity repositoryEntity = null;
-        if (name != null && installationId != null) {
+        if(id!=0 && name!=null && userID!=0 && installationId!=null) {
             repositoryEntity = new RepositoryEntity();
             repositoryEntity.setRepositoryId(id);
             repositoryEntity.setRepositoryName(name);

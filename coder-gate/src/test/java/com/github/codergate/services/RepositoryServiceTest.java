@@ -199,10 +199,10 @@ class RepositoryServiceTest {
     @Test
     void testAddRepositoryWhenIdIsNUll() {
 
-        int id = 0;
+        int repositoryId = 0;
         String name = "abc";
         String installationId = "12344";
-        RepositoryEntity result = repositoryServiceMock.addRepository(id, name, (int) userId, installationId);
+        RepositoryEntity result = repositoryServiceMock.addRepository(repositoryId, name, (int) userId, installationId);
         assertNull(result);
 
     }
