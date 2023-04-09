@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.github.codergate.dto.insight.OccurrencesDTO;
 import com.github.codergate.dto.insight.TimeStampDTO;
 import com.github.codergate.services.InsightService;
+import com.github.codergate.services.utility.InsightUtil;
 
 @RestController
 public class InsightController {
@@ -23,24 +24,27 @@ public class InsightController {
     @Autowired
     InsightService insightService;
 
+    @Autowired
+    InsightUtil iUtil;
+
     @GetMapping("/getTimeStampInsight/{repoId}/{branchId}")
-    public ResponseEntity<String> fetchTimeStampInsights(@PathVariable("repoId") String repoId,@PathVariable("branchId") String branchId) throws JsonProcessingException {
+    public ResponseEntity<String> fetchTimeStampInsights(@PathVariable("repoId") String repoId,
+            @PathVariable("branchId") String branchId) throws JsonProcessingException {
         LOGGER.debug("fetchTimeStampInsights : Entering the method");
-        TimeStampDTO timeStampInsightSeries = insightService.getTimeStampInsightSeries(repoId, branchId);
+        TimeStampDTO timeStampInsightSeries = iUtil.getTimeStampInsightSeries(repoId, branchId);
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String output = ow.writeValueAsString(timeStampInsightSeries);
         return ResponseEntity.ok(output);
     }
 
     @GetMapping("/getOccurrencesInsight/{repoId}/{branchId}")
-    public ResponseEntity<String> fetchOccurrencesInsights(@PathVariable("repoId") String repoId, @PathVariable("branchId") String branchId) throws JsonProcessingException {
+    public ResponseEntity<String> fetchOccurrencesInsights(@PathVariable("repoId") String repoId,
+            @PathVariable("branchId") String branchId) throws JsonProcessingException {
         LOGGER.debug("fetchOccurrencesInsights : Entering the method");
         OccurrencesDTO occurrencesInsight = insightService.getOccurrencesInsight(repoId, branchId);
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String output = ow.writeValueAsString(occurrencesInsight);
         return ResponseEntity.ok(output);
     }
-
-
 
 }

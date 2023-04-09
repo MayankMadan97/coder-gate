@@ -353,22 +353,31 @@ public class AnalysisService {
                     branchService.addBranch(branchName, repoId);
                     double complexityDensity = getCyclomaticComplexity(solution.getProject(),
                             solution.getMethodCount());
-                    List<ArchSmell> archSmell = project.getArchSmells().getArchSmell();
-                    int cycArchDependencies = getSmells(archSmell, CYC_DEPENDENCY).size();
-                    int godCompArchDependencies = getSmells(archSmell, GOD_COMPONENT).size();
-                    List<ImplementationSmell> implementationSmell = project.getImplementationSmells()
-                            .getImplementationSmell();
-                    int complexCondImpSmells = getSmells(implementationSmell, COMPLEX_CONDITIONAL).size();
-                    int emptyCatchClauseImpSmells = getSmells(implementationSmell, EMPTY_CATCH_CLAUSE).size();
-                    List<DesignSmell> designSmell = project.getDesignSmells().getDesignSmell();
-                    int cycDependentDsSmells = getSmells(designSmell, CYC_DEPENDENT_MOD).size();
-                    int insufficientModDsSmells = getSmells(designSmell, INSUFFICIENT_MOD).size();
-                    int unnecessaryAbsDsSmells = getSmells(designSmell, UNNECESSARY_ABST).size();
-                    int archSmells = solution.getTotalArchSmellCount();
-                    int designSmells = solution.getTotalDesignSmellCount();
-                    int impSmells = solution.getTotalImplSmellCount();
-
-
+                    AnalysisEntity analysisEntity = new AnalysisEntity(repoId, branchName, System.currentTimeMillis());
+                    if (project.getArchSmells() != null) {
+                        List<ArchSmell> archSmell = project.getArchSmells().getArchSmell();
+                        int cycArchDependencies = getSmells(archSmell, CYC_DEPENDENCY).size();
+                        int godCompArchDependencies = getSmells(archSmell, GOD_COMPONENT).size();
+                        analysisEntity.setCyclicDependency(cycArchDependencies);
+                        analysisEntity.setGodComponents(godCompArchDependencies);
+                    }
+                    if (project.getImplementationSmells() != null) {
+                        List<ImplementationSmell> implementationSmell = project.getImplementationSmells()
+                                .getImplementationSmell();
+                        int complexCondImpSmells = getSmells(implementationSmell, COMPLEX_CONDITIONAL).size();
+                        int emptyCatchClauseImpSmells = getSmells(implementationSmell, EMPTY_CATCH_CLAUSE).size();
+                        analysisEntity.setComplexConditional(complexCondImpSmells);
+                        analysisEntity.setEmptyCatchClause(emptyCatchClauseImpSmells);
+                    }
+                    if (project.getDesignSmells() != null) {
+                        List<DesignSmell> designSmell = project.getDesignSmells().getDesignSmell();
+                        int cycDependentDsSmells = getSmells(designSmell, CYC_DEPENDENT_MOD).size();
+                        int insufficientModDsSmells = getSmells(designSmell, INSUFFICIENT_MOD).size();
+                        int unnecessaryAbsDsSmells = getSmells(designSmell, UNNECESSARY_ABST).size();
+                        analysisEntity.setCyclicallyDependentModularization(cycDependentDsSmells);
+                        analysisEntity.setInsufficientModularization(insufficientModDsSmells);
+                        analysisEntity.setUnnecessaryAbstraction(unnecessaryAbsDsSmells);
+                    }
                     Integer methodCount = solution.getMethodCount();
                     Integer totalArchSmellCount = solution.getTotalArchSmellCount();
                     Integer totalDesignSmellCount = solution.getTotalDesignSmellCount();
@@ -377,9 +386,6 @@ public class AnalysisService {
                     Integer metricVoilations = solution.getMetricVoilations();
                     Integer typeCount = solution.getTypeCount();
 
-
-
-                    AnalysisEntity analysisEntity = new AnalysisEntity(repoId, branchName, System.currentTimeMillis());
                     analysisEntity.setLoc(loc);
                     analysisEntity.setMethodCount(methodCount);
                     analysisEntity.setTotalArchSmellCount(totalArchSmellCount);
@@ -392,13 +398,9 @@ public class AnalysisService {
                     analysisEntity.setCodeSmell(solution.getSmellDensity());
                     analysisEntity.setDuplicatedLines(solution.getCodeDuplication());
                     analysisEntity.setCyclomaticComplexity(complexityDensity);
-                    analysisEntity.setCyclicDependency(cycArchDependencies);
-                    analysisEntity.setGodComponents(godCompArchDependencies);
-                    analysisEntity.setComplexConditional(complexCondImpSmells);
-                    analysisEntity.setEmptyCatchClause(emptyCatchClauseImpSmells);
-                    analysisEntity.setCyclicallyDependentModularization(cycDependentDsSmells);
-                    analysisEntity.setInsufficientModularization(insufficientModDsSmells);
-                    analysisEntity.setUnnecessaryAbstraction(unnecessaryAbsDsSmells);
+                    int archSmells = solution.getTotalArchSmellCount();
+                    int designSmells = solution.getTotalDesignSmellCount();
+                    int impSmells = solution.getTotalImplSmellCount();
                     analysisEntity.setArchSmellDensity(
                             archSmells > 0 ? (double) archSmells / solution.getLoc() : archSmells);
                     analysisEntity.setDesignSmellDensity(

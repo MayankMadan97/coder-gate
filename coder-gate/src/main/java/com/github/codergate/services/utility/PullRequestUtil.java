@@ -11,6 +11,9 @@ import com.github.codergate.entities.ThresholdEntity;
 @Component
 public class PullRequestUtil {
 
+    private static final String EXPECTED = "Expected (";
+    private static final String ACTUAL = ") | Actual (";
+
     /**
      * method compares latest analysis with threshold values for a repo
      * 
@@ -20,71 +23,81 @@ public class PullRequestUtil {
      */
     public List<String> getFalseThresholdKeys(AnalysisEntity analysisEntity, ThresholdEntity thresholdEntity) {
         List<String> falseKeys = new ArrayList<>();
+        String moreInfo;
         if (analysisEntity.getCodeSmell() >= thresholdEntity.getCodeSmell()) {
-            falseKeys.add("Code smell density : Expected (" + thresholdEntity.getCodeSmell() + ") | Actual ("
-                    + analysisEntity.getCodeSmell() + ")");
+            moreInfo = thresholdEntity.getCodeSmell() + ACTUAL + analysisEntity.getCodeSmell();
+            falseKeys.add("Code smell density :" + EXPECTED + moreInfo + ")");
         }
         if (analysisEntity.getCyclomaticComplexity() >= thresholdEntity.getCyclomaticComplexity()) {
-            falseKeys.add(
-                    "Cyclomatic complexity: Expected (" + thresholdEntity.getCyclomaticComplexity() + ") | Actual ("
-                            + analysisEntity.getCyclomaticComplexity() + ")");
+            moreInfo = thresholdEntity.getCyclomaticComplexity() + ACTUAL
+                    + analysisEntity.getCyclomaticComplexity();
+            falseKeys.add(EXPECTED +
+                    "Cyclomatic complexity:" + EXPECTED + moreInfo + ")");
         }
         if (analysisEntity.getDuplicatedLines() >= thresholdEntity.getDuplicatedLines()) {
-            falseKeys.add("Line duplication: Expected (" + thresholdEntity.getDuplicatedLines() + ") | Actual ("
-                    + analysisEntity.getDuplicatedLines() + ")");
+            moreInfo = thresholdEntity.getDuplicatedLines() + ACTUAL
+                    + analysisEntity.getDuplicatedLines();
+            falseKeys.add("Line duplication: " + EXPECTED + moreInfo + ")");
         }
         if (analysisEntity.getArchSmellDensity() >= thresholdEntity.getArchSmellDensity()) {
-            falseKeys.add(
-                    "Architecture smell density : Expected (" + thresholdEntity.getArchSmellDensity() + ") | Actual ("
-                            + analysisEntity.getArchSmellDensity() + ")");
+            moreInfo = thresholdEntity.getArchSmellDensity() + ACTUAL
+                    + analysisEntity.getArchSmellDensity();
+            falseKeys.add("Architecture smell density : " + EXPECTED + moreInfo + ")");
         }
         if (analysisEntity.getDesignSmellDensity() >= thresholdEntity.getDesignSmellDensity()) {
-            falseKeys.add("Design smell density: Expected (" + thresholdEntity.getDesignSmellDensity() + ") | Actual ("
-                    + analysisEntity.getDesignSmellDensity() + ")");
+            moreInfo = thresholdEntity.getDesignSmellDensity() + ACTUAL
+                    + analysisEntity.getDesignSmellDensity();
+            falseKeys.add("Design smell density: " + EXPECTED + moreInfo + ")");
         }
         if (analysisEntity.getImpSmellDensity() >= thresholdEntity.getImpSmellDensity()) {
-            falseKeys.add(
-                    "Implementation smell density : Expected (" + thresholdEntity.getImpSmellDensity() + ") | Actual ("
-                            + analysisEntity.getImpSmellDensity() + ")");
+            moreInfo = thresholdEntity.getImpSmellDensity() + ACTUAL
+                    + analysisEntity.getImpSmellDensity();
+            falseKeys.add("Implementation smell density : " + EXPECTED + moreInfo + ")");
         }
         if (analysisEntity.getComplexConditional() >= thresholdEntity.getComplexConditional()) {
-            falseKeys.add("Complex conditions: Expected (" + thresholdEntity.getComplexConditional() + ") | Actual ("
-                    + analysisEntity.getComplexConditional() + ")");
+            moreInfo = thresholdEntity.getComplexConditional() + ACTUAL
+                    + analysisEntity.getComplexConditional();
+            falseKeys.add("Complex conditions:" + EXPECTED + EXPECTED + moreInfo + ")");
         }
         if (analysisEntity.getCyclicallyDependentModularization() >= thresholdEntity.getCycDependentMod()) {
-            falseKeys.add("Cyclically dependent modularization : Expected (" + thresholdEntity.getCycDependentMod()
-                    + ") | Actual ("
-                    + analysisEntity.getCyclicallyDependentModularization() + ")");
+            moreInfo = thresholdEntity.getCycDependentMod() + ACTUAL
+                    + analysisEntity.getCyclicallyDependentModularization();
+            falseKeys.add("Cyclically dependent modularization : " + EXPECTED + moreInfo);
         }
         if (analysisEntity.getCyclicDependency() >= thresholdEntity.getCyclicDependency()) {
-            falseKeys.add("Cyclic dependencie : Expected (" + thresholdEntity.getCyclicDependency() + ") | Actual ("
-                    + analysisEntity.getCyclicDependency() + ")");
+            moreInfo = thresholdEntity.getCyclicDependency() + ACTUAL
+                    + analysisEntity.getCyclicDependency();
+            falseKeys.add("Cyclic dependencie : " + EXPECTED + moreInfo);
         }
         if (analysisEntity.getEmptyCatchClause() >= thresholdEntity.getEmptyCatchClause()) {
-            falseKeys.add("Empty catch clause : Expected (" + thresholdEntity.getEmptyCatchClause() + ") | Actual ("
-                    + analysisEntity.getEmptyCatchClause() + ")");
+            moreInfo = thresholdEntity.getEmptyCatchClause() + ACTUAL
+                    + analysisEntity.getEmptyCatchClause();
+            falseKeys.add("Empty catch clause : " + EXPECTED + moreInfo + ")");
         }
         if (analysisEntity.getEmptyTest() >= thresholdEntity.getEmptyTest()) {
-            falseKeys.add("Empty test method : Expected (" + thresholdEntity.getEmptyTest() + ") | Actual ("
-                    + analysisEntity.getEmptyTest() + ")");
+            moreInfo = thresholdEntity.getEmptyTest() + ACTUAL
+                    + analysisEntity.getEmptyTest();
+            falseKeys.add("Empty test method : " + EXPECTED + moreInfo + ")");
         }
         if (analysisEntity.getGodComponents() >= thresholdEntity.getGodComponents()) {
-            falseKeys.add("God component : Expected (" + thresholdEntity.getGodComponents() + ") | Actual ("
-                    + analysisEntity.getGodComponents() + ")");
+            moreInfo = thresholdEntity.getGodComponents() + ACTUAL
+                    + analysisEntity.getGodComponents();
+            falseKeys.add("God component : " + EXPECTED + moreInfo + ")");
         }
         if (analysisEntity.getInsufficientModularization() >= thresholdEntity.getInsufficientModularization()) {
-            falseKeys.add("Insufficient modularization : Expected (" + thresholdEntity.getInsufficientModularization()
-                    + ") | Actual ("
-                    + analysisEntity.getInsufficientModularization() + ")");
+            moreInfo = thresholdEntity.getInsufficientModularization() + ACTUAL
+                    + analysisEntity.getInsufficientModularization();
+            falseKeys.add("Insufficient modularization : " + EXPECTED + moreInfo + ")");
         }
         if (analysisEntity.getMissingAssertion() >= thresholdEntity.getMissingAssertion()) {
-            falseKeys.add("Missing assertion : Expected (" + thresholdEntity.getMissingAssertion() + ") | Actual ("
-                    + analysisEntity.getMissingAssertion() + ")");
+            moreInfo = thresholdEntity.getMissingAssertion() + ACTUAL
+                    + analysisEntity.getMissingAssertion();
+            falseKeys.add("Missing assertion : " + EXPECTED + EXPECTED + moreInfo + ")");
         }
         if (analysisEntity.getUnnecessaryAbstraction() >= thresholdEntity.getUnnecessaryAbstraction()) {
-            falseKeys.add("Unnecessary abstraction : Expected (" + thresholdEntity.getUnnecessaryAbstraction()
-                    + ") | Actual ("
-                    + analysisEntity.getUnnecessaryAbstraction() + ")");
+            moreInfo = thresholdEntity.getUnnecessaryAbstraction() + ACTUAL
+                    + analysisEntity.getUnnecessaryAbstraction();
+            falseKeys.add("Unnecessary abstraction : " + EXPECTED + EXPECTED + moreInfo + ")");
         }
         return falseKeys;
     }

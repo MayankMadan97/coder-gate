@@ -30,17 +30,17 @@ public class WebHookListenerUtil {
         return true;
     }
 
-    public boolean commentOnPullRequest(String owner, String repositoryName, String title, String body, String assignee,
-            String[] label, String installationId) {
+    public boolean commentOnPullRequest(String owner, String repositoryName, String title,
+            String body, String assignee, String[] label, String installationId) {
         boolean isIssueRaised = false;
         Map<String, Object> bodyMap = new HashMap<>();
         bodyMap.put("title", title);
         bodyMap.put("body", body);
         bodyMap.put("assignee", assignee);
         bodyMap.put("label", label);
-        if (owner != null && repositoryName != null && title != null) {
-            restClient.invokeForPost("https://api.github.com/repos/" + owner + "/" + repositoryName + "/issues",
-                    bodyMap, null, installationId);
+        if (owner != null && repositoryName != null) {
+            String url = "https://api.github.com/repos/" + owner + "/" + repositoryName + "/issues";
+            restClient.invokeForPost(url, bodyMap, null, installationId);
         }
         return isIssueRaised;
     }
