@@ -56,7 +56,6 @@ class ThresholdEntityTest {
     boolean action = true;
 
 
-
     @Test
     void testAllArgsConstructor() {
         RepositoryEntity repositoryIdInThreshold = new RepositoryEntity();

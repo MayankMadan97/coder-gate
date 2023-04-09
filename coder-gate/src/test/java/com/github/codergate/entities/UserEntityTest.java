@@ -36,11 +36,13 @@ class UserEntityTest {
     int userId =11;
     int repositoryId =123;
 
+    String email = "test@gmail.com";
+
     @Test
     void testUserEntityPersisted() {
         userEntity.setUserName("alex");
         userEntity.setUserId(userId);
-        userEntity.setEmail("test@gmail");
+        userEntity.setEmail(email);
         entityManager.persist(userEntity);
         entityManager.flush();
         UserEntity expected = entityManager.find(UserEntity.class, userEntity.getUserId());
@@ -68,11 +70,42 @@ class UserEntityTest {
     }
 
     @Test
-    void testFindByUserId() {
+    void testAllArgsConstructor() {
+        long userId = 1;
+        String userName = "alex";
+        UserEntity user = new UserEntity(userId, userName, email, repositoryEntities, eventEntities);
+        assertEquals(userId, user.getUserId());;
+    }
+
+    @Test
+    void testDeleteUserEntity() {
+        userEntity.setUserId(1L);
+        userEntity.setUserName("alex");
+        userEntity.setEmail(email);
+        userEntity = userRepository.save(userEntity);
+        userRepository.delete(userEntity);
+        Optional<UserEntity> deletedUser = userRepository.findById(userEntity.getUserId());
+        assertFalse(deletedUser.isPresent());
+    }
+
+    @Test
+    void testDeleteUserEntityById() {
         long userId =1;
         userEntity.setUserId(userId);
+        userEntity.setUserName("testuser");
+        userEntity.setEmail(email);
+        userEntity = userRepository.save(userEntity);
+        userRepository.deleteById(userEntity.getUserId());
+        Optional<UserEntity> deletedUser = userRepository.findById(userEntity.getUserId());
+        assertFalse(deletedUser.isPresent());
+    }
+
+    @Test
+    void testFindByUserId() {
+        long userId = 1;
+        userEntity.setUserId(userId);
         userEntity.setUserName("test_user");
-        userEntity.setEmail("test@gmail");
+        userEntity.setEmail(email);
         repositoryEntity.setRepositoryId(repositoryId);
         repositoryEntity.setRepositoryName("alex_repository");
         repositoryEntity.setFork(false);
@@ -93,45 +126,13 @@ class UserEntityTest {
         UserEntity retrievedUser = expected.get();
         assertEquals("test_user", retrievedUser.getUserName());
         List<RepositoryEntity> retrievedRepositories = retrievedUser.getRepositoryEntity();
-        assertNotNull(retrievedRepositories);
+        assertEquals(1, retrievedRepositories.size());
         RepositoryEntity retrievedRepository = retrievedRepositories.get(0);
         assertEquals("alex_repository", retrievedRepository.getRepositoryName());
         Set<EventEntity> retrievedEvents = retrievedUser.getUserAndEvent();
-        assertNotNull(retrievedEvents);
+        assertEquals(1, retrievedEvents.size());
         EventEntity retrievedEvent = retrievedEvents.iterator().next();
         assertEquals("test_event", retrievedEvent.getEventName());
-    }
-
-    @Test
-    void testAllArgsConstructor() {
-        long userId = 1;
-        String userName = "alex";
-        String email = "alex@example.com";
-        UserEntity user = new UserEntity(userId, userName, email, repositoryEntities, eventEntities);
-        assertEquals(userId, user.getUserId());;
-    }
-
-    @Test
-    void testDeleteUserEntity() {
-        userEntity.setUserId(1L);
-        userEntity.setUserName("alex");
-        userEntity.setEmail("alex@test.com");
-        userEntity = userRepository.save(userEntity);
-        userRepository.delete(userEntity);
-        Optional<UserEntity> deletedUser = userRepository.findById(userEntity.getUserId());
-        assertFalse(deletedUser.isPresent());
-    }
-
-    @Test
-    void testDeleteUserEntityById() {
-        long userId =1;
-        userEntity.setUserId(userId);
-        userEntity.setUserName("testuser");
-        userEntity.setEmail("testuser@test.com");
-        userEntity = userRepository.save(userEntity);
-        userRepository.deleteById(userEntity.getUserId());
-        Optional<UserEntity> deletedUser = userRepository.findById(userEntity.getUserId());
-        assertFalse(deletedUser.isPresent());
     }
 
 

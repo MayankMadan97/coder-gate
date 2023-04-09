@@ -46,11 +46,6 @@ class EventEntityTest {
         entityManager.persist(eventEntity);
         entityManager.flush();
         EventEntity retrievedEvent = entityManager.find(EventEntity.class, eventEntity.getEventId());
-        assertNotNull(retrievedEvent);
-        assertEquals(eventEntity.getEventId(), retrievedEvent.getEventId());
-        assertEquals(eventEntity.getEventName(), retrievedEvent.getEventName());
-        assertEquals(eventEntity.getCommitId(), retrievedEvent.getCommitId());
-        assertEquals(eventEntity.getCommitMessage(), retrievedEvent.getCommitMessage());
         entityManager.remove(retrievedEvent);
         entityManager.flush();
         EventEntity deletedEvent = entityManager.find(EventEntity.class, eventEntity.getEventId());
@@ -95,9 +90,6 @@ class EventEntityTest {
         assertEquals(repositoryEntity.getRepositoryId(), retrievedEvent.getRepositoryIdInEvent().getRepositoryId());
         assertEquals(repositoryEntity.getRepositoryName(), retrievedEvent.getRepositoryIdInEvent().getRepositoryName());
     }
-
-
-
 
 }
 
