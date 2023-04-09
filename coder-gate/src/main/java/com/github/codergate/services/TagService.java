@@ -1,15 +1,14 @@
 package com.github.codergate.services;
 
-import com.github.codergate.dto.push.RepositoryDTO;
-import com.github.codergate.entities.BranchEntity;
-import com.github.codergate.entities.RepositoryEntity;
-import com.github.codergate.entities.TagEntity;
-import com.github.codergate.entities.TagId;
-import com.github.codergate.repositories.TagRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.github.codergate.entities.RepositoryEntity;
+import com.github.codergate.entities.TagEntity;
+import com.github.codergate.entities.TagId;
+import com.github.codergate.repositories.TagRepository;
 
 @Service
 public class TagService {
@@ -20,11 +19,12 @@ public class TagService {
 
     /***
      * adds tag information to table
+     * 
      * @return RepositoryDTO object
      */
     public void addTag(String tagsUrl, Integer repositoryId) {
-        TagEntity tagEntity = convertDTOToEntity(tagsUrl,repositoryId);
-        if(tagEntity!=null) {
+        TagEntity tagEntity = convertDTOToEntity(tagsUrl, repositoryId);
+        if (tagEntity != null) {
             TagEntity savedEntity = tagRepository.save(tagEntity);
             LOGGER.info("addTag : The tag information is added {}", savedEntity);
         }
@@ -32,6 +32,7 @@ public class TagService {
 
     /***
      * converts RepositoryDTO to Tag Entity
+     * 
      * @return Tag Entity
      */
     private TagEntity convertDTOToEntity(String tagUrls, Integer id) {
@@ -43,28 +44,5 @@ public class TagService {
         tagEntity.setTagId(tagId);
         tagEntity.setRepositoryIdInTag(repositoryEntity);
         return tagEntity;
-    }
-
-    /***
-     * Converts Tag entity to RepositoryDTO
-     * @param tag Tag Entity
-     * @return RepositoryDTO Object
-     */
-    private RepositoryDTO convertEntityToDTO(TagEntity tag) {
-        RepositoryDTO repositoryDTO = null;
-        if(tag != null)
-        {
-            repositoryDTO = new RepositoryDTO();
-            if(tag.getTagId() != null)
-            {
-                TagId tagIdObject = tag.getTagId();
-                repositoryDTO.setId(tagIdObject.getRepositoryId());
-                repositoryDTO.setTagsUrl(tagIdObject.getTagUrl());
-            }
-            LOGGER.info("ConvertEntityToDto : Tag Entity has been converted to RepositoryDTO {}", repositoryDTO);
-        } else {
-            LOGGER.warn("ConvertEntityToDto : Tag entity value is null");
-        }
-        return repositoryDTO;
     }
 }

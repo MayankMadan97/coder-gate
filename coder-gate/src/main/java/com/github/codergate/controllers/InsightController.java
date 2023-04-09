@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.github.codergate.dto.insight.OccurrencesDTO;
 import com.github.codergate.dto.insight.TimeStampDTO;
 import com.github.codergate.services.InsightService;
-import com.github.codergate.services.utility.InsightUtil;
+import com.github.codergate.utils.InsightUtil;
 
 @RestController
 public class InsightController {

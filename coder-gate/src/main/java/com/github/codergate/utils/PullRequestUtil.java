@@ -1,4 +1,4 @@
-package com.github.codergate.services.utility;
+package com.github.codergate.utils;
 
 import java.util.ArrayList;
 import java.util.List;

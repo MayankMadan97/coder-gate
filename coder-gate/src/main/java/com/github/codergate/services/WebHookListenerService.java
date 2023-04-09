@@ -28,11 +28,11 @@ import com.github.codergate.dto.push.PusherPayloadDTO;
 import com.github.codergate.dto.threshold.ThresholdDTO;
 import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.UserEntity;
-import com.github.codergate.services.utility.WebHookListenerUtil;
 import com.github.codergate.utils.Constants;
 import com.github.codergate.utils.JwtUtils;
 import com.github.codergate.utils.Mapper;
 import com.github.codergate.utils.RestClient;
+import com.github.codergate.utils.WebHookListenerUtil;
 
 /*
  * service handles subscribed webhooks from GitHub

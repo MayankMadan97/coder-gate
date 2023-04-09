@@ -35,7 +35,7 @@ import com.github.codergate.entities.RepositoryEntity;
 import com.github.codergate.entities.TagEntity;
 import com.github.codergate.entities.TagId;
 import com.github.codergate.entities.UserEntity;
-import com.github.codergate.services.utility.WebHookListenerUtil;
+import com.github.codergate.utils.WebHookListenerUtil;
 
 @ExtendWith(MockitoExtension.class)
 class WebHookListenerServiceTest {

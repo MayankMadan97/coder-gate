@@ -1,24 +1,21 @@
 package com.github.codergate.services;
-import com.github.codergate.dto.controller.UserResponse;
-import com.github.codergate.dto.installation.AccountDTO;
-import com.github.codergate.dto.push.SenderDTO;
-import com.github.codergate.entities.UserEntity;
-import com.github.codergate.repositories.UserRepository;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
-import java.util.Scanner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.github.codergate.dto.installation.AccountDTO;
+import com.github.codergate.dto.push.SenderDTO;
+import com.github.codergate.entities.UserEntity;
+import com.github.codergate.repositories.UserRepository;
 
 @Service
 public class UserService {
@@ -28,9 +25,10 @@ public class UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
-
     /***
-     * adds the value into the table using entity and returns the values in dto class during installation event
+     * adds the value into the table using entity and returns the values in dto
+     * class during installation event
+     * 
      * @param userToAdd dto class
      * @return dto class with user values
      */
@@ -47,7 +45,8 @@ public class UserService {
 
     /***
      * adds user to the table during push event
-     * @param  userId, login, userEmail
+     * 
+     * @param userId,   login, userEmail
      * @param userEmail email of User in String format
      * @return SenderDTO Object
      */
@@ -61,9 +60,9 @@ public class UserService {
         return userEntity;
     }
 
-
     /***
      * Gets the user information from the table using id
+     * 
      * @param userId user id
      * @return dto class with user information
      */
@@ -82,6 +81,7 @@ public class UserService {
 
     /***
      * updates the user information using userId
+     * 
      * @param userId userId
      * @return dto class
      */
@@ -96,9 +96,9 @@ public class UserService {
         return accountDto;
     }
 
-
     /***
-     *  deletes user row by id
+     * deletes user row by id
+     * 
      * @param userId user_id
      * @return true or false
      */
@@ -112,9 +112,9 @@ public class UserService {
         return isDeleted;
     }
 
-
     /***
      * converts AccountDTO to User Entity
+     * 
      * @param accountDTO dto, id and name check and set.
      * @return entity
      */
@@ -135,9 +135,9 @@ public class UserService {
         return userEntity;
     }
 
-
     /***
      * converts SenderDTO to User Entity during push event
+     * 
      * @param userEmail email of User in String format
      * @return User Entity
      */
@@ -160,6 +160,7 @@ public class UserService {
 
     /***
      * converts User entity to AccountDTO
+     * 
      * @param userEntity user entity
      * @return AccountDTO
      */
@@ -178,46 +179,6 @@ public class UserService {
             LOGGER.warn("convertEntityToAccountDto : User entity value is null");
         }
         return accountDTO;
-    }
-
-    /***
-     * converts User Entity to SenderDTO
-     * @param userEntity User Entity
-     * @return SenderDTO
-     */
-    public SenderDTO convertEntityToSenderDTO(UserEntity userEntity) {
-        SenderDTO senderDTO = null;
-        if (userEntity != null) {
-            senderDTO = new SenderDTO();
-            if (userEntity.getUserId() != 0L) {
-                senderDTO.setId((int) userEntity.getUserId());
-            }
-            if (userEntity.getUserName() != null) {
-                senderDTO.setLogin(userEntity.getUserName());
-            }
-            LOGGER.info("convertEntityToSenderDto : Entity has been converted to SenderDTO {}", senderDTO);
-        } else {
-            LOGGER.warn("convertEntityToSenderDto : User entity value is null");
-        }
-        return senderDTO;
-    }
-
-    public UserResponse getUserResponse(String userName) {
-        UserEntity userEntity = userRepository.findByUserName(userName);
-        UserResponse userResponse = new UserResponse();
-        String apiUrl = String.format("https://api.github.com/users/%s", userName);
-        String avatarUrl = null;
-        try {
-            URL url = new URL(apiUrl);
-            String response = new Scanner(url.openStream(), StandardCharsets.UTF_8).useDelimiter("\\A").next();
-            avatarUrl = new JSONObject(response).getString("avatar_url");
-            userResponse.setAvatarUrl(avatarUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        userResponse.setUserName(userName);
-        userResponse.setEmail(userEntity.getEmail());
-        return userResponse;
     }
 
     public String getUserDetails(String githubAccessToken) throws IOException {
@@ -244,7 +205,8 @@ public class UserService {
 
     public String getPublicUserDetails(String userId) throws IOException {
 
-        // Create a URL object with the GitHub API endpoint for retrieving user information by ID
+        // Create a URL object with the GitHub API endpoint for retrieving user
+        // information by ID
         URL url = new URL("https://api.github.com/user/" + userId);
 
         // Create an HttpURLConnection object to send the GET request
@@ -272,4 +234,3 @@ public class UserService {
         }
     }
 }
-

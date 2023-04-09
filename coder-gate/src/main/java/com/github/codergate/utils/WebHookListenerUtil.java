@@ -1,4 +1,4 @@
-package com.github.codergate.services.utility;
+package com.github.codergate.utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.github.codergate.dto.controller.PullRequestRestRequest;
-import com.github.codergate.utils.RestClient;
 
 @Component
 public class WebHookListenerUtil {

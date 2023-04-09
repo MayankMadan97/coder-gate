@@ -3,7 +3,8 @@ package com.github.codergate.services;
 import com.github.codergate.entities.*;
 import com.github.codergate.repositories.AnalysisRepository;
 import com.github.codergate.repositories.ThresholdRepository;
-import com.github.codergate.services.utility.PullRequestUtil;
+import com.github.codergate.utils.PullRequestUtil;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
