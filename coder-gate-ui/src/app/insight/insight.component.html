@@ -4,9 +4,9 @@
       <div *ngIf="branches" class="col-3 d-flex align-self-center">
         <mat-form-field appearance="fill">
           <mat-label>Branches</mat-label>
-          <mat-select [(value)]="branches[0]">
+          <mat-select [(value)]="userSelectedBranch" (selectionChange)="onOptionChange($event.value)">
             <mat-option *ngFor="let branch of branches" [value]="branch">
-              {{branches}}
+              {{branch}}
             </mat-option>
           </mat-select>
         </mat-form-field>
