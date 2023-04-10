@@ -1,14 +1,16 @@
 package com.github.codergate.services.utility;
 
-import com.github.codergate.entities.AnalysisEntity;
-import com.github.codergate.entities.ThresholdEntity;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.github.codergate.entities.AnalysisEntity;
+import com.github.codergate.entities.ThresholdEntity;
+import com.github.codergate.utils.PullRequestUtil;
 
 @ExtendWith(MockitoExtension.class)
 public class PullRequestUtilTest {
