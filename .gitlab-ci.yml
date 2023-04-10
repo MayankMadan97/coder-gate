@@ -76,8 +76,7 @@ deploy-backend:
     - ssh -o StrictHostKeyChecking=no -i ${DEPLOY_SSH_KEY} ${DEPLOY_USER}@${DEPLOY_HOST} "docker run -d --name coder-gate-backend -p 8080:8080 coder-gate-backend"
   tags:
     - Group19Runner
-  only:
-  - dev
+
 
 deploy-frontend:
   stage: deploy
@@ -89,7 +88,6 @@ deploy-frontend:
     - ssh -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${DEPLOY_USER}@${DEPLOY_HOST} "sudo -S sh -c 'sudo service apache2 restart'" < <(echo ${SUDO_PASSWORD})
   tags:
     - Group19Runner
-  only:
-    - dev
+
 
     
