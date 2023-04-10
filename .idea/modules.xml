@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Project.iml" filepath="$PROJECT_DIR$/.idea/Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/coder-gate/coder-gate.iml" filepath="$PROJECT_DIR$/coder-gate/coder-gate.iml" />
     </modules>
   </component>
 </project>

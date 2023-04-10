@@ -2,6 +2,10 @@
     font-size: 1.3em;
 }
 
+.navbar-container .profile-picture {
+    border-radius: 2em;
+}
+
 .navbar-container input[type=text] {
     float: right;
     padding: 6px;

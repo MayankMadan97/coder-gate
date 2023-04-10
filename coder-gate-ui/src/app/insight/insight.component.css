@@ -1,0 +1,4 @@
+.chart-section {
+    max-height: calc(100vh - 18em);
+    overflow-y: scroll;
+}

@@ -10,6 +10,10 @@ import { HomeComponent } from './home/home.component';
 import { MainModule } from './main/main.module';
 import { AuthGuard } from './shared/auth.guard';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RepositoriesComponent } from './repositories/repositories.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,7 +28,8 @@ const routes: Routes = [
     AppComponent,
     GithubLoginComponent,
     HomeComponent,
-    FeaturesComponent
+    FeaturesComponent,
+    RepositoriesComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +42,10 @@ const routes: Routes = [
         allowedUrls: ['https://api.github.com'],
         sendAccessToken: true
       }
-    })
+    }),
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    MatDialogModule
   ],
   exports: [
     GithubLoginComponent,

@@ -3,7 +3,7 @@ package com.github.codergate.dto.pullRequest;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "user",
     "repo"
 })
-@Generated("jsonschema2pojo")
 public class Base {
 
     @JsonProperty("label")
@@ -29,9 +28,9 @@ public class Base {
     @JsonProperty("sha")
     private String sha;
     @JsonProperty("user")
-    private User__2 user;
+    private User user;
     @JsonProperty("repo")
-    private Repo__1 repo;
+    private Repo repo;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -66,22 +65,22 @@ public class Base {
     }
 
     @JsonProperty("user")
-    public User__2 getUser() {
+    public User getUser() {
         return user;
     }
 
     @JsonProperty("user")
-    public void setUser(User__2 user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
     @JsonProperty("repo")
-    public Repo__1 getRepo() {
+    public Repo getRepo() {
         return repo;
     }
 
     @JsonProperty("repo")
-    public void setRepo(Repo__1 repo) {
+    public void setRepo(Repo repo) {
         this.repo = repo;
     }
 
@@ -93,42 +92,6 @@ public class Base {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Base.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("label");
-        sb.append('=');
-        sb.append(((this.label == null)?"<null>":this.label));
-        sb.append(',');
-        sb.append("ref");
-        sb.append('=');
-        sb.append(((this.ref == null)?"<null>":this.ref));
-        sb.append(',');
-        sb.append("sha");
-        sb.append('=');
-        sb.append(((this.sha == null)?"<null>":this.sha));
-        sb.append(',');
-        sb.append("user");
-        sb.append('=');
-        sb.append(((this.user == null)?"<null>":this.user));
-        sb.append(',');
-        sb.append("repo");
-        sb.append('=');
-        sb.append(((this.repo == null)?"<null>":this.repo));
-        sb.append(',');
-        sb.append("additionalProperties");
-        sb.append('=');
-        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
-        sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
-        }
-        return sb.toString();
     }
 
 }

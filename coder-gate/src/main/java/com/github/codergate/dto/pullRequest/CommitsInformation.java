@@ -4,7 +4,7 @@ package com.github.codergate.dto.pullRequest;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "committer",
     "parents"
 })
-@Generated("jsonschema2pojo")
 public class CommitsInformation {
 
     @JsonProperty("url")
@@ -40,9 +39,9 @@ public class CommitsInformation {
     @JsonProperty("commit")
     private Commit commit;
     @JsonProperty("author")
-    private Author__1 author;
+    private Author author;
     @JsonProperty("committer")
-    private Committer__1 committer;
+    private Committer committer;
     @JsonProperty("parents")
     private List<Parent> parents;
     @JsonIgnore
@@ -109,22 +108,22 @@ public class CommitsInformation {
     }
 
     @JsonProperty("author")
-    public Author__1 getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
     @JsonProperty("author")
-    public void setAuthor(Author__1 author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
     @JsonProperty("committer")
-    public Committer__1 getCommitter() {
+    public Committer getCommitter() {
         return committer;
     }
 
     @JsonProperty("committer")
-    public void setCommitter(Committer__1 committer) {
+    public void setCommitter(Committer committer) {
         this.committer = committer;
     }
 
@@ -146,58 +145,6 @@ public class CommitsInformation {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(CommitsInformation.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("url");
-        sb.append('=');
-        sb.append(((this.url == null)?"<null>":this.url));
-        sb.append(',');
-        sb.append("sha");
-        sb.append('=');
-        sb.append(((this.sha == null)?"<null>":this.sha));
-        sb.append(',');
-        sb.append("nodeId");
-        sb.append('=');
-        sb.append(((this.nodeId == null)?"<null>":this.nodeId));
-        sb.append(',');
-        sb.append("htmlUrl");
-        sb.append('=');
-        sb.append(((this.htmlUrl == null)?"<null>":this.htmlUrl));
-        sb.append(',');
-        sb.append("commentsUrl");
-        sb.append('=');
-        sb.append(((this.commentsUrl == null)?"<null>":this.commentsUrl));
-        sb.append(',');
-        sb.append("commit");
-        sb.append('=');
-        sb.append(((this.commit == null)?"<null>":this.commit));
-        sb.append(',');
-        sb.append("author");
-        sb.append('=');
-        sb.append(((this.author == null)?"<null>":this.author));
-        sb.append(',');
-        sb.append("committer");
-        sb.append('=');
-        sb.append(((this.committer == null)?"<null>":this.committer));
-        sb.append(',');
-        sb.append("parents");
-        sb.append('=');
-        sb.append(((this.parents == null)?"<null>":this.parents));
-        sb.append(',');
-        sb.append("additionalProperties");
-        sb.append('=');
-        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
-        sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
-        }
-        return sb.toString();
     }
 
 }
