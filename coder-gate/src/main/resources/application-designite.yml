@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      
       - name: Set build system
         id: set-build-system
         run: |
@@ -22,32 +23,59 @@ jobs:
             echo "Build system not found"
             exit 1
           fi
-      - name: Build with Maven
-        run: |
-          if [[ "${{ steps.set-build-system.outputs.build-system }}" == "maven" ]]; then
-            mvn clean install
-          fi
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      
       - name: Build with Gradle
         run: |
           if [[ "${{ steps.set-build-system.outputs.build-system }}" == "gradle" ]]; then
             ./gradlew build
           fi
-      - name: Download DesigniteJava
-        run: wget "https://www.designite-tools.com/static/download/DJE/DesigniteJava.jar"
-      - name: Analyze project with DesigniteJava
+          
+      - name: Build with Maven
         run: |
-          java -jar DesigniteJava.jar -ci -repo $GITHUB_REPOSITORY -pat ${{ secrets.PAT }}
-          ls
-      - name: Upload Designite results as artifact
-        uses: actions/upload-artifact@v2
+          if [[ "${{ steps.set-build-system.outputs.build-system }}" == "maven" ]]; then
+            mvn clean install -Dmaven.test.skip=true
+          fi
+
+      # - name: Download DesigniteJava
+      #   run: wget "https://www.designite-tools.com/assets/DesigniteJava.jar"
+          
+      # - name: Analyze project with DesigniteJava
+      #   run: |
+      #     java -version
+      #     java -jar DesigniteJava.jar -o Designite_output -ci -repo $GITHUB_REPOSITORY -pat ${{ secrets.PAT }} -k ${{ secrets.D_KEY }}
+      #     cd Designite_output
+      #     ls -a
+      #     cd ..
+
+      - name: DesigniteJava_action
+        uses: DesigniteTools/DJAction@v2.0
         with:
-          name: DesigniteAnalysis
-          path: Designite_output/DesigniteAnalysis.xml
-      - name: Download DesigniteAnalysis artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: DesigniteAnalysis
-          path: Designite_output
-      - name: Send DesigniteAnalysis.xml to Analysis controller
+          PAT: ${{ secrets.PAT }}
+          K: ${{ secrets.D_KEY }}
+
+      - name: check_results
         run: |
-          curl -X POST -F 'file=@Designite_output/DesigniteAnalysis.xml' http://csci5308vm19.research.cs.dal.ca:8080/analysis/${{github.repository_id}}/${{github.ref_name}}
+          cd designite-output/
+          ls -a
+      
+      # - name: Upload Designite results as artifact
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: DesigniteAnalysis
+      #     path: Designite_output/DesigniteAnalysis.xml
+          
+      # - name: Download DesigniteAnalysis artifact
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: DesigniteAnalysis
+      #     path: Designite_output
+          
+      # - name: Send DesigniteAnalysis.xml to Analysis controller
+      #   run: |
+      #     curl -X POST -F 'file=@Designite_output/DesigniteAnalysis.xml' http://localhost:8080/analysis/${{github.repository_id}}/${{github.ref_name}}
