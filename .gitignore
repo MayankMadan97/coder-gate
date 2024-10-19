@@ -34,3 +34,7 @@ build/
 
 */node_modules/
 coder-gate-ui/*/cache/
+
+.env
+application-dev.properties
+application-prod.properties
